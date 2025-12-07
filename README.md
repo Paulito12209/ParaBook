@@ -8,26 +8,19 @@
 
 ## UI‑Design Leitlinien
 
-<aside>
-<img src="/icons/palette_purple.svg" alt="/icons/palette_purple.svg" width="40px" />
-
 **Farben**
 
 - Hintergrund: sehr dunkel blau‑grau (#0D1420 bis #0F172A)
 - Karten: dunkel mit subtilen Verläufen, Akzent **Magenta‑Violett** für Hero‑Card
 - Primärbutton: dunkelblau mit hellen States
 - Text: helles Grau, Überschriften Weiß
-</aside>
 
-<aside>
-<img src="/icons/typography_blue.svg" alt="/icons/typography_blue.svg" width="40px" />
 
 **Typografie & Abstände**
 
 - Großes Titel‑Weight für Projektkarten
 - 8px‑Spacing‑Raster, großzügige Padding auf Karten
 - Runde Ecken 12–16px
-</aside>
 
 ---
 
@@ -95,12 +88,8 @@ para-book/
 │  │  └─ shared/          # UI‑Bausteine (Button, Card, Avatar)
 ```
 
-<aside>
-<img src="/icons/info-alternate_blue.svg" alt="/icons/info-alternate_blue.svg" width="40px" />
-
 Aktualisierung: Anstelle von `src/assets` wird ein `public/`‑Ordner verwendet. Alle statischen Dateien (Bilder, Fonts, i18n) liegen unter `public/` und werden direkt ausgeliefert.
 
-</aside>
 
 ---
 
