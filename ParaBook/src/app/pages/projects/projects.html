@@ -1,0 +1,6 @@
+<!-- Projects Page -->
+<div class="projects-page" [class.mobile-show-details]="mobileShowDetails">
+    <app-project-list (projectSelected)="onProjectSelected($event)"></app-project-list>
+    <app-project-details [project]="selectedProject" (backToProjectList)="onBackToProjectList()">
+    </app-project-details>
+</div>

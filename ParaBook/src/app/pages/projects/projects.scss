@@ -1,0 +1,36 @@
+:host {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.projects-page {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    height: 100%;
+    gap: 0;
+}
+
+@media (max-width: 768px) {
+    .projects-page {
+        grid-template-columns: 1fr;
+        /* Allow content to scroll if needed */
+        overflow-y: auto;
+
+        /* Default: Show List, Hide Details */
+        app-project-details {
+            display: none;
+        }
+
+        /* Show Details State: Hide List, Show Details */
+        &.mobile-show-details {
+            app-project-list {
+                display: none;
+            }
+
+            app-project-details {
+                display: block;
+            }
+        }
+    }
+}

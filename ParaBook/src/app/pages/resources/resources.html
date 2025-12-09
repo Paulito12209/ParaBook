@@ -1,0 +1,5 @@
+<!-- Resources Page -->
+<div class="resources-page">
+    <app-project-list (projectSelected)="onProjectSelected($event)"></app-project-list>
+    <app-project-details [project]="selectedProject"></app-project-details>
+</div>

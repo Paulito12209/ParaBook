@@ -1,0 +1,50 @@
+:host {
+    height: 100vh;
+    display: flex;
+}
+
+.layout-container {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    height: 100vh;
+    overflow: hidden;
+
+    app-header {
+        flex-shrink: 0;
+    }
+
+    app-projects {
+        flex: 1;
+        overflow: hidden;
+    }
+}
+
+@media (max-width: 768px) {
+    :host {
+        flex-direction: column-reverse;
+        /* Navigation at bottom */
+    }
+
+    .layout-container {
+        /* Container fills remaining space, but does NOT scroll itself */
+        height: auto;
+        flex: 1;
+        overflow: hidden;
+        /* Changed from overflow-y: auto */
+        display: flex;
+        flex-direction: column;
+    }
+
+    .layout-container app-header {
+        flex-shrink: 0;
+        /* Header keeps its size, never scrolls */
+    }
+
+    /* This targets the router-outlet content area (e.g., app-projects) */
+    .layout-container ::ng-deep>*:not(app-header):not(router-outlet) {
+        flex: 1;
+        overflow-y: auto;
+        /* Only this area scrolls */
+    }
+}
