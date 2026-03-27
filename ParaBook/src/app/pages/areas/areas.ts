@@ -51,6 +51,12 @@ export class Areas {
           if (!this.selectedAreaId) {
             this.selectedAreaId = list[0].id;
             this.selectedProject = list[0];
+            this.appState.trackPageVisit({
+              id: list[0].id.toString(),
+              type: 'Area',
+              title: list[0].title,
+              timestamp: Date.now()
+            });
           }
         });
         this.autoSelected = true;
@@ -80,6 +86,12 @@ export class Areas {
   onProjectSelected(project: ProjectListItem) {
     this.selectedAreaId = project.id;
     this.selectedProject = project as ProjectDetailsItem;
+    this.appState.trackPageVisit({
+      id: project.id.toString(),
+      type: 'Area',
+      title: project.title,
+      timestamp: Date.now()
+    });
   }
 
   /**

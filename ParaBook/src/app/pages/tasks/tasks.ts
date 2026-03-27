@@ -40,6 +40,12 @@ export class Tasks {
           if (!this.selectedTaskId) {
             this.selectedTaskId = list[0].id;
             this.selectedTask = list[0];
+            this.appState.trackPageVisit({
+              id: list[0].id!,
+              type: 'Task',
+              title: list[0].title,
+              timestamp: Date.now()
+            });
           }
         });
         this.autoSelected = true;
@@ -69,6 +75,12 @@ export class Tasks {
   onTaskSelected(task: TaskEntity) {
     this.selectedTaskId = task.id;
     this.selectedTask = task;
+    this.appState.trackPageVisit({
+      id: task.id!,
+      type: 'Task',
+      title: task.title,
+      timestamp: Date.now()
+    });
   }
 
   onAddTask() {

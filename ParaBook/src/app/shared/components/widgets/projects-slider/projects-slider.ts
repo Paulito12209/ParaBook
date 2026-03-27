@@ -8,43 +8,92 @@ import { ProjectEntity } from '../../../../core/models/entities';
   standalone: true,
   imports: [CommonModule],
   template: `
-    <div class="projects-section">
-      <div class="section-header">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="icon">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 0 1 4.5 9.75h15A2.25 2.25 0 0 1 21.75 12v.75m-8.625-1.219c.337.158.736.19 1.093.092l.337-.092m-8.625-1.219a.75.75 0 0 1 .556-.75l.337-.092m11.332 5.093.337.092a.75.75 0 0 1 .556.75v3a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25v-3a.75.75 0 0 1 .556-.75l.337-.092m9.962-3.214.337.092a.75.75 0 0 1 .556.75v3a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25v-3a.75.75 0 0 1 .556-.75l.337-.092" />
-        </svg>
-        <span>Meine Projekte</span>
-      </div>
-      
-      <div class="projects-carousel">
-        <div *ngFor="let project of projects" class="project-card">
-          <div class="card-cover">
-             <div class="cover-pattern" [style.background-color]="getProjectColor(project.id)"></div>
-          </div>
-          <div class="card-content">
-            <h3 class="title">{{ project.title }}</h3>
-            
-            <div class="pill-container">
-              <span *ngIf="project.areaIds && project.areaIds.length > 0" class="area-pill">
-                {{ getAreaName(project.areaIds[0]) }}
-              </span>
-              
-              <button *ngIf="!project.areaIds || project.areaIds.length === 0" class="link-area-btn">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="btn-icon">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                </svg>
-                Arbeitsbereich verknüpfen
-              </button>
+    <div class="projects-layout">
+      <!-- Slider Area -->
+      <div class="slider-area">
+        <div class="section-header">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="icon">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 0 1 4.5 9.75h15A2.25 2.25 0 0 1 21.75 12v.75m-8.625-1.219c.337.158.736.19 1.093.092l.337-.092m-8.625-1.219a.75.75 0 0 1 .556-.75l.337-.092m11.332 5.093.337.092a.75.75 0 0 1 .556.75v3a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25v-3a.75.75 0 0 1 .556-.75l.337-.092m9.962-3.214.337.092a.75.75 0 0 1 .556.75v3a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25v-3a.75.75 0 0 1 .556-.75l.337-.092" />
+          </svg>
+          <span>Meine Projekte</span>
+        </div>
+        
+        <div class="projects-carousel">
+          <div *ngFor="let project of projects" class="project-card">
+            <div class="card-cover">
+               <div class="cover-pattern" [style.background-color]="getProjectColor(project.id)"></div>
             </div>
+            <div class="card-content">
+              <h3 class="title">{{ project.title }}</h3>
+              
+              <div class="pill-container">
+                <span *ngIf="project.areaIds && project.areaIds.length > 0" class="area-pill">
+                  {{ getAreaName(project.areaIds[0]) }}
+                </span>
+                
+                <button *ngIf="!project.areaIds || project.areaIds.length === 0" class="link-area-btn">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="btn-icon">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                  </svg>
+                  Arbeitsbereich verknüpfen
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Compact List Area -->
+      <div class="compact-list-area">
+        <div class="section-header">
+          <span class="text-bold">Zuletzt erstellt</span>
+        </div>
+        <div class="widget-panel list-container">
+          <div *ngFor="let proj of projects.slice(0, 4)" class="compact-project">
+            <span class="title">{{ proj.title }}</span>
           </div>
         </div>
       </div>
     </div>
   `,
   styles: [`
-    .projects-section {
+    .projects-layout {
       margin-top: 2rem;
       margin-bottom: 2rem;
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 2rem;
+      
+      @media (max-width: 1024px) {
+        grid-template-columns: 1fr;
+      }
+    }
+    .slider-area {
+      overflow: hidden;
+    }
+    .compact-list-area {
+      display: flex;
+      flex-direction: column;
+    }
+    .list-container {
+      background: var(--bg-canvas);
+      border-radius: 1.5rem;
+      border: 1px solid rgba(0,0,0,0.05);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.03);
+      padding: 1rem 1.25rem;
+      height: 100%;
+      min-height: 200px;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .compact-project {
+      padding: 0.5rem 0;
+      .title {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: var(--text-main);
+      }
     }
     .section-header {
       display: flex;

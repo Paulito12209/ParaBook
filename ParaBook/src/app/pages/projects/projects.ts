@@ -48,6 +48,12 @@ export class Projects {
         setTimeout(() => {
           if (!this.selectedProjectId) {
             this.selectedProjectId = list[0].id;
+            this.appState.trackPageVisit({
+              id: list[0].id.toString(),
+              type: 'Project',
+              title: list[0].title,
+              timestamp: Date.now()
+            });
           }
         });
         this.autoSelected = true;
@@ -76,6 +82,12 @@ export class Projects {
 
   onProjectSelected(project: ProjectListItem) {
     this.selectedProjectId = project.id;
+    this.appState.trackPageVisit({
+      id: project.id.toString(),
+      type: 'Project',
+      title: project.title,
+      timestamp: Date.now()
+    });
   }
 
   get selectedProject(): ProjectDetailsItem | null {

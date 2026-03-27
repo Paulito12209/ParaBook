@@ -65,7 +65,8 @@ import { delay } from 'rxjs/operators';
       &::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 10px; }
     }
     .item-card {
-      min-width: 140px;
+      width: 160px;
+      flex: 0 0 auto;
       background: var(--bg-canvas);
       border-radius: 1rem;
       overflow: hidden;

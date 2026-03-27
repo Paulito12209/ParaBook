@@ -39,6 +39,12 @@ export class Meetings {
           if (!this.selectedMeetingId) {
             this.selectedMeetingId = list[0].id;
             this.selectedMeeting = list[0];
+            this.appState.trackPageVisit({
+              id: list[0].id!,
+              type: 'Meeting',
+              title: list[0].title,
+              timestamp: Date.now()
+            });
           }
         });
         this.autoSelected = true;
@@ -68,6 +74,12 @@ export class Meetings {
   onMeetingSelected(meeting: MeetingEntity) {
     this.selectedMeetingId = meeting.id;
     this.selectedMeeting = meeting;
+    this.appState.trackPageVisit({
+      id: meeting.id!,
+      type: 'Meeting',
+      title: meeting.title,
+      timestamp: Date.now()
+    });
   }
 
   /**

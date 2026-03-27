@@ -11,100 +11,105 @@ import { toSignal } from '@angular/core/rxjs-interop';
   standalone: true,
   imports: [CommonModule, FormsModule],
   template: `
-    <div class="tasks-container">
-      <div class="widget-panel list-panel">
-        <div class="panel-header">
-           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="icon">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-          </svg>
-          <span>Meine Aufgaben</span>
-        </div>
-        
-        <div class="task-list">
-          @for (task of tasks(); track task.id) {
-            <div 
-                 class="task-item" 
-                 [class.active]="selectedTask()?.id === task.id"
-                 (click)="selectTask(task)">
-              <input type="checkbox" 
-                     [checked]="task.status === 'erledigt'" 
-                     (change)="toggleTaskStatus(task)"
-                     (click)="$event.stopPropagation()">
-              <div class="task-info">
-                <span class="title">{{ task.title }}</span>
-                <div class="meta">
-                  <span class="due" *ngIf="task.dueDate">{{ task.dueDate | date:'d. MMM' }}</span>
+    <div class="widget-wrapper">
+      <div class="section-header">
+         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="icon">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+        </svg>
+        <span>Meine Aufgaben</span>
+      </div>
+      
+      <div class="widget-panel tasks-container">
+        <div class="list-panel">
+          <div class="task-list">
+            @for (task of tasks(); track task.id) {
+              <div 
+                   class="task-item" 
+                   [class.active]="selectedTask()?.id === task.id"
+                   (click)="selectTask(task)">
+                <input type="checkbox" 
+                       [checked]="task.status === 'erledigt'" 
+                       (change)="toggleTaskStatus(task)"
+                       (click)="$event.stopPropagation()">
+                <div class="task-info">
+                  <span class="title">{{ task.title }}</span>
+                  <div class="meta">
+                    <span class="due" *ngIf="task.dueDate">{{ task.dueDate | date:'d. MMM' }}</span>
+                  </div>
                 </div>
               </div>
-            </div>
-          } @empty {
-            <div class="empty-state-simple">Keine aktiven Aufgaben</div>
-          }
+            } @empty {
+              <div class="empty-state-simple">Keine aktiven Aufgaben</div>
+            }
+          </div>
         </div>
-      </div>
 
-      <div class="widget-panel detail-panel">
-        <div *ngIf="selectedTask() as task; else placeholder" class="task-detail">
-          <input class="detail-title" [(ngModel)]="task.title" (ngModelChange)="updateTask(task)" placeholder="Aufgabentitel">
-          <textarea class="detail-description" [(ngModel)]="task.details" (ngModelChange)="updateTask(task)" placeholder="Notizen..."></textarea>
+        <div class="detail-panel">
+          <div *ngIf="selectedTask() as task; else placeholder" class="task-detail">
+            <input class="detail-title" [(ngModel)]="task.title" (ngModelChange)="updateTask(task)" placeholder="Aufgabentitel">
+            <textarea class="detail-description" [(ngModel)]="task.details" (ngModelChange)="updateTask(task)" placeholder="Notizen..."></textarea>
+            
+            <div class="detail-fields">
+              <div class="field">
+                <label>Status</label>
+                <select [(ngModel)]="task.status" (ngModelChange)="updateTask(task)">
+                  <option value="offen">Offen</option>
+                  <option value="in Arbeit">In Arbeit</option>
+                </select>
+              </div>
+              <div class="field">
+                <label>Priorität</label>
+                <select [(ngModel)]="task.priority" (ngModelChange)="updateTask(task)">
+                  <option value="niedrig">Niedrig</option>
+                  <option value="mittel">Mittel</option>
+                  <option value="hoch">Hoch</option>
+                </select>
+              </div>
+            </div>
+          </div>
           
-          <div class="detail-fields">
-            <div class="field">
-              <label>Status</label>
-              <select [(ngModel)]="task.status" (ngModelChange)="updateTask(task)">
-                <option value="offen">Offen</option>
-                <option value="in Arbeit">In Arbeit</option>
-              </select>
+          <ng-template #placeholder>
+            <div class="detail-placeholder">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="placeholder-icon">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+              </svg>
+              <p>Aufgabe auswählen für Details</p>
             </div>
-            <div class="field">
-              <label>Priorität</label>
-              <select [(ngModel)]="task.priority" (ngModelChange)="updateTask(task)">
-                <option value="niedrig">Niedrig</option>
-                <option value="mittel">Mittel</option>
-                <option value="hoch">Hoch</option>
-              </select>
-            </div>
-          </div>
+          </ng-template>
         </div>
-        
-        <ng-template #placeholder>
-          <div class="detail-placeholder">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="placeholder-icon">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-            </svg>
-            <p>Aufgabe auswählen für Details</p>
-          </div>
-        </ng-template>
       </div>
     </div>
   `,
   styles: [`
-    .tasks-container {
+    .widget-wrapper {
       display: flex;
-      gap: 1rem;
-      height: 400px;
+      flex-direction: column;
+      height: 100%;
+    }
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      font-weight: 600;
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      .icon { width: 1.25rem; height: 1.25rem; color: #10b981; }
     }
     .widget-panel {
       background: var(--bg-primary);
       border-radius: 1.5rem;
       border: 1px solid var(--border-color);
       box-shadow: var(--shadow-card);
-      padding: 1.25rem;
       display: flex;
-      flex-direction: column;
     }
-    .list-panel { flex: 0 0 45%; }
-    .detail-panel { flex: 1; }
-    
-    .panel-header {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      margin-bottom: 1rem;
-      font-weight: 600;
-      color: var(--text-primary);
-      .icon { width: 1.25rem; height: 1.25rem; color: #10b981; }
+    .tasks-container {
+      flex-direction: row;
+      height: 400px;
+      overflow: hidden;
     }
+    .list-panel { flex: 0 0 45%; padding: 1.25rem; border-right: 1px solid var(--border-color); display: flex; flex-direction: column; }
+    .detail-panel { flex: 1; padding: 1.25rem; display: flex; flex-direction: column; }
 
     .task-list {
       overflow-y: auto;

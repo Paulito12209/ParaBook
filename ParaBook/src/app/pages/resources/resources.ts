@@ -76,11 +76,23 @@ export class Resources implements OnInit {
     // Automatische Auswahl des ersten Elements beim Navigieren
     if (resources.length > 0 && !this.selectedResource()) {
       this.selectedResource.set(resources[0]);
+      this.appState.trackPageVisit({
+        id: resources[0].id!,
+        type: 'Resource',
+        title: resources[0].title,
+        timestamp: Date.now()
+      });
     }
   }
 
   onResourceSelected(res: ResourceEntity) {
     this.selectedResource.set(res);
+    this.appState.trackPageVisit({
+      id: res.id!,
+      type: 'Resource',
+      title: res.title,
+      timestamp: Date.now()
+    });
   }
 
   onCloseDetails() {
