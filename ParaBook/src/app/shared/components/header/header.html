@@ -1,11 +1,14 @@
-<!-- Header: 3-Spalten (Logo/Titel | Suche | Actions) -->
+<!-- Header: Transparent mit Floating Pills -->
 <header>
 
     <div class="header-left">
-        <img class="header-logo" src="parabook-logo.png" alt="ParaBook Logo">
+        <!-- Seitentitel Pille (dynamisch) -->
+        <div class="page-pill">
+            <span class="text">{{ pageTitle() }}</span>
+        </div>
     </div>
 
-    <!-- Zentrale Suchleiste -->
+    <!-- Zentrale Suchleiste als schwebende Pille -->
     <div class="header-search">
         <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="11" cy="11" r="8"/>
@@ -15,6 +18,7 @@
         <kbd class="search-shortcut">⌘K</kbd>
     </div>
 
+    <!-- Aktionen (Icons + Profil) zusammen in einer Pille gebündelt -->
     <div class="header-actions">
         <button class="icon-btn" aria-label="Hilfe">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

@@ -12,14 +12,14 @@ import { System } from './pages/system/system';
 export const routes: Routes = [
     {
         path: "", component: MainLayout, children: [
-            { path: "dashboard", component: Dashboard },
-            { path: "meetings", component: Meetings },
-            { path: "tasks", component: Tasks },
-            { path: "projects", component: Projects },
-            { path: "areas", component: Areas },
-            { path: "resources", component: Resources },
-            { path: "archive", component: Archive },
-            { path: "system", component: System },
+            { path: "dashboard", component: Dashboard, data: { title: 'Dashboard' } },
+            { path: "meetings", component: Meetings, data: { title: 'Meetings' } },
+            { path: "tasks", component: Tasks, data: { title: 'Aufgaben' } },
+            { path: "projects", component: Projects, data: { title: 'Projekte' } },
+            { path: "areas", component: Areas, data: { title: 'Arbeitsbereiche' } },
+            { path: "resources", component: Resources, data: { title: 'Ressourcen' } },
+            { path: "archive", component: Archive, data: { title: 'Archiv' } },
+            { path: "system", component: System, data: { title: 'System' } },
             { path: "", redirectTo: "dashboard", pathMatch: "full" }
         ]
     }
