@@ -30,7 +30,7 @@
 
             <!-- Untere Sektion (60px) -->
             <div class="header-bottom">
-                @if (task.subtasks && task.subtasks.length >= 2) {
+                @if (task.subtasks && task.subtasks.length >= 1) {
                     <div class="subtask-indicator" (click)="toggleSubtasksPanel()" title="Unteraufgaben anzeigen">
                         <div *ngFor="let st of task.subtasks" 
                              class="indicator-segment" 
