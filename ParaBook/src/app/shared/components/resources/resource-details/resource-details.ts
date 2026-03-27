@@ -51,6 +51,19 @@ export class ResourceDetailsComponent {
     this.onClose();
   }
 
+  /**
+   * Löscht die aktuelle Ressource permanent aus der Datenbank.
+   */
+  async deleteResource() {
+    if (!this.resource) return;
+    
+    // Bestätigung (optional, aber hier direkt löschen wie bei Tasks)
+    await this.db.resources.delete(this.resource.id);
+    
+    // Ansicht schließen
+    this.onClose();
+  }
+
   onClose() {
     this.close.emit();
   }

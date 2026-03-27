@@ -4,6 +4,7 @@ import { SharedProjectDetails, ProjectDetailsItem } from '../../shared/component
 import { CommonModule } from '@angular/common';
 import { AppStateService } from '../../core/services/app-state.service';
 import { DatabaseService } from '../../core/database/db.service';
+import { ShortcutService } from '../../core/services/shortcut.service';
 
 @Component({
   selector: 'app-areas',
@@ -15,6 +16,7 @@ import { DatabaseService } from '../../core/database/db.service';
 export class Areas {
   private db = inject(DatabaseService);
   appState = inject(AppStateService);
+  private shortcutService = inject(ShortcutService);
   selectedProject: ProjectDetailsItem | null = null;
   selectedAreaId: string | number | null = null;
   
@@ -44,21 +46,10 @@ export class Areas {
     this.selectedProject = project as ProjectDetailsItem;
   }
 
-  onAddItem() {
-    const newId = crypto.randomUUID();
-    this.db.areas.add({
-        id: newId,
-        title: 'Neuer Arbeitsbereich',
-        description: '',
-        createdAt: Date.now(),
-        updatedAt: Date.now(),
-        isArchived: false,
-        projectIds: [],
-        taskIds: [],
-        resourceIds: [],
-        meetingIds: [],
-        bookmarkIds: [],
-        participants: []
-    });
+  /**
+   * Öffnet den Quick-Capture-Dialog für einen neuen Arbeitsbereich.
+   */
+  onAddArea() {
+    this.shortcutService.toggleCaptureDialog('area');
   }
 }

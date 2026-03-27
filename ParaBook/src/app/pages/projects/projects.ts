@@ -7,6 +7,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { SharedProjectList, ProjectListItem } from '../../shared/components/project-list/project-list';
 import { SharedProjectDetails, ProjectDetailsItem } from '../../shared/components/project-details/project-details';
 import { AppStateService } from '../../core/services/app-state.service';
+import { ShortcutService } from '../../core/services/shortcut.service';
 
 @Component({
   selector: 'app-projects',
@@ -18,6 +19,7 @@ import { AppStateService } from '../../core/services/app-state.service';
 export class Projects {
   private db = inject(DatabaseService);
   appState = inject(AppStateService);
+  private shortcutService = inject(ShortcutService);
 
   // Roh-Daten von Dexie
   rawProjects = toSignal(
@@ -78,25 +80,10 @@ export class Projects {
     await this.db.projects.delete(id.toString());
   }
 
-  // Die addProject Logik bleibt gleich, wird aber evtl. von der Shared-Komponente getriggert oder hier behalten
-  // Für das Refactoring nutzen wir vorerst die Shared-Listen-Logik zum Anzeigen.
-  onAddItem() {
-      const newId = crypto.randomUUID();
-      this.db.projects.add({
-          id: newId,
-          title: 'Neues Projekt',
-          status: 'geplant',
-          priority: 'mittel',
-          createdAt: Date.now(),
-          updatedAt: Date.now(),
-          isArchived: false,
-          isFavorite: false,
-          taskIds: [],
-          resourceIds: [],
-          areaIds: [],
-          meetingIds: [],
-          bookmarkIds: [],
-          participants: []
-      });
+  /**
+   * Öffnet den Quick-Capture-Dialog für ein neues Projekt.
+   */
+  onAddProject() {
+    this.shortcutService.toggleCaptureDialog('project');
   }
 }

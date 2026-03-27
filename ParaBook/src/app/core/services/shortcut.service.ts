@@ -16,8 +16,18 @@ export class ShortcutService {
    * Öffnet oder schließt den Quick-Capture-Dialog mit einer optionalen Vorselektion.
    */
   toggleCaptureDialog(type: 'task' | 'project' | 'area' | 'resource' | 'meeting' | null = null) {
-    this.captureType.set(type);
-    this.isCaptureDialogOpen.update(val => !val);
+    if (type) {
+        // Falls ein Typ übergeben wird, wollen wir den Dialog explizit öffnen (nicht nur toggen)
+        this.captureType.set(type);
+        this.isCaptureDialogOpen.set(true);
+    } else {
+        // Ohne Typ verhält es sich wie ein Toggle
+        this.isCaptureDialogOpen.update(val => !val);
+        if (!this.isCaptureDialogOpen()) {
+            this.captureType.set(null);
+        }
+    }
+    
     if (this.isCaptureDialogOpen()) this.isSearchModalOpen.set(false);
   }
 

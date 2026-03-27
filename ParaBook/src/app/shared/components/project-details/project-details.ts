@@ -41,4 +41,17 @@ export class SharedProjectDetails {
     // Zurück zur Liste navigieren
     this.goBack();
   }
+
+  /**
+   * Löscht das aktuelle Projekt permanent aus der Datenbank.
+   */
+  async deleteProject() {
+    if (!this.project) return;
+
+    // Projekt aus der Datenbank löschen
+    await (this.db as any).projects.delete(this.project.id);
+
+    // Zurück zur Liste
+    this.goBack();
+  }
 }
