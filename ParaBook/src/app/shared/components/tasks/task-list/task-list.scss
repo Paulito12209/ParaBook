@@ -34,9 +34,10 @@
             }
 
             &.active {
-                border-color: var(--accent-primary);
-                background: rgba(99, 102, 241, 0.03);
-                box-shadow: 0 4px 12px rgba(99, 102, 241, 0.1);
+                border-color: #6366f1;
+                background: rgba(99, 102, 241, 0.05);
+                box-shadow: 0 4px 15px rgba(99, 102, 241, 0.15);
+                transform: translateX(4px);
             }
 
             &.completed {

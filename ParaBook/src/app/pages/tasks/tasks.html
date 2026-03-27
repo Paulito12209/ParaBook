@@ -2,6 +2,7 @@
     <div class="list-col" [style.width.px]="appState.globalSidebarWidth()">
         <app-task-list 
             [tasks]="tasks()" 
+            [selectedTaskId]="selectedTaskId"
             (taskSelected)="onTaskSelected($event)"
             (addTask)="onAddTask()"
             (toggleStatus)="onToggleStatus($event)">

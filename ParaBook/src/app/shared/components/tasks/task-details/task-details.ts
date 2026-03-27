@@ -17,6 +17,7 @@ export class TaskDetailsComponent {
   @Output() delete = new EventEmitter<string>();
 
   showPropertiesDialog = false;
+  showSubtasksPanel = false;
 
   private db = inject(DatabaseService);
 
@@ -102,5 +103,9 @@ export class TaskDetailsComponent {
 
   togglePropertiesDialog() {
     this.showPropertiesDialog = !this.showPropertiesDialog;
+  }
+
+  toggleSubtasksPanel() {
+    this.showSubtasksPanel = !this.showSubtasksPanel;
   }
 }

@@ -13,13 +13,17 @@
     /* === Glassmorphism Header (Projekt = Rot) === */
     .glass-header {
         background: linear-gradient(135deg, rgba(204, 49, 42, 0.15) 0%, var(--bg-primary) 100%);
-        padding: 40px 32px;
+        padding: 40px 32px 20px;
         position: relative;
         overflow: hidden;
+        height: 240px;
+        display: flex;
+        align-items: flex-start;
 
         .header-content {
             position: relative;
             z-index: 1;
+            width: 100%;
 
             /* Zurück-Pille im Header */
             .back-pill {

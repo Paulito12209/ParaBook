@@ -22,48 +22,65 @@
                     <span class="badge priority" [attr.data-priority]="task.priority">{{ task.priority }}</span>
                 </div>
             </div>
+
+            <!-- Subtask Progress Indicator (direktes Kind von glass-header, wird nach unten gedrückt) -->
+            @if (task.subtasks && task.subtasks.length >= 2) {
+                <div class="subtask-indicator" (click)="toggleSubtasksPanel()" title="Unteraufgaben anzeigen">
+                    <div *ngFor="let st of task.subtasks" 
+                         class="indicator-segment" 
+                         [class.filled]="st.isCompleted">
+                    </div>
+                </div>
+            }
         </div>
 
         <!-- Action-Bar -->
         <div class="action-bar">
-            <button class="action-btn" (click)="togglePropertiesDialog()" title="Eigenschaften" [class.active]="showPropertiesDialog">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="4" y1="21" x2="4" y2="14"></line>
-                    <line x1="4" y1="10" x2="4" y2="3"></line>
-                    <line x1="12" y1="21" x2="12" y2="12"></line>
-                    <line x1="12" y1="8" x2="12" y2="3"></line>
-                    <line x1="20" y1="21" x2="20" y2="16"></line>
-                    <line x1="20" y1="12" x2="20" y2="3"></line>
-                    <line x1="1" y1="14" x2="7" y2="14"></line>
-                    <line x1="9" y1="8" x2="15" y2="8"></line>
-                    <line x1="17" y1="16" x2="23" y2="16"></line>
+            <div class="action-group">
+                <button class="action-btn" (click)="togglePropertiesDialog()" title="Eigenschaften" [class.active]="showPropertiesDialog">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="4" y1="21" x2="4" y2="14"></line>
+                        <line x1="4" y1="10" x2="4" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="12"></line>
+                        <line x1="12" y1="8" x2="12" y2="3"></line>
+                        <line x1="20" y1="21" x2="20" y2="16"></line>
+                        <line x1="20" y1="12" x2="20" y2="3"></line>
+                        <line x1="1" y1="14" x2="7" y2="14"></line>
+                        <line x1="9" y1="8" x2="15" y2="8"></line>
+                        <line x1="17" y1="16" x2="23" y2="16"></line>
+                    </svg>
+                    Eigenschaften
+                </button>
+                <button class="action-btn" (click)="onArchive()" title="Archivieren">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="21 8 21 21 3 21 3 8"></polyline>
+                        <rect x="1" y="3" width="22" height="5"></rect>
+                        <line x1="10" y1="12" x2="14" y2="12"></line>
+                    </svg>
+                    Archivieren
+                </button>
+                <button class="action-btn delete" (click)="onDelete()" title="Löschen">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                    </svg>
+                    Löschen
+                </button>
+            </div>
+            <button class="action-btn subtask-toggle" (click)="toggleSubtasksPanel()" [class.active]="showSubtasksPanel">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
                 </svg>
-                Eigenschaften
-            </button>
-            <button class="action-btn" (click)="onArchive()" title="Archivieren">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="21 8 21 21 3 21 3 8"></polyline>
-                    <rect x="1" y="3" width="22" height="5"></rect>
-                    <line x1="10" y1="12" x2="14" y2="12"></line>
-                </svg>
-                Archivieren
-            </button>
-            <button class="action-btn delete" (click)="onDelete()" title="Löschen">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
-                </svg>
-                Löschen
+                Unteraufgabe
             </button>
         </div>
 
         <!-- Main Content Area -->
         <div class="main-canvas">
-            <div class="content-placeholder">
-                <!-- Hier kämen in Zukunft weitere Aufgabendetails (z.B. Beschreibung/Notizen) hin -->
-            </div>
+            <div class="content-placeholder"></div>
         </div>
 
-        <!-- Eigenschaften (Properties) Dialog / Bottom Sheet -->
+        <!-- Eigenschaften (Properties) Dialog -->
         <div class="properties-dialog" [class.open]="showPropertiesDialog">
             <div class="dialog-header">
                 <h3>Eigenschaften</h3>
@@ -84,31 +101,42 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
 
-                <div class="section subtasks-section">
-                    <h3>Unteraufgaben</h3>
-                    <div class="subtasks-list">
-                        <div *ngFor="let st of task.subtasks" class="subtask-item" [class.completed]="st.isCompleted">
-                            <label class="custom-checkbox">
-                                <input type="checkbox" [(ngModel)]="st.isCompleted" (ngModelChange)="updateSubtasks()" />
-                                <span class="checkmark"></span>
-                            </label>
-                            <input class="subtask-title-input" [(ngModel)]="st.title" (ngModelChange)="updateSubtasks()" />
-                            <button class="remove-btn" (click)="removeSubtask(st.id)" title="Löschen">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <line x1="18" y1="6" x2="6" y2="18"></line>
-                                    <line x1="6" y1="6" x2="18" y2="18"></line>
-                                </svg>
-                            </button>
-                        </div>
+        <!-- Subtasks Panel (Side Sheet) -->
+        <div class="subtasks-panel" [class.open]="showSubtasksPanel">
+            <div class="panel-header">
+                <h3>Unteraufgaben</h3>
+                <button class="close-btn" (click)="toggleSubtasksPanel()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="panel-content">
+                <div class="subtasks-list">
+                    <div *ngFor="let st of (task.subtasks || [])" class="subtask-item" [class.completed]="st.isCompleted">
+                        <label class="custom-checkbox">
+                            <input type="checkbox" [(ngModel)]="st.isCompleted" (ngModelChange)="updateSubtasks()" />
+                            <span class="checkmark"></span>
+                        </label>
+                        <input class="subtask-title-input" [(ngModel)]="st.title" (ngModelChange)="updateSubtasks()" />
+                        <button class="remove-btn" (click)="removeSubtask(st.id)" title="Löschen">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                        </button>
                     </div>
-                    <div class="add-subtask-row">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="add-icon">
-                            <line x1="12" y1="5" x2="12" y2="19"></line>
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                        </svg>
-                        <input #newSubtaskInput type="text" placeholder="Weitere Unteraufgabe..." class="add-subtask-input" (keyup.enter)="addSubtask(newSubtaskInput.value); newSubtaskInput.value=''" />
-                    </div>
+                </div>
+                <div class="add-subtask-row">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="add-icon">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                    <input #newSubtaskInput type="text" placeholder="Weitere Unteraufgabe..." class="add-subtask-input" (keyup.enter)="addSubtask(newSubtaskInput.value); newSubtaskInput.value=''" />
                 </div>
             </div>
         </div>

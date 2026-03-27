@@ -12,12 +12,12 @@ import { AppStateService } from '../../../../core/services/app-state.service';
 })
 export class TaskListComponent {
   @Input() tasks: TaskEntity[] = [];
+  @Input() selectedTaskId: string | null = null;
   @Output() taskSelected = new EventEmitter<TaskEntity>();
   @Output() addTask = new EventEmitter<void>();
   @Output() toggleStatus = new EventEmitter<TaskEntity>();
 
   appState = inject(AppStateService);
-  selectedTaskId: string | null = null;
 
   selectTask(task: TaskEntity) {
     this.selectedTaskId = task.id;
