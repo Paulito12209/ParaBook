@@ -1,0 +1,64 @@
+<div class="meeting-details" [class.empty]="!meeting">
+    @if (meeting) {
+        <div class="details-header">
+            <div class="header-main">
+                <h2 class="title">{{ meeting.title }}</h2>
+                <button class="close-btn" (click)="onClose()">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 6L6 18M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="meta-row">
+                <span class="date-badge">{{ meeting.scheduledFor | date:'EEEE, dd. MMMM yyyy' }}</span>
+                <span class="time-badge">{{ meeting.scheduledFor | date:'HH:mm' }} Uhr</span>
+            </div>
+        </div>
+
+        <div class="details-content">
+            <div class="section">
+                <h3>Teilnehmer</h3>
+                <div class="participants-list">
+                    @for (p of meeting.participants; track p) {
+                        <div class="participant-pill">{{ p }}</div>
+                    } @empty {
+                        <p class="empty-msg">Keine Teilnehmer eingetragen</p>
+                    }
+                </div>
+            </div>
+
+            <div class="section">
+                <h3>Themen / Agenda</h3>
+                @if (meeting.topics && meeting.topics.length > 0) {
+                    <ul class="topics-list">
+                        @for (topic of meeting.topics; track topic) {
+                            <li>{{ topic }}</li>
+                        }
+                    </ul>
+                } @else {
+                    <p class="agenda">Keine Agenda vorhanden.</p>
+                }
+            </div>
+
+            <div class="actions-section">
+                <button class="delete-btn" (click)="onDelete()">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                    </svg>
+                    Meeting löschen
+                </button>
+            </div>
+        </div>
+    } @else {
+        <div class="empty-state">
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" opacity="0.1">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                <line x1="16" y1="2" x2="16" y2="6"/>
+                <line x1="8" y1="2" x2="8" y2="6"/>
+                <line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+            <p>Wähle ein Meeting aus, um Details anzuzeigen</p>
+        </div>
+    }
+</div>

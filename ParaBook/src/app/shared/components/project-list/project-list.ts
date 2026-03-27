@@ -19,6 +19,7 @@ export class SharedProjectList implements OnInit {
   @Input() projects: ProjectListItem[] = [];
   @Input() searchPlaceholder: string = 'Search projects...';
   @Input() addButtonLabel: string = 'Add New Project';
+  @Input() showSearch: boolean = true;
   @Output() projectSelected = new EventEmitter<ProjectListItem>();
   @Output() itemAdded = new EventEmitter<void>();
 

@@ -1,0 +1,38 @@
+<div class="task-list">
+    <button class="add-task-btn" (click)="onAdd()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="8" x2="12" y2="16"/>
+            <line x1="8" y1="12" x2="16" y2="12"/>
+        </svg>
+        Add New Task
+    </button>
+
+    <div class="list-items">
+        @for (task of tasks; track task.id) {
+            <div 
+                class="task-card" 
+                [class.active]="selectedTaskId === task.id"
+                [class.completed]="task.status === 'erledigt'"
+                (click)="selectTask(task)">
+                
+                <div class="checkbox-wrapper" (click)="onToggle($event, task)">
+                    <div class="checkbox" [class.checked]="task.status === 'erledigt'">
+                        @if (task.status === 'erledigt') {
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                        }
+                    </div>
+                </div>
+
+                <div class="task-info">
+                    <span class="title">{{ task.title }}</span>
+                    <span class="priority" [attr.data-priority]="task.priority">{{ task.priority }}</span>
+                </div>
+            </div>
+        } @empty {
+            <div class="empty-state">Keine Aufgaben gefunden</div>
+        }
+    </div>
+</div>

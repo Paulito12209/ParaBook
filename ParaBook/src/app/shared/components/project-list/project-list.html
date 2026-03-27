@@ -1,5 +1,6 @@
 <!-- Project List -->
 <div class="project-list">
+    @if (showSearch) {
     <div class="search-container">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="11" cy="11" r="8"/>
@@ -7,6 +8,7 @@
         </svg>
         <input type="text" [placeholder]="searchPlaceholder" [(ngModel)]="searchQuery" (input)="onSearch()">
     </div>
+    }
 
     <button class="add-project-btn" (click)="addItem()">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

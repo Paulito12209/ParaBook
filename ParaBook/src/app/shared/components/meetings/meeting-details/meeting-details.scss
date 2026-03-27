@@ -1,0 +1,149 @@
+.meeting-details {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: var(--bg-primary);
+
+    .details-header {
+        padding: 32px;
+        border-bottom: 1px solid var(--border-color);
+
+        .header-main {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+
+            .title {
+                margin: 0;
+                font-size: 1.8rem;
+                font-weight: 700;
+                color: var(--text-primary);
+                line-height: 1.2;
+            }
+
+            .close-btn {
+                background: none;
+                border: none;
+                color: var(--text-tertiary);
+                cursor: pointer;
+                padding: 4px;
+                border-radius: 8px;
+                transition: all 0.2s ease;
+
+                &:hover {
+                    background: var(--bg-secondary);
+                    color: var(--text-primary);
+                }
+            }
+        }
+
+        .meta-row {
+            display: flex;
+            gap: 12px;
+
+            .date-badge, .time-badge {
+                padding: 6px 14px;
+                border-radius: 10px;
+                font-size: 0.85rem;
+                font-weight: 600;
+            }
+
+            .date-badge {
+                background: rgba(99, 102, 241, 0.1);
+                color: var(--accent-primary);
+            }
+
+            .time-badge {
+                background: var(--bg-secondary);
+                color: var(--text-secondary);
+            }
+        }
+    }
+
+    .details-content {
+        flex: 1;
+        padding: 32px;
+        overflow-y: auto;
+
+        .section {
+            margin-bottom: 32px;
+
+            h3 {
+                font-size: 1rem;
+                font-weight: 600;
+                margin-bottom: 16px;
+                color: var(--text-secondary);
+            }
+
+            .participants-list {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px;
+
+                .participant-pill {
+                    padding: 4px 12px;
+                    background: var(--bg-secondary);
+                    border: 1px solid var(--border-color);
+                    border-radius: 20px;
+                    font-size: 0.85rem;
+                    color: var(--text-primary);
+                }
+
+                .empty-msg {
+                    color: var(--text-tertiary);
+                    font-style: italic;
+                    font-size: 0.9rem;
+                }
+            }
+
+            .agenda {
+                font-size: 1rem;
+                line-height: 1.6;
+                color: var(--text-primary);
+                white-space: pre-wrap;
+            }
+        }
+
+        .actions-section {
+            margin-top: 48px;
+            padding-top: 32px;
+            border-top: 1px solid var(--border-color);
+
+            .delete-btn {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 10px 16px;
+                background: #fee2e2;
+                color: #991b1b;
+                border: none;
+                border-radius: 10px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.2s ease;
+
+                &:hover {
+                    background: #fecaca;
+                    color: #7f1d1d;
+                }
+            }
+        }
+    }
+
+    .empty-state {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 40px;
+        color: var(--text-tertiary);
+        text-align: center;
+
+        p {
+            margin-top: 16px;
+            font-size: 1rem;
+        }
+    }
+}

@@ -1,1 +1,19 @@
-<p>meetings works!</p>
+<div class="meetings-page split-view">
+    <div class="list-col" [style.width.px]="appState.globalSidebarWidth()">
+        <app-meeting-list 
+            [meetings]="meetings()" 
+            (meetingSelected)="onMeetingSelected($event)"
+            (addMeeting)="onAddMeeting()">
+        </app-meeting-list>
+    </div>
+
+    <div class="resize-handle" (mousedown)="startResizing($event)"></div>
+
+    <div class="details-col" [class.visible]="selectedMeetingId">
+        <app-meeting-details 
+            [meeting]="selectedMeeting" 
+            (close)="selectedMeetingId = null; selectedMeeting = null"
+            (delete)="onDeleteMeeting($event)">
+        </app-meeting-details>
+    </div>
+</div>

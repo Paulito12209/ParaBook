@@ -3,6 +3,7 @@
         <app-shared-project-list 
             [searchPlaceholder]="'Search areas...'" 
             [addButtonLabel]="'Add New Area'"
+            [showSearch]="false"
             (projectSelected)="onProjectSelected($event)"
             (itemAdded)="onAddItem()">
         </app-shared-project-list>

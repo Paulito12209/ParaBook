@@ -1,47 +1,20 @@
-<div class="page-container">
-  <header class="page-header">
-    <div class="header-title">
-      <span class="badge">{{ tasks().length }}</span> Aufgaben
+<div class="tasks-page split-view">
+    <div class="list-col" [style.width.px]="appState.globalSidebarWidth()">
+        <app-task-list 
+            [tasks]="tasks()" 
+            (taskSelected)="onTaskSelected($event)"
+            (addTask)="onAddTask()"
+            (toggleStatus)="onToggleStatus($event)">
+        </app-task-list>
     </div>
-    <div class="header-actions">
-      <!-- Quick Add Inline Form -->
-      <div class="quick-add">
-        <input 
-          type="text" 
-          [(ngModel)]="newTaskTitle" 
-          (keyup.enter)="addTask()"
-          placeholder="Neue Aufgabe (Drücke Enter)..."
-          class="input-premium"
-        >
-        <button class="btn btn-primary" (click)="addTask()">Hinzufügen</button>
-      </div>
+
+    <div class="resize-handle" (mousedown)="startResizing($event)"></div>
+
+    <div class="details-col" [class.visible]="selectedTaskId">
+        <app-task-details 
+            [task]="selectedTask" 
+            (close)="selectedTaskId = null; selectedTask = null"
+            (delete)="onDeleteTask($event)">
+        </app-task-details>
     </div>
-  </header>
-
-  <div class="task-list">
-    @for (task of tasks(); track task.id) {
-      <div class="task-card" [class.completed]="task.status === 'erledigt'">
-        <div class="task-checkbox" (click)="toggleStatus(task)">
-          <span class="check-icon" *ngIf="task.status === 'erledigt'">✓</span>
-        </div>
-        
-        <div class="task-content">
-          <span class="task-title">{{ task.title }}</span>
-          <div class="task-meta">
-            <span class="badge priority">{{ task.priority }}</span>
-            <span class="badge status">{{ task.status }}</span>
-          </div>
-        </div>
-
-        <div class="task-actions">
-          <button class="btn btn-icon" (click)="deleteTask(task.id)" title="Löschen">🗑️</button>
-        </div>
-      </div>
-    } @empty {
-      <div class="empty-state">
-        <div class="empty-icon">✓</div>
-        <p>Keine Aufgaben vorhanden. Erfasse eine neue Aufgabe!</p>
-      </div>
-    }
-  </div>
 </div>
