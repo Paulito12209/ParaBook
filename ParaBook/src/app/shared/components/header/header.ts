@@ -14,7 +14,7 @@ import { filter } from 'rxjs/operators';
   styleUrl: './header.scss',
 })
 export class Header {
-  private router = inject(Router);
+  public router = inject(Router);
   private route = inject(ActivatedRoute);
   private el = inject(ElementRef);
 
@@ -53,9 +53,16 @@ export class Header {
     this.isAssigneeDropdownOpen = !this.isAssigneeDropdownOpen;
   }
 
+  getCurrentRole(): string {
+    const role = this.appState.getPageRole(this.router.url);
+    if (role === 'all') return 'Ohne Filter';
+    if (role === 'assignee') return 'Verantwortliche/r';
+    return 'Teilnehmer/in';
+  }
+
   selectRole(role: 'all' | 'assignee' | 'participant', event: Event) {
     event.stopPropagation();
-    this.appState.setGlobalRole(role);
+    this.appState.setPageRole(this.router.url, role);
     this.isAssigneeDropdownOpen = false;
   }
 

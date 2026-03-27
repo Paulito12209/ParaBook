@@ -7,7 +7,7 @@
 
         <div class="profile-content">
             <div class="avatar-section">
-                <div class="avatar-large" [style.background-image]="'url(' + tempPhoto() + ')'">
+                <div class="avatar-large" [style.background-image]="'url(' + tempPhoto + ')'">
                     <label class="edit-overlay">
                         <input type="file" (change)="onPhotoChange($event)" hidden accept="image/*">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

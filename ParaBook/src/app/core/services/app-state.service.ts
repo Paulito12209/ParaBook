@@ -17,10 +17,12 @@ export class AppStateService {
   favoriteProjectId = signal<string | null>(this.loadFromStorage('favoriteProjectId', null));
   lastOpenedProjectId = signal<string | null>(this.loadFromStorage('lastOpenedProjectId', null));
   lastActiveWorkspaceId = signal<string | null>(this.loadFromStorage('lastActiveWorkspaceId', null));
-  globalRoleFilter = signal<'all' | 'assignee' | 'participant'>(this.loadFromStorage('globalRoleFilter', 'assignee'));
   globalSidebarWidth = signal<number>(this.loadFromStorage('globalSidebarWidth', 400));
   userName = signal<string>(this.loadFromStorage('userName', 'Paul'));
-  userPhoto = signal<string|null>(this.loadFromStorage('userPhoto', 'profile-icon.png'));
+  userPhoto = signal<string>(this.loadFromStorage('userPhoto', 'profile-icon.png'));
+  
+  // Seitenspezifische Filter
+  pageRoleFilters = signal<Record<string, 'all' | 'assignee' | 'participant'>>(this.loadFromStorage('pageRoleFilters', {}));
 
   constructor() {
     // Effekte zur Persistierung im LocalStorage
@@ -37,7 +39,7 @@ export class AppStateService {
       localStorage.setItem('parabook_lastActiveWorkspaceId', JSON.stringify(this.lastActiveWorkspaceId()));
     });
     effect(() => {
-      localStorage.setItem('parabook_globalRoleFilter', JSON.stringify(this.globalRoleFilter()));
+      localStorage.setItem('parabook_pageRoleFilters', JSON.stringify(this.pageRoleFilters()));
     });
     effect(() => {
       localStorage.setItem('parabook_globalSidebarWidth', JSON.stringify(this.globalSidebarWidth()));
@@ -51,8 +53,15 @@ export class AppStateService {
   }
 
   // Hilfsmethoden zum Setzen des States
-  setGlobalRole(role: 'all' | 'assignee' | 'participant') {
-      this.globalRoleFilter.set(role);
+  setPageRole(page: string, role: 'all' | 'assignee' | 'participant') {
+      this.pageRoleFilters.update(filters => ({
+          ...filters,
+          [page]: role
+      }));
+  }
+
+  getPageRole(page: string): 'all' | 'assignee' | 'participant' {
+      return this.pageRoleFilters()[page] || 'all';
   }
 
   setGlobalSidebarWidth(width: number) {
@@ -61,9 +70,7 @@ export class AppStateService {
 
   trackPageVisit(page: VisitedPage) {
     this.lastVisitedPages.update(pages => {
-      // Entferne Duplikate derselben ID
       const filtered = pages.filter(p => p.id !== page.id);
-      // Füge neue Seite vorne an und limitiere auf 10
       return [page, ...filtered].slice(0, 10);
     });
     

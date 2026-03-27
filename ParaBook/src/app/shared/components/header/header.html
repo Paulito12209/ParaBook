@@ -9,28 +9,33 @@
 
         <!-- Verantwortlichen-Filter Pille -->
         <div class="assignee-pill" [class.active]="isAssigneeDropdownOpen" (click)="toggleAssigneeDropdown($event)">
-            <span class="name">{{ appState.globalRoleFilter() === 'all' ? 'Alle' : 'Paul' }}</span>
-            <span class="role">{{ 
-                appState.globalRoleFilter() === 'all' ? 'Ohne Filter' : 
-                appState.globalRoleFilter() === 'assignee' ? 'Verantwortliche/r' : 'Teilnehmer/in' 
-            }}</span>
+            <span class="assignee-name">{{ appState.userName() }}</span>
+            <span class="divider"></span>
+            <span class="role-text">{{ getCurrentRole() }}</span>
             <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="m6 9 6 6 6-6"/>
             </svg>
 
-            @if (isAssigneeDropdownOpen) {
-            <div class="dropdown-menu">
-                <button (click)="selectRole('all', $event)" [class.selected]="appState.globalRoleFilter() === 'all'">
-                    Ohne Filter
-                </button>
-                <button (click)="selectRole('assignee', $event)" [class.selected]="appState.globalRoleFilter() === 'assignee'">
-                    Verantwortliche/r
-                </button>
-                <button (click)="selectRole('participant', $event)" [class.selected]="appState.globalRoleFilter() === 'participant'">
-                    Teilnehmer/in
-                </button>
-            </div>
-            }
+            <div class="dropdown" [class.show]="isAssigneeDropdownOpen">
+            <button class="dropdown-item" 
+                    [class.active]="appState.getPageRole(router.url) === 'all'"
+                    (click)="selectRole('all', $event)">
+                <span class="label">Alle</span>
+                <span class="subtext">Ohne Filter</span>
+            </button>
+            <button class="dropdown-item" 
+                    [class.active]="appState.getPageRole(router.url) === 'assignee'"
+                    (click)="selectRole('assignee', $event)">
+                <span class="label">{{ appState.userName() }}</span>
+                <span class="subtext">Verantwortliche/r</span>
+            </button>
+            <button class="dropdown-item" 
+                    [class.active]="appState.getPageRole(router.url) === 'participant'"
+                    (click)="selectRole('participant', $event)">
+                <span class="label">{{ appState.userName() }}</span>
+                <span class="subtext">Teilnehmer/in</span>
+            </button>
+        </div>
         </div>
     </div>
 
