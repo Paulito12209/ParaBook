@@ -1,19 +1,15 @@
 <!-- Project / Area Details -->
 <div class="project-details" [class.type-area]="entityType === 'area'">
     @if (project) {
-    <!-- Zurück-Button -->
-    <div class="back-row">
-        <button class="back-btn" (click)="goBack()">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="15 18 9 12 15 6"></polyline>
-            </svg>
-            Zurück
-        </button>
-    </div>
-
     <!-- Glassmorphism Header -->
     <div class="glass-header">
         <div class="header-content">
+            <button class="back-pill" (click)="goBack()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+                Zurück
+            </button>
             <span class="type-label">{{ entityType === 'area' ? 'ARBEITSBEREICH' : 'PROJEKT' }}</span>
             <h1>{{ project.title }}</h1>
             <p class="description">{{ project.description || 'Keine Beschreibung vorhanden.' }}</p>

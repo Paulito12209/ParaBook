@@ -10,31 +10,6 @@
     height: 100%;
     background-color: var(--bg-primary);
 
-    /* === Zurück-Button === */
-    .back-row {
-        padding: 12px 24px;
-
-        .back-btn {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            background: none;
-            border: none;
-            color: var(--text-secondary);
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
-            padding: 6px 12px;
-            border-radius: 8px;
-            transition: all 0.2s ease;
-
-            &:hover {
-                color: var(--text-primary);
-                background: var(--bg-secondary);
-            }
-        }
-    }
-
     /* === Glassmorphism Header (Projekt = Rot) === */
     .glass-header {
         background: linear-gradient(135deg, #CC312A 0%, #C0C0C0 100%);
@@ -55,6 +30,29 @@
         .header-content {
             position: relative;
             z-index: 1;
+
+            /* Zurück-Pille im Header */
+            .back-pill {
+                display: flex;
+                width: fit-content;
+                align-items: center;
+                gap: 4px;
+                padding: 6px 14px;
+                background: rgba(255, 255, 255, 0.2);
+                border: none;
+                border-radius: 20px;
+                color: rgba(255, 255, 255, 0.85);
+                font-size: 13px;
+                font-weight: 500;
+                cursor: pointer;
+                backdrop-filter: blur(8px);
+                transition: all 0.2s ease;
+                margin-bottom: 12px;
+
+                &:hover {
+                    background: rgba(255, 255, 255, 0.35);
+                }
+            }
 
             .type-label {
                 font-size: 12px;
@@ -87,6 +85,11 @@
         background: linear-gradient(135deg, #F9D61D 0%, #C0C0C0 100%);
 
         .header-content {
+            .back-pill {
+                background: rgba(0, 0, 0, 0.1);
+                color: rgba(0, 0, 0, 0.7);
+                &:hover { background: rgba(0, 0, 0, 0.18); }
+            }
             .type-label { color: rgba(0, 0, 0, 0.6); }
             h1 { color: rgba(0, 0, 0, 0.9); }
             .description { color: rgba(0, 0, 0, 0.7); }
