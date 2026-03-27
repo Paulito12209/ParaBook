@@ -13,25 +13,26 @@
     /* === Glassmorphism Header (Projekt = Rot) === */
     .glass-header {
         background: linear-gradient(135deg, rgba(204, 49, 42, 0.15) 0%, var(--bg-primary) 100%);
-        padding: 40px 32px 20px;
+        padding: 0 32px;
         position: relative;
         overflow: hidden;
         height: 240px;
         display: flex;
-        align-items: flex-start;
+        flex-direction: column;
 
-        .header-content {
-            position: relative;
-            z-index: 1;
-            width: 100%;
+        .header-top {
+            height: 60px;
+            display: flex;
+            align-items: flex-end;
+            flex-shrink: 0;
 
-            /* Zurück-Pille im Header */
             .back-pill {
                 display: flex;
                 width: fit-content;
                 align-items: center;
                 gap: 4px;
-                padding: 6px 14px;
+                padding: 0 14px;
+                height: 32px;
                 background: var(--bg-tertiary);
                 border: 1px solid rgba(128, 128, 128, 0.15);
                 border-radius: 20px;
@@ -40,25 +41,57 @@
                 font-weight: 500;
                 cursor: pointer;
                 transition: all 0.2s ease;
-                margin-bottom: 12px;
+                margin-top: 24px;
 
                 &:hover {
                     background: var(--bg-secondary);
                 }
             }
+        }        /* Content-Block (Mitte, vertikal zentriert) */
+        .header-content {
+            position: relative;
+            z-index: 1;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            gap: 8px;
+            width: 100%;
+            max-height: 120px;
 
-            .title-meta-row {
+            .type-label {
+                font-size: 12px;
+                font-weight: 700;
+                color: var(--text-secondary);
+                text-transform: uppercase;
+                letter-spacing: 1.5px;
+            }
+
+            .title-row {
                 display: flex;
                 align-items: center;
+                justify-content: space-between;
                 gap: 16px;
-                margin-bottom: 8px;
 
-                .type-label {
-                    font-size: 12px;
+                .title-input {
+                    flex: 1;
+                    min-width: 0;
+                    font-size: 32px;
                     font-weight: 700;
-                    color: var(--text-secondary);
-                    text-transform: uppercase;
-                    letter-spacing: 1.5px;
+                    color: var(--text-primary);
+                    line-height: 1.2;
+                    background: transparent;
+                    border: none;
+                    outline: none;
+                    font-family: inherit;
+                    padding: 0;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+
+                    &::placeholder {
+                        color: var(--text-muted);
+                    }
                 }
 
                 .due-date-picker {
@@ -69,11 +102,13 @@
                     color: var(--text-secondary);
                     font-weight: 500;
                     background: var(--bg-canvas);
-                    padding: 4px 10px;
+                    height: 32px;
+                    padding: 0 10px;
                     border-radius: 12px;
                     border: 1px dashed rgba(0,0,0,0.15);
                     position: relative;
                     cursor: pointer;
+                    flex-shrink: 0;
 
                     &:hover {
                         background: var(--bg-tertiary);
@@ -88,7 +123,8 @@
                         font-size: inherit;
                         outline: none;
                         cursor: pointer;
-                        /* Verstecke das Standard-Icon von input[type=date], damit unseres genutzt wird */
+                        width: 90px;
+                        
                         &::-webkit-calendar-picker-indicator {
                             cursor: pointer;
                             opacity: 0;
@@ -99,31 +135,15 @@
                     }
                 }
             }
-
-            .title-input {
-                margin: 0 0 8px 0;
-                font-size: 32px;
-                font-weight: 700;
-                color: var(--text-primary);
-                line-height: 1.2;
-                background: transparent;
-                border: none;
-                width: 100%;
-                outline: none;
-                font-family: inherit;
-                padding: 0;
-
-                &::placeholder {
-                    color: var(--text-muted);
-                }
-            }
-
             .description {
                 margin: 0;
-                font-size: 15px;
+                font-size: 14px;
                 color: var(--text-secondary);
                 max-width: 600px;
                 line-height: 1.5;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
         }
     }

@@ -9,29 +9,27 @@
     /* === Glassmorphism Header (Aufgaben = Lila) === */
     .glass-header {
         background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, var(--bg-primary) 100%);
-        padding: 24px 32px 14px;
+        padding: 0 32px;
         position: relative;
         overflow: hidden;
         height: 240px;
         display: flex;
-        flex-direction: column; /* Vertikal anordnen */
-        justify-content: space-between; /* Indikator nach unten drücken */
+        flex-direction: column;
 
-        .header-content {
-            position: relative;
-            z-index: 1;
-            flex: 1;
+        /* Obere Sektion (60px) – enthält Zurück-Button */
+        .header-top {
+            height: 60px;
             display: flex;
-            flex-direction: column;
-            width: 100%;
+            align-items: flex-end;
+            flex-shrink: 0;
 
-            /* Zurück-Pille im Header */
             .back-pill {
                 display: flex;
                 width: fit-content;
                 align-items: center;
                 gap: 4px;
-                padding: 6px 14px;
+                padding: 0 14px;
+                height: 32px;
                 background: var(--bg-tertiary);
                 border: 1px solid rgba(128, 128, 128, 0.15);
                 border-radius: 20px;
@@ -40,7 +38,7 @@
                 font-weight: 500;
                 cursor: pointer;
                 transition: all 0.2s ease;
-                margin-bottom: 12px;
+                margin-top: 24px;
                 box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 
                 :host-context([data-theme="dark"]) & {
@@ -56,6 +54,19 @@
                     }
                 }
             }
+        }
+
+        /* Content-Block (Mitte, 120px, vertikal zentriert) */
+        .header-content {
+            position: relative;
+            z-index: 1;
+            height: 120px;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            gap: 8px;
+            width: 100%;
 
             .type-label {
                 font-size: 12px;
@@ -70,10 +81,11 @@
                 align-items: center;
                 justify-content: space-between;
                 gap: 16px;
-                margin: 8px 0;
+                margin: 0;
 
                 .title-input {
                     flex: 1;
+                    min-width: 0;
                     font-size: 28px;
                     font-weight: 700;
                     color: var(--text-primary);
@@ -83,6 +95,9 @@
                     outline: none;
                     font-family: inherit;
                     padding: 0;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
 
                     &::placeholder {
                         color: var(--text-muted);
@@ -95,7 +110,8 @@
                     gap: 6px;
                     background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(99, 102, 241, 0.05) 100%);
                     color: #4f46e5; /* Indigo */
-                    padding: 6px 14px;
+                    height: 32px;
+                    padding: 0 14px;
                     border-radius: 20px;
                     font-size: 13px;
                     font-weight: 600;
@@ -136,49 +152,62 @@
 
             .meta-badges {
                 display: flex;
+                align-items: center;
                 gap: 8px;
-                margin-top: 8px;
+                margin: 0;
 
                 .badge {
-                    padding: 4px 12px;
+                    display: flex;
+                    align-items: center;
+                    height: 24px;
+                    padding: 0 12px;
                     border-radius: 20px;
                     font-size: 12px;
                     font-weight: 600;
                     background: var(--bg-tertiary);
                     color: var(--text-primary);
-                    text-transform: capitalize;
+                    border: 1px solid var(--border-color);
+                    white-space: nowrap;
                 }
             }
         }
 
-        /* === Subtask Progress Indicator (direktes Kind von glass-header) === */
-        .subtask-indicator {
+        /* Untere Sektion (60px) – enthält Subtask-Indikator */
+        .header-bottom {
+            height: 60px;
             display: flex;
-            gap: 6px;
-            cursor: pointer;
-            transition: opacity 0.2s ease;
-            z-index: 2;
-            width: 100%;
+            align-items: flex-end;
+            flex-shrink: 0;
 
-            &:hover {
-                opacity: 0.8;
-                .indicator-segment:not(.filled) {
-                    border-color: rgba(95, 96, 239, 0.4);
+            .subtask-indicator {
+                display: flex;
+                gap: 6px;
+                cursor: pointer;
+                transition: opacity 0.2s ease;
+                z-index: 2;
+                width: 100%;
+                margin-bottom: 16px;
+
+                &:hover {
+                    opacity: 0.8;
+                    .indicator-segment:not(.filled) {
+                        border-color: rgba(95, 96, 239, 0.4);
+                    }
                 }
-            }
 
-            .indicator-segment {
-                flex: 1;
-                height: 3px;
-                border-radius: 2px;
-                background: rgba(255, 255, 255, 0.1);
-                border: 1px solid rgba(128, 128, 128, 0.2);
-                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                .indicator-segment {
+                    flex: 1;
+                    height: 8px;
+                    border-radius: 4px;
+                    background: rgba(255, 255, 255, 0.1);
+                    border: 1px solid rgba(128, 128, 128, 0.2);
+                    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
-                &.filled {
-                    background: #5F60EF;
-                    border-color: #5F60EF;
-                    box-shadow: 0 0 10px rgba(95, 96, 239, 0.3);
+                    &.filled {
+                        background: #5F60EF;
+                        border-color: #5F60EF;
+                        box-shadow: 0 0 10px rgba(95, 96, 239, 0.3);
+                    }
                 }
             }
         }
@@ -200,11 +229,27 @@
             gap: 12px;
         }
 
+        .back-pill {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 0 16px;
+            height: 32px;
+            background: rgba(255, 255, 255, 0.4);
+            border: 1px solid transparent;
+            border-radius: 10px;
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
         .action-btn {
             display: flex;
             align-items: center;
             gap: 8px;
-            padding: 8px 16px;
+            padding: 0 16px;
+            height: 32px;
             background: transparent;
             border: 1px solid transparent;
             border-radius: 10px;

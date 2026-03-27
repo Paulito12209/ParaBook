@@ -2,13 +2,18 @@
     @if (task) {
         <!-- Glassmorphism Header -->
         <div class="glass-header">
-            <div class="header-content">
+            <!-- Obere Sektion (60px) -->
+            <div class="header-top">
                 <button class="back-pill" (click)="onClose()">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <polyline points="15 18 9 12 15 6"></polyline>
                     </svg>
                     Zurück
                 </button>
+            </div>
+
+            <!-- Content-Block (Mitte, 120px, vertikal zentriert) -->
+            <div class="header-content">
                 <span class="type-label">AUFGABE</span>
                 <div class="title-row">
                     <input [(ngModel)]="task.title" (ngModelChange)="updateTask()" class="title-input" placeholder="Titel der Aufgabe" />
@@ -23,15 +28,17 @@
                 </div>
             </div>
 
-            <!-- Subtask Progress Indicator (direktes Kind von glass-header, wird nach unten gedrückt) -->
-            @if (task.subtasks && task.subtasks.length >= 2) {
-                <div class="subtask-indicator" (click)="toggleSubtasksPanel()" title="Unteraufgaben anzeigen">
-                    <div *ngFor="let st of task.subtasks" 
-                         class="indicator-segment" 
-                         [class.filled]="st.isCompleted">
+            <!-- Untere Sektion (60px) -->
+            <div class="header-bottom">
+                @if (task.subtasks && task.subtasks.length >= 2) {
+                    <div class="subtask-indicator" (click)="toggleSubtasksPanel()" title="Unteraufgaben anzeigen">
+                        <div *ngFor="let st of task.subtasks" 
+                             class="indicator-segment" 
+                             [class.filled]="st.isCompleted">
+                        </div>
                     </div>
-                </div>
-            }
+                }
+            </div>
         </div>
 
         <!-- Action-Bar -->

@@ -2,15 +2,24 @@
     @if (meeting) {
         <!-- Glassmorphism Header -->
         <div class="glass-header">
-            <div class="header-content">
+            <!-- Obere Sektion (60px) -->
+            <div class="header-top">
                 <button class="back-pill" (click)="onClose()">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <polyline points="15 18 9 12 15 6"></polyline>
                     </svg>
                     Zurück
                 </button>
+            </div>
+
+            <!-- Content-Block (Mitte, 120px, vertikal zentriert) -->
+            <div class="header-content">
                 <span class="type-label">MEETING</span>
-                <input [(ngModel)]="meeting.title" (ngModelChange)="updateMeeting()" class="title-input" placeholder="Titel des Meetings" />
+                
+                <div class="title-row">
+                    <input [(ngModel)]="meeting.title" (ngModelChange)="updateMeeting()" class="title-input" placeholder="Titel des Meetings" />
+                </div>
+
                 <div class="meta-badges">
                     <span class="badge">{{ meeting.scheduledFor | date:'EEEE, dd. MMMM yyyy' }}</span>
                     <span class="badge">{{ meeting.scheduledFor | date:'HH:mm' }} Uhr</span>

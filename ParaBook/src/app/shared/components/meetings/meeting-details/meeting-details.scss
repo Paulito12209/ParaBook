@@ -7,25 +7,26 @@
     /* === Glassmorphism Header (Meeting = Blau) === */
     .glass-header {
         background: linear-gradient(135deg, rgba(0, 120, 212, 0.15) 0%, var(--bg-primary) 100%);
-        padding: 40px 32px 20px;
+        padding: 0 32px;
         position: relative;
         overflow: hidden;
         height: 240px;
         display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
+        flex-direction: column;
 
-        .header-content {
-            position: relative;
-            z-index: 1;
+        .header-top {
+            height: 60px;
+            display: flex;
+            align-items: flex-end;
+            flex-shrink: 0;
 
-            /* Zurück-Pille im Header */
             .back-pill {
                 display: flex;
                 width: fit-content;
                 align-items: center;
                 gap: 4px;
-                padding: 6px 14px;
+                padding: 0 14px;
+                height: 32px;
                 background: var(--bg-tertiary);
                 border: 1px solid rgba(128, 128, 128, 0.15);
                 border-radius: 20px;
@@ -34,12 +35,23 @@
                 font-weight: 500;
                 cursor: pointer;
                 transition: all 0.2s ease;
-                margin-bottom: 12px;
+                margin-top: 24px;
 
                 &:hover {
                     background: var(--bg-secondary);
                 }
             }
+        }        /* Content-Block (Mitte, vertikal zentriert) */
+        .header-content {
+            position: relative;
+            z-index: 1;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            gap: 8px;
+            width: 100%;
+            max-height: 120px;
 
             .type-label {
                 font-size: 12px;
@@ -49,36 +61,51 @@
                 letter-spacing: 1.5px;
             }
 
-            .title-input {
-                margin: 8px 0;
-                font-size: 28px;
-                font-weight: 700;
-                color: var(--text-primary);
-                line-height: 1.2;
-                background: transparent;
-                border: none;
-                width: 100%;
-                outline: none;
-                font-family: inherit;
-                padding: 0;
+            .title-row {
+                display: flex;
+                align-items: center;
 
-                &::placeholder {
-                    color: var(--text-muted);
+                .title-input {
+                    margin: 0;
+                    font-size: 28px;
+                    font-weight: 700;
+                    color: var(--text-primary);
+                    line-height: 1.2;
+                    background: transparent;
+                    border: none;
+                    flex: 1;
+                    min-width: 0;
+                    outline: none;
+                    font-family: inherit;
+                    padding: 0;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+
+                    &::placeholder {
+                        color: var(--text-muted);
+                    }
                 }
             }
 
             .meta-badges {
                 display: flex;
+                align-items: center;
                 gap: 8px;
-                margin-top: 8px;
+                margin: 0;
 
                 .badge {
-                    padding: 4px 12px;
-                    border-radius: 20px;
+                    display: flex;
+                    align-items: center;
+                    height: 24px;
+                    padding: 0 12px;
+                    border-radius: 12px;
                     font-size: 12px;
                     font-weight: 600;
                     background: var(--bg-tertiary);
                     color: var(--text-primary);
+                    border: 1px solid var(--border-color);
+                    white-space: nowrap;
                 }
             }
         }
@@ -92,6 +119,25 @@
         padding: 10px 24px;
         background: var(--bg-tertiary, #f5f5f7);
         border-bottom: 1px solid var(--border-color);
+
+        .back-pill {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 0 16px;
+            height: 32px;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+
+            &:hover {
+                background: var(--bg-secondary);
+            }
+        }
 
         .action-btn {
             display: flex;
