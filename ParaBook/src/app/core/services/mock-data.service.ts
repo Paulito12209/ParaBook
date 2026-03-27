@@ -14,10 +14,12 @@ export class MockDataService {
     return [
       { 
         id: 'area-1', title: 'Privat', isArchived: false, createdAt: Date.now(), updatedAt: Date.now(),
+        assignee: 'Paul', participants: ['Paul'],
         projectIds: ['proj-1'], taskIds: ['task-1'], resourceIds: [], meetingIds: [], bookmarkIds: [] 
       },
       { 
         id: 'area-2', title: 'Arbeit', isArchived: false, createdAt: Date.now(), updatedAt: Date.now(),
+        assignee: 'Paul', participants: ['Paul', 'Jane Doe'],
         projectIds: ['proj-2'], taskIds: ['task-2'], resourceIds: ['res-1'], meetingIds: ['meet-1'], bookmarkIds: [] 
       }
     ];
@@ -28,12 +30,12 @@ export class MockDataService {
       {
         id: 'proj-1', title: 'Urlaubsplanung', status: 'aktiv', priority: 'mittel', 
         isArchived: false, isFavorite: true, createdAt: Date.now(), updatedAt: Date.now(),
-        participants: [], taskIds: [], resourceIds: [], areaIds: ['area-1'], meetingIds: [], bookmarkIds: []
+        assignee: 'Paul', participants: ['Paul'], taskIds: [], resourceIds: [], areaIds: ['area-1'], meetingIds: [], bookmarkIds: []
       },
       {
         id: 'proj-2', title: 'ParaBook Redesign', status: 'aktiv', priority: 'hoch', 
         isArchived: false, isFavorite: false, createdAt: Date.now(), updatedAt: Date.now(),
-        participants: [], taskIds: [], resourceIds: ['res-1'], areaIds: ['area-2'], meetingIds: [], bookmarkIds: []
+        assignee: 'Paul', participants: ['Paul', 'Jane Doe'], taskIds: [], resourceIds: ['res-1'], areaIds: ['area-2'], meetingIds: [], bookmarkIds: []
       }
     ];
   }
@@ -81,6 +83,7 @@ export class MockDataService {
       {
         id: 'res-1', title: 'Design Guide 2024', type: 'Dokumentation', status: 'überprüft',
         isFavorite: true, isArchived: false, isHidden: false, categories: ['Design'],
+        assignee: 'Paul', participants: ['Paul', 'Jane Doe'],
         targetGroups: [], createdAt: Date.now(), updatedAt: Date.now(),
         areaIds: ['area-2'], projectIds: ['proj-2'], taskIds: [], meetingIds: []
       }

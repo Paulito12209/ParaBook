@@ -82,8 +82,13 @@ export class QuickCapture {
         taskIds: [], resourceIds: [], areaIds: [], meetingIds: [], bookmarkIds: []
       });
     } else if (type === 'resource') {
-      // Hier würde die Logik für Ressourcen / Lesezeichen hinkommen
-      console.log('Ressource gespeichert:', this.content);
+      await this.db.resources.add({
+        id, title: this.content.trim(), type: 'Lesezeichen', status: 'zu prüfen',
+        url: this.content.trim(), isFavorite: false, isArchived: false, isHidden: false,
+        assignee: 'Paul', participants: [],
+        categories: [], targetGroups: [], createdAt: now, updatedAt: now,
+        areaIds: [], projectIds: [], taskIds: [], meetingIds: []
+      });
     }
 
     this.close();

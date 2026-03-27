@@ -17,6 +17,7 @@ export class AppStateService {
   favoriteProjectId = signal<string | null>(this.loadFromStorage('favoriteProjectId', null));
   lastOpenedProjectId = signal<string | null>(this.loadFromStorage('lastOpenedProjectId', null));
   lastActiveWorkspaceId = signal<string | null>(this.loadFromStorage('lastActiveWorkspaceId', null));
+  globalAssigneeFilter = signal<string | null>(this.loadFromStorage('globalAssigneeFilter', 'Paul'));
 
   constructor() {
     // Effekte zur Persistierung im LocalStorage
@@ -32,9 +33,16 @@ export class AppStateService {
     effect(() => {
       localStorage.setItem('parabook_lastActiveWorkspaceId', JSON.stringify(this.lastActiveWorkspaceId()));
     });
+    effect(() => {
+      localStorage.setItem('parabook_globalAssigneeFilter', JSON.stringify(this.globalAssigneeFilter()));
+    });
   }
 
   // Hilfsmethoden zum Setzen des States
+  setGlobalAssignee(assignee: string | null) {
+      this.globalAssigneeFilter.set(assignee);
+  }
+
   trackPageVisit(page: VisitedPage) {
     this.lastVisitedPages.update(pages => {
       // Entferne Duplikate derselben ID

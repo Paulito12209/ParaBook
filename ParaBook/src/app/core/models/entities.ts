@@ -11,7 +11,7 @@ export type StatusMeeting = 'geplant' | 'abgehalten' | 'abgesagt';
 
 export type Priority = 'niedrig' | 'mittel' | 'hoch';
 export type TaskType = 'Idee' | 'aktiv' | 'archiviert';
-export type ResourceType = 'SOP' | 'Notiz' | 'Ressource' | 'Dokumentation';
+export type ResourceType = 'SOP' | 'Notiz' | 'Ressource' | 'Dokumentation' | 'Lesezeichen';
 
 export interface BaseEntity {
   id: string; // UUIDv4
@@ -61,6 +61,8 @@ export interface AreaEntity extends BaseEntity {
   title: string;
   description?: string;
   isArchived: boolean;
+  assignee?: string;
+  participants: string[];
 
   // Relationen (IDs)
   projectIds: string[];
@@ -82,6 +84,8 @@ export interface ResourceEntity extends BaseEntity {
   files?: string[];
   isArchived: boolean;
   isHidden: boolean;
+  assignee?: string;
+  participants: string[];
 
   // Relationen (IDs)
   areaIds: string[];

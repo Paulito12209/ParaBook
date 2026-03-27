@@ -6,6 +6,29 @@
         <div class="page-pill">
             <span class="text">{{ pageTitle() }}</span>
         </div>
+
+        <!-- Verantwortlichen-Filter Pille -->
+        <div class="assignee-pill" [class.active]="isAssigneeDropdownOpen" (click)="toggleAssigneeDropdown()">
+            <span class="name">{{ appState.globalAssigneeFilter() === 'Paul' ? 'Paul' : appState.globalAssigneeFilter() === 'Jane Doe' ? 'Jane Doe' : 'Alle' }}</span>
+            <span class="role" *ngIf="appState.globalAssigneeFilter() !== 'Alle'">Verantwortliche/r</span>
+            <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="m6 9 6 6 6-6"/>
+            </svg>
+
+            @if (isAssigneeDropdownOpen) {
+            <div class="dropdown-menu">
+                <button (click)="selectAssignee('Paul', $event)" [class.selected]="appState.globalAssigneeFilter() === 'Paul'">
+                    Paul <span class="role-sm">Verantwortliche/r</span>
+                </button>
+                <button (click)="selectAssignee('Jane Doe', $event)" [class.selected]="appState.globalAssigneeFilter() === 'Jane Doe'">
+                    Jane Doe <span class="role-sm">Verantwortliche/r</span>
+                </button>
+                <button (click)="selectAssignee('Alle', $event)" [class.selected]="appState.globalAssigneeFilter() === 'Alle'">
+                    Alle
+                </button>
+            </div>
+            }
+        </div>
     </div>
 
     <!-- Zentrale Suchleiste als schwebende Pille -->

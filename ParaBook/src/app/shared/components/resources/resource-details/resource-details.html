@@ -1,0 +1,71 @@
+<div class="resource-details" [class.empty]="!resource">
+    @if (resource) {
+        <div class="header">
+            <div class="header-left">
+                <span class="type-badge">{{ resource.type }}</span>
+                <h2>{{ resource.title }}</h2>
+            </div>
+            <button class="close-btn" (click)="onClose()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 6L6 18M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+
+        <div class="content">
+            <div class="meta-section">
+                <div class="meta-item">
+                    <span class="label">Status</span>
+                    <span class="value status-pill" [attr.data-status]="resource.status">{{ resource.status }}</span>
+                </div>
+                <div class="meta-item">
+                    <span class="label">Verantwortlich</span>
+                    <span class="value">{{ resource.assignee || 'Nicht zugewiesen' }}</span>
+                </div>
+            </div>
+
+            @if (resource.type === 'Lesezeichen' && resource.url) {
+                <div class="bookmark-action">
+                    <h3>Link öffnen</h3>
+                    <a [href]="resource.url" target="_blank" class="url-btn">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                            <polyline points="15 3 21 3 21 9"/>
+                            <line x1="10" y1="14" x2="21" y2="3"/>
+                        </svg>
+                        {{ resource.url }}
+                    </a>
+                </div>
+            }
+
+            @if (resource.description) {
+                <div class="description-section">
+                    <h3>Beschreibung</h3>
+                    <p>{{ resource.description }}</p>
+                </div>
+            }
+
+            <div class="relations-section">
+                <h3>Verknüpfungen</h3>
+                <div class="tags">
+                    @for (areaId of resource.areaIds; track areaId) {
+                        <span class="tag area">Area: {{ areaId }}</span>
+                    }
+                    @for (projId of resource.projectIds; track projId) {
+                        <span class="tag project">Projekt: {{ projId }}</span>
+                    }
+                </div>
+            </div>
+        </div>
+    } @else {
+        <div class="empty-state">
+            <div class="empty-icon">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                    <polyline points="14 2 14 8 20 8"/>
+                </svg>
+            </div>
+            <p>Wähle eine Ressource aus, um Details anzuzeigen</p>
+        </div>
+    }
+</div>

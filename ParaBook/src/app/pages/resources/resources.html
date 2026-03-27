@@ -1,5 +1,14 @@
-<!-- Resources Page -->
-<div class="resources-page">
-    <app-shared-project-list (projectSelected)="onProjectSelected($event)"></app-shared-project-list>
-    <app-shared-project-details [project]="selectedProject" (backToProjectList)="selectedProject = null"></app-shared-project-details>
+<div class="resources-page split-view">
+    <div class="list-col">
+        <app-resource-list 
+            [resources]="allResources()" 
+            (resourceSelected)="onResourceSelected($event)">
+        </app-resource-list>
+    </div>
+    <div class="details-col" [class.visible]="selectedResource()">
+        <app-resource-details 
+            [resource]="selectedResource()" 
+            (close)="onCloseDetails()">
+        </app-resource-details>
+    </div>
 </div>

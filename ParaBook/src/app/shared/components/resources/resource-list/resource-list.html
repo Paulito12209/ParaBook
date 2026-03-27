@@ -1,0 +1,50 @@
+<div class="resource-list">
+    <div class="search-container">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/>
+            <path d="m21 21-4.3-4.3"/>
+        </svg>
+        <input type="text" placeholder="Suchen..." [(ngModel)]="searchQuery">
+    </div>
+
+    <!-- Kategorie Pillen (Screenshot 2 inspiriert) -->
+    <div class="category-pills">
+        @for (cat of categories; track cat) {
+            <button 
+                class="pill-btn" 
+                [class.active]="selectedCategoryId === cat"
+                (click)="selectCategory(cat)">
+                {{ cat }}
+            </button>
+        }
+    </div>
+
+    <div class="list-items">
+        @for (res of filteredResources; track res.id) {
+            <div 
+                class="resource-card" 
+                [class.active]="selectedResourceId === res.id"
+                (click)="selectResource(res)">
+                <div class="res-icon">
+                    @if (res.type === 'Lesezeichen') {
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+                            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+                        </svg>
+                    } @else {
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                            <polyline points="14 2 14 8 20 8"/>
+                        </svg>
+                    }
+                </div>
+                <div class="res-info">
+                    <span class="title">{{ res.title }}</span>
+                    <span class="type-pill">{{ res.type }}</span>
+                </div>
+            </div>
+        } @empty {
+            <div class="empty-state">Keine Ressourcen gefunden</div>
+        }
+    </div>
+</div>

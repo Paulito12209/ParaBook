@@ -1,20 +1,52 @@
-import { Component } from '@angular/core';
-import { SharedProjectList, ProjectListItem } from '../../shared/components/project-list/project-list';
-import { SharedProjectDetails, ProjectDetailsItem } from '../../shared/components/project-details/project-details';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ResourceListComponent } from '../../shared/components/resources/resource-list/resource-list';
+import { ResourceDetailsComponent } from '../../shared/components/resources/resource-details/resource-details';
+import { ResourceEntity } from '../../core/models/entities';
+import { DatabaseService } from '../../core/database/db.service';
+import { MockDataService } from '../../core/services/mock-data.service';
+import { AppStateService } from '../../core/services/app-state.service';
+import { from } from 'rxjs';
 
 @Component({
   selector: 'app-resources',
   standalone: true,
-  imports: [CommonModule, SharedProjectList, SharedProjectDetails],
+  imports: [CommonModule, ResourceListComponent, ResourceDetailsComponent],
   templateUrl: './resources.html',
   styleUrl: './resources.scss',
 })
-export class Resources {
-  selectedProject: ProjectDetailsItem | null = null;
+export class Resources implements OnInit {
+  private db = inject(DatabaseService);
+  private mockData = inject(MockDataService);
+  appState = inject(AppStateService);
 
-  onProjectSelected(project: ProjectListItem) {
-    // Map ProjectListItem to ProjectDetailsItem if needed, or cast if they are compatible
-    this.selectedProject = project as ProjectDetailsItem;
+  allResources = signal<ResourceEntity[]>([]);
+  selectedResource = signal<ResourceEntity | null>(null);
+
+  async ngOnInit() {
+    await this.loadResources();
+  }
+
+  async loadResources() {
+    let resources = await this.db.resources.toArray();
+    
+    // Fallback auf Mock-Daten, falls DB leer ist (für die Demo)
+    if (resources.length === 0) {
+      const mocks = this.mockData.getResources();
+      for (const m of mocks) {
+        await this.db.resources.add(m);
+      }
+      resources = mocks;
+    }
+    
+    this.allResources.set(resources);
+  }
+
+  onResourceSelected(res: ResourceEntity) {
+    this.selectedResource.set(res);
+  }
+
+  onCloseDetails() {
+    this.selectedResource.set(null);
   }
 }

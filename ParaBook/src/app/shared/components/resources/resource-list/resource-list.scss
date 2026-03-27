@@ -1,0 +1,119 @@
+.resource-list {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-color: var(--bg-primary);
+    border-right: var(--divider-thickness) solid var(--border-color);
+    padding: 16px;
+    gap: 16px;
+
+    .search-container {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: var(--bg-secondary);
+        border: var(--divider-thickness) solid var(--border-color);
+        border-radius: var(--radius-md);
+        padding: 8px 12px;
+        color: var(--text-muted);
+
+        input {
+            background: none;
+            border: none;
+            outline: none;
+            font-size: 14px;
+            color: var(--text-primary);
+            width: 100%;
+            
+            &::placeholder {
+                color: var(--text-muted);
+            }
+        }
+    }
+
+    .category-pills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+
+        .pill-btn {
+            background: var(--bg-secondary);
+            border: none;
+            border-radius: var(--radius-pill);
+            padding: 6px 12px;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+
+            &:hover {
+                background: var(--border-color);
+            }
+
+            &.active {
+                background: var(--accent-primary);
+                color: white;
+            }
+        }
+    }
+
+    .list-items {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        overflow-y: auto;
+        flex: 1;
+
+        .resource-card {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+
+            &:hover {
+                background-color: var(--bg-tertiary);
+            }
+
+            &.active {
+                background-color: var(--bg-tertiary);
+                border-left: 3px solid var(--accent-primary);
+            }
+
+            .res-icon {
+                color: var(--text-muted);
+                display: flex;
+                align-items: center;
+            }
+
+            .res-info {
+                display: flex;
+                flex-direction: column;
+                gap: 2px;
+
+                .title {
+                    font-size: 14px;
+                    font-weight: 500;
+                    color: var(--text-primary);
+                }
+
+                .type-pill {
+                    font-size: 10px;
+                    text-transform: uppercase;
+                    letter-spacing: 0.05em;
+                    color: var(--text-muted);
+                }
+            }
+        }
+
+        .empty-state {
+            padding: 24px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+    }
+}
