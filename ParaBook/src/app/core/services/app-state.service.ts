@@ -18,7 +18,9 @@ export class AppStateService {
   lastOpenedProjectId = signal<string | null>(this.loadFromStorage('lastOpenedProjectId', null));
   lastActiveWorkspaceId = signal<string | null>(this.loadFromStorage('lastActiveWorkspaceId', null));
   globalSidebarWidth = signal<number>(this.loadFromStorage('globalSidebarWidth', 400));
-  userName = signal<string>(this.loadFromStorage('userName', 'Paul'));
+  
+  // Benutzerprofil Signale
+  userDisplayName = signal<string>(this.loadFromStorage('userDisplayName', 'Paul'));
   userPhoto = signal<string>(this.loadFromStorage('userPhoto', 'profile-icon.png'));
   
   // Seitenspezifische Filter
@@ -45,7 +47,7 @@ export class AppStateService {
       localStorage.setItem('parabook_globalSidebarWidth', JSON.stringify(this.globalSidebarWidth()));
     });
     effect(() => {
-      localStorage.setItem('parabook_userName', JSON.stringify(this.userName()));
+      localStorage.setItem('parabook_userDisplayName', JSON.stringify(this.userDisplayName()));
     });
     effect(() => {
       localStorage.setItem('parabook_userPhoto', JSON.stringify(this.userPhoto()));
@@ -89,6 +91,13 @@ export class AppStateService {
 
   private loadFromStorage<T>(key: string, defaultValue: T): T {
     const saved = localStorage.getItem(`parabook_${key}`);
-    return saved ? JSON.parse(saved) : defaultValue;
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {
+        return saved as unknown as T;
+      }
+    }
+    return defaultValue;
   }
 }

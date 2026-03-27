@@ -5,13 +5,15 @@ import { Injectable, signal } from '@angular/core';
 })
 export class ShortcutService {
   isCaptureDialogOpen = signal(false);
+  captureType = signal<'task' | 'project' | 'area' | 'resource' | null>(null);
   isSearchModalOpen = signal(false);
 
   constructor() {
     this.initGlobalShortcuts();
   }
 
-  toggleCaptureDialog() {
+  toggleCaptureDialog(type: 'task' | 'project' | 'area' | 'resource' | null = null) {
+    this.captureType.set(type);
     this.isCaptureDialogOpen.update(val => !val);
     if (this.isCaptureDialogOpen()) this.isSearchModalOpen.set(false);
   }

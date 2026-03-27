@@ -1,8 +1,10 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, Signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { MockDataService } from '../../../../core/services/mock-data.service';
+import { DatabaseService } from '../../../../core/database/db.service';
 import { TaskEntity } from '../../../../core/models/entities';
+import { liveQuery } from 'dexie';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-tasks-widget',
@@ -19,41 +21,47 @@ import { TaskEntity } from '../../../../core/models/entities';
         </div>
         
         <div class="task-list">
-          <div *ngFor="let task of tasks" 
-               class="task-item" 
-               [class.active]="selectedTask()?.id === task.id"
-               (click)="selectTask(task)">
-            <input type="checkbox" 
-                   [checked]="task.status === 'erledigt'" 
-                   (change)="toggleTaskStatus(task)"
-                   (click)="$event.stopPropagation()">
-            <div class="task-info">
-              <span class="title">{{ task.title }}</span>
-              <div class="meta">
-                <span class="due" *ngIf="task.dueDate">{{ task.dueDate | date:'d. MMM' }}</span>
-                <span class="area-tag" *ngIf="task.areaId">{{ getAreaName(task.areaId) }}</span>
+          @for (task of tasks(); track task.id) {
+            <div 
+                 class="task-item" 
+                 [class.active]="selectedTask()?.id === task.id"
+                 (click)="selectTask(task)">
+              <input type="checkbox" 
+                     [checked]="task.status === 'erledigt'" 
+                     (change)="toggleTaskStatus(task)"
+                     (click)="$event.stopPropagation()">
+              <div class="task-info">
+                <span class="title">{{ task.title }}</span>
+                <div class="meta">
+                  <span class="due" *ngIf="task.dueDate">{{ task.dueDate | date:'d. MMM' }}</span>
+                </div>
               </div>
             </div>
-          </div>
+          } @empty {
+            <div class="empty-state-simple">Keine aktiven Aufgaben</div>
+          }
         </div>
       </div>
 
       <div class="widget-panel detail-panel">
         <div *ngIf="selectedTask() as task; else placeholder" class="task-detail">
-          <input class="detail-title" [(ngModel)]="task.title" placeholder="Aufgabentitel">
-          <textarea class="detail-description" [(ngModel)]="task.details" placeholder="Notizen..."></textarea>
+          <input class="detail-title" [(ngModel)]="task.title" (ngModelChange)="updateTask(task)" placeholder="Aufgabentitel">
+          <textarea class="detail-description" [(ngModel)]="task.details" (ngModelChange)="updateTask(task)" placeholder="Notizen..."></textarea>
           
           <div class="detail-fields">
             <div class="field">
-              <label>Fälligkeit</label>
-              <span>{{ task.dueDate ? (task.dueDate | date:'dd.MM.yyyy') : 'Kein Datum' }}</span>
-            </div>
-            <div class="field">
               <label>Status</label>
-              <select [(ngModel)]="task.status">
+              <select [(ngModel)]="task.status" (ngModelChange)="updateTask(task)">
                 <option value="offen">Offen</option>
                 <option value="in Arbeit">In Arbeit</option>
-                <option value="erledigt">Erledigt</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Priorität</label>
+              <select [(ngModel)]="task.priority" (ngModelChange)="updateTask(task)">
+                <option value="niedrig">Niedrig</option>
+                <option value="mittel">Mittel</option>
+                <option value="hoch">Hoch</option>
               </select>
             </div>
           </div>
@@ -77,10 +85,10 @@ import { TaskEntity } from '../../../../core/models/entities';
       height: 400px;
     }
     .widget-panel {
-      background: var(--bg-canvas);
+      background: var(--bg-primary);
       border-radius: 1.5rem;
-      border: 1px solid rgba(0,0,0,0.05);
-      box-shadow: 0 4px 16px rgba(0,0,0,0.03);
+      border: 1px solid var(--border-color);
+      box-shadow: var(--shadow-card);
       padding: 1.25rem;
       display: flex;
       flex-direction: column;
@@ -94,7 +102,7 @@ import { TaskEntity } from '../../../../core/models/entities';
       gap: 0.5rem;
       margin-bottom: 1rem;
       font-weight: 600;
-      color: var(--text-main);
+      color: var(--text-primary);
       .icon { width: 1.25rem; height: 1.25rem; color: #10b981; }
     }
 
@@ -111,29 +119,24 @@ import { TaskEntity } from '../../../../core/models/entities';
       cursor: pointer;
       transition: background 0.2s;
       
-      &:hover { background: rgba(0,0,0,0.02); }
-      &.active { background: rgba(var(--primary-rgb), 0.05); border: 1px solid rgba(var(--primary-rgb), 0.1); }
+      &:hover { background: var(--bg-secondary); }
+      &.active { background: var(--bg-secondary); border: 1px solid var(--border-color); }
       
       input[type="checkbox"] {
         width: 1.125rem;
         height: 1.125rem;
         border-radius: 0.35rem;
-        accent-color: var(--primary);
+        accent-color: var(--accent-primary);
       }
     }
     .task-info {
-      .title { font-size: 0.875rem; font-weight: 500; display: block; }
+      .title { font-size: 0.875rem; font-weight: 500; color: var(--text-primary); display: block; }
       .meta {
         font-size: 0.75rem;
         color: var(--text-secondary);
         display: flex;
         gap: 0.5rem;
         margin-top: 0.25rem;
-      }
-      .area-tag {
-        background: rgba(0,0,0,0.04);
-        padding: 1px 6px;
-        border-radius: 0.25rem;
       }
     }
 
@@ -150,16 +153,18 @@ import { TaskEntity } from '../../../../core/models/entities';
             outline: none;
             background: transparent;
             width: 100%;
+            color: var(--text-primary);
         }
         .detail-description {
             flex: 1;
             border: none;
             outline: none;
             resize: none;
-            background: rgba(0,0,0,0.02);
+            background: var(--bg-secondary);
             border-radius: 0.75rem;
             padding: 0.75rem;
             font-size: 0.875rem;
+            color: var(--text-primary);
         }
     }
     .detail-fields {
@@ -172,8 +177,7 @@ import { TaskEntity } from '../../../../core/models/entities';
             flex-direction: column;
             gap: 0.25rem;
             label { font-size: 0.75rem; color: var(--text-secondary); font-weight: 500; }
-            span, select { font-size: 0.875rem; }
-            select { border: 1px solid rgba(0,0,0,0.1); border-radius: 0.5rem; padding: 0.25rem; }
+            select { border: 1px solid var(--border-color); border-radius: 0.5rem; padding: 0.25rem; background: var(--bg-primary); color: var(--text-primary); }
         }
     }
     .detail-placeholder {
@@ -186,23 +190,40 @@ import { TaskEntity } from '../../../../core/models/entities';
         gap: 0.5rem;
         .placeholder-icon { width: 3rem; height: 3rem; opacity: 0.2; }
     }
+    .empty-state-simple {
+        padding: 2rem;
+        text-align: center;
+        font-size: 0.875rem;
+        color: var(--text-secondary);
+    }
   `]
 })
 export class TasksWidgetComponent {
-  private mockData = inject(MockDataService);
-  tasks = this.mockData.getTasks();
+  private db = inject(DatabaseService);
+  
+  tasks: Signal<TaskEntity[]> = toSignal(
+    liveQuery(() => this.db.tasks.where('status').notEqual('erledigt').limit(10).toArray()),
+    { initialValue: [] as TaskEntity[] }
+  ) as Signal<TaskEntity[]>;
+
   selectedTask = signal<TaskEntity | null>(null);
 
   selectTask(task: TaskEntity) {
     this.selectedTask.set(task);
   }
 
-  toggleTaskStatus(task: TaskEntity) {
-    task.status = task.status === 'erledigt' ? 'offen' : 'erledigt';
+  async toggleTaskStatus(task: TaskEntity) {
+    const newStatus = task.status === 'erledigt' ? 'offen' : 'erledigt';
+    await this.db.tasks.update(task.id, { status: newStatus, updatedAt: Date.now() });
   }
 
-  getAreaName(areaId: string): string {
-    const area = this.mockData.getAreas().find(a => a.id === areaId);
-    return area ? area.title : 'Kein Bereich';
+  async updateTask(task: TaskEntity) {
+    await this.db.tasks.update(task.id, { 
+      title: task.title,
+      details: task.details,
+      status: task.status,
+      priority: task.priority,
+      updatedAt: Date.now() 
+    });
   }
 }

@@ -39,22 +39,43 @@ export class SearchModal {
     this.results.set([]);
   }
 
-  onSearch() {
-    // Hier wird später die echte Suche implementiert
-    // Für das UI-Feedback zeigen wir ein paar Mock-Daten
-    if (this.searchQuery.length > 2) {
-      this.results.set([
-        { id: '1', title: 'Meine SVG Sammlung', type: 'Ressource', path: 'System / ... / Ressourcen' },
-        { id: '2', title: 'Raycast meeting', type: 'Termin', path: 'System / ... / Termine' },
-        { id: '3', title: 'Struktur & Konzept', type: 'Ressource', path: 'PARA-Book' }
-      ]);
-    } else {
+  async onSearch() {
+    if (this.searchQuery.length < 2) {
       this.results.set([]);
+      return;
     }
+
+    const query = this.searchQuery.toLowerCase();
+    
+    // Suche in Projekten, Ressourcen und Aufgaben
+    const [projects, resources, tasks, areas] = await Promise.all([
+      this.db.projects.filter(p => p.title.toLowerCase().includes(query)).limit(5).toArray(),
+      this.db.resources.filter(r => r.title.toLowerCase().includes(query)).limit(5).toArray(),
+      this.db.tasks.filter(t => t.title.toLowerCase().includes(query)).limit(5).toArray(),
+      this.db.areas.filter(a => a.title.toLowerCase().includes(query)).limit(5).toArray()
+    ]);
+
+    const mappedResults = [
+      ...projects.map(p => ({ id: p.id, title: p.title, type: 'Projekt', path: 'PARA / Projekte', icon: '📁' })),
+      ...areas.map(a => ({ id: a.id, title: a.title, type: 'Bereich', path: 'PARA / Bereiche', icon: '⭕' })),
+      ...resources.map(r => ({ id: r.id, title: r.title, type: 'Ressource', path: 'PARA / Ressourcen', icon: '📄' })),
+      ...tasks.map(t => ({ id: t.id, title: t.title, type: 'Aufgabe', path: 'System / Aufgaben', icon: '🎯' }))
+    ];
+
+    this.results.set(mappedResults);
   }
 
   navigate(result: any) {
-    // Navigation Logik
+    let route = '/';
+    switch (result.type) {
+      case 'Projekt': route = '/projects'; break;
+      case 'Bereich': route = '/areas'; break;
+      case 'Ressource': route = '/resources'; break;
+      case 'Aufgabe': route = '/tasks'; break;
+    }
+    
+    // Wir navigieren zur Seite und übergeben die ID als QueryParam für die Auswahl
+    this.router.navigate([route], { queryParams: { id: result.id } });
     this.close();
   }
 }

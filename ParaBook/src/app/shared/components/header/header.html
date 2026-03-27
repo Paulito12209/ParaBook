@@ -9,7 +9,7 @@
 
         <!-- Verantwortlichen-Filter Pille -->
         <div class="assignee-pill" [class.active]="isAssigneeDropdownOpen" (click)="toggleAssigneeDropdown($event)">
-            <span class="assignee-name">{{ appState.userName() }}</span>
+            <span class="assignee-name">{{ appState.userDisplayName() }}</span>
             <span class="divider"></span>
             <span class="role-text">{{ getCurrentRole() }}</span>
             <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -20,19 +20,16 @@
             <button class="dropdown-item" 
                     [class.active]="appState.getPageRole(router.url) === 'all'"
                     (click)="selectRole('all', $event)">
-                <span class="label">Alle</span>
                 <span class="subtext">Ohne Filter</span>
             </button>
             <button class="dropdown-item" 
                     [class.active]="appState.getPageRole(router.url) === 'assignee'"
                     (click)="selectRole('assignee', $event)">
-                <span class="label">{{ appState.userName() }}</span>
                 <span class="subtext">Verantwortliche/r</span>
             </button>
             <button class="dropdown-item" 
                     [class.active]="appState.getPageRole(router.url) === 'participant'"
                     (click)="selectRole('participant', $event)">
-                <span class="label">{{ appState.userName() }}</span>
                 <span class="subtext">Teilnehmer/in</span>
             </button>
         </div>
@@ -73,7 +70,7 @@
                 <img [src]="appState.userPhoto()" alt="Avatar">
             </div>
             <div class="user-info">
-                <span class="user-name">{{ appState.userName() }}</span>
+                <span class="user-name">{{ appState.userDisplayName() }}</span>
                 <span class="user-role">Founder</span>
             </div>
         </div>

@@ -56,7 +56,7 @@ export class Tasks {
   }
 
   onAddTask() {
-    this.shortcutService.toggleSearchModal();
+    this.shortcutService.toggleCaptureDialog('task');
   }
 
   async onToggleStatus(task: TaskEntity) {

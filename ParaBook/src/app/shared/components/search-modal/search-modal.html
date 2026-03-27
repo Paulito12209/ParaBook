@@ -30,9 +30,7 @@
         @for (item of results(); track item.id) {
           <div class="result-item" (click)="navigate(item)">
             <div class="item-icon">
-              <!-- Dynamische Icons basierend auf Type -->
-              <span *ngIf="item.type === 'Ressource'">📄</span>
-              <span *ngIf="item.type === 'Termin'">📹</span>
+              <span>{{ item.icon }}</span>
             </div>
             <div class="item-content">
               <div class="item-title">

@@ -25,6 +25,8 @@ export class QuickCapture {
   constructor() {
     effect(() => {
       if (this.isOpen()) {
+        const preType = this.shortcutService.captureType();
+        if (preType) this.selectedType = preType;
         setTimeout(() => this.captureInput?.nativeElement?.focus(), 50);
       }
     });

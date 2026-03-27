@@ -3,10 +3,34 @@
     
     <div class="capture-header">
       <div class="smart-pills" *ngIf="content.length > 0">
-        <button [class.active]="selectedType === 'task'" (click)="setType('task')">✓ Aufgabe</button>
-        <button [class.active]="selectedType === 'project'" (click)="setType('project')">📁 Projekt</button>
-        <button [class.active]="selectedType === 'area'" (click)="setType('area')">🎯 Arbeitsbereich</button>
-        <button [class.active]="selectedType === 'resource'" (click)="setType('resource')">📚 Ressource</button>
+        <button [class.active]="selectedType === 'task'" (click)="setType('task')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+            <polyline points="22 4 12 14.01 9 11.01"/>
+          </svg>
+          Aufgabe
+        </button>
+        <button [class.active]="selectedType === 'project'" (click)="setType('project')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+          </svg>
+          Projekt
+        </button>
+        <button [class.active]="selectedType === 'area'" (click)="setType('area')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <circle cx="12" cy="12" r="6"/>
+            <circle cx="12" cy="12" r="2"/>
+          </svg>
+          Arbeitsbereich
+        </button>
+        <button [class.active]="selectedType === 'resource'" (click)="setType('resource')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+          </svg>
+          Ressource
+        </button>
       </div>
       <div class="close-hint" *ngIf="content.length === 0">
         <button class="close-btn" (click)="close()">✕</button>

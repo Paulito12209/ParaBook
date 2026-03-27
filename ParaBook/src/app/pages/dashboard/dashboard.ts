@@ -20,7 +20,8 @@ import { ResourcesMatrixComponent } from '../../shared/components/widgets/resour
   styleUrl: './dashboard.scss',
 })
 export class Dashboard {
-  public appState = inject(AppStateService);
+  private appState = inject(AppStateService);
+  userDisplayName = this.appState.userDisplayName;
 
   constructor() {
     // Initialisiere Test-Zustand für die Demo

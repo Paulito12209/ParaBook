@@ -23,7 +23,7 @@ export class ResourceListComponent {
   categories = ['Alle', 'SOP', 'Notiz', 'Lesezeichen', 'Dokumentation', 'Ressource'];
 
   get filteredResources(): ResourceEntity[] {
-    const roleFilter = this.appState.globalRoleFilter();
+    const roleFilter = this.appState.getPageRole('/resources');
 
     return this.resources.filter(res => {
       const matchesCategory = this.selectedCategoryId === 'Alle' || res.type === this.selectedCategoryId;

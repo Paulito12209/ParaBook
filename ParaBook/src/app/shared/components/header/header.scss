@@ -46,7 +46,7 @@ header {
         gap: 6px;
         background-color: var(--bg-primary);
         padding: 8px 16px;
-        border-radius: var(--radius-pill);
+        border-radius: 20px; /* Fixed radius to avoid distortion from high pill values */
         font-size: 14px;
         font-weight: 500;
         color: var(--text-primary);
@@ -56,10 +56,21 @@ header {
         cursor: pointer;
         position: relative;
         user-select: none;
+        z-index: 101; /* Layer priorities for the dropdown */
 
-        &:hover, &.active {
+        &:hover {
             box-shadow: var(--shadow-card-hover);
             border-color: var(--border-color-hover);
+        }
+
+        &.active {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border-color: var(--border-color-hover);
+            border-bottom-color: transparent; /* Seamless connection */
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
         }
 
         .name {
@@ -83,27 +94,31 @@ header {
             transform: rotate(180deg);
         }
 
-        .dropdown-menu {
+        .dropdown {
+            display: none;
             position: absolute;
-            top: calc(100% + 8px);
-            left: 0;
+            top: 100%;
+            left: -1px;
+            min-width: calc(100% + 2px);
             background: var(--bg-primary);
-            border: var(--divider-thickness) solid var(--border-color);
-            border-radius: var(--radius-lg);
+            border: var(--divider-thickness) solid var(--border-color-hover);
+            border-top: none;
+            border-radius: 0 0 16px 16px;
             padding: 6px;
-            box-shadow: var(--shadow-header);
-            display: flex;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.08);
             flex-direction: column;
             gap: 2px;
-            min-width: 180px;
-            z-index: 100;
+
+            &.show {
+                display: flex;
+            }
 
             button {
                 display: flex;
                 align-items: center;
-                justify-content: space-between;
+                justify-content: center;
                 width: 100%;
-                padding: 8px 12px;
+                padding: 10px 12px;
                 background: transparent;
                 border: none;
                 border-radius: var(--radius-md);
@@ -112,20 +127,27 @@ header {
                 color: var(--text-primary);
                 cursor: pointer;
                 transition: background var(--transition-fast);
+                white-space: nowrap;
 
                 &:hover {
                     background: var(--bg-secondary);
                 }
 
-                &.selected {
+                &.active, &.selected {
                     background: var(--bg-secondary);
                     font-weight: 600;
+                    
+                    .subtext {
+                        color: var(--text-primary);
+                        font-weight: 600;
+                    }
                 }
 
-                .role-sm {
-                    font-size: 12px;
+                .subtext {
+                    font-size: 13px;
                     color: var(--text-muted);
                     font-weight: 400;
+                    transition: color var(--transition-fast);
                 }
             }
         }

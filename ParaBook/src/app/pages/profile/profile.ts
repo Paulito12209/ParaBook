@@ -15,7 +15,7 @@ export class Profile {
   appState = inject(AppStateService);
   private router = inject(Router);
 
-  tempName = this.appState.userName();
+  tempName = this.appState.userDisplayName();
   tempPhoto = this.appState.userPhoto();
 
   onPhotoChange(event: any) {
@@ -30,7 +30,7 @@ export class Profile {
   }
 
   save() {
-    this.appState.userName.set(this.tempName);
+    this.appState.userDisplayName.set(this.tempName);
     this.appState.userPhoto.set(this.tempPhoto);
     this.router.navigate(['/']); // Zurück zum HQ
   }
