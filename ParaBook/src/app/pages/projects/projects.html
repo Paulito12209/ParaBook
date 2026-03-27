@@ -1,6 +1,7 @@
 <div class="projects-page split-view">
     <div class="list-col" [style.width.px]="appState.globalSidebarWidth()">
         <app-shared-project-list 
+            [projects]="projectsList()"
             [searchPlaceholder]="'Search projects...'" 
             [addButtonLabel]="'Add New Project'"
             [showSearch]="false"

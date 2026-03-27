@@ -1,6 +1,7 @@
 <div class="areas-page split-view">
     <div class="list-col" [style.width.px]="appState.globalSidebarWidth()">
         <app-shared-project-list 
+            [projects]="areasList()"
             [searchPlaceholder]="'Search areas...'" 
             [addButtonLabel]="'Add New Area'"
             [showSearch]="false"
@@ -13,7 +14,8 @@
 
     <div class="details-col" [class.visible]="selectedAreaId">
         <app-shared-project-details 
-            [project]="selectedProject" 
+            [project]="selectedProject"
+            [entityType]="'area'"
             (backToProjectList)="selectedAreaId = null">
         </app-shared-project-details>
     </div>

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Output, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -15,7 +15,7 @@ export interface ProjectListItem {
   templateUrl: './project-list.html',
   styleUrl: './project-list.scss',
 })
-export class SharedProjectList implements OnInit {
+export class SharedProjectList implements OnInit, OnChanges {
   @Input() projects: ProjectListItem[] = [];
   @Input() searchPlaceholder: string = 'Search projects...';
   @Input() addButtonLabel: string = 'Add New Project';
@@ -35,6 +35,16 @@ export class SharedProjectList implements OnInit {
     this.filteredProjects = [...this.projects];
     if (this.projects.length > 0) {
       this.selectProject(this.projects[0]);
+    }
+  }
+
+  /**
+   * Reagiert auf Änderungen der Input-Properties (z.B. neue Einträge via liveQuery).
+   */
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['projects']) {
+      // Gefilterte Liste aktualisieren
+      this.onSearch();
     }
   }
 

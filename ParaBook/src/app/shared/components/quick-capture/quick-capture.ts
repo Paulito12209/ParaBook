@@ -100,6 +100,12 @@ export class QuickCapture {
         participants: [], isArchived: false, isFavorite: false, createdAt: now, updatedAt: now,
         taskIds: [], resourceIds: [], areaIds: [], meetingIds: [], bookmarkIds: []
       });
+    } else if (type === 'area') {
+      await this.db.areas.add({
+        id, title: this.content.trim(), description: '',
+        participants: [], isArchived: false, createdAt: now, updatedAt: now,
+        projectIds: [], taskIds: [], resourceIds: [], meetingIds: [], bookmarkIds: []
+      });
     } else if (type === 'resource') {
       let url = this.content.trim();
       // Automatische Protokoll-Ergänzung, falls nur Domain eingegeben wurde

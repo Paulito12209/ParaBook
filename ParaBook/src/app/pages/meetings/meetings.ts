@@ -22,7 +22,7 @@ export class Meetings {
   private shortcutService = inject(ShortcutService);
 
   meetings: Signal<MeetingEntity[]> = toSignal(
-    liveQuery(() => this.db.meetings.orderBy('date').reverse().toArray()), 
+    liveQuery(() => this.db.meetings.orderBy('createdAt').reverse().toArray()), 
     { initialValue: [] as MeetingEntity[] }
   ) as Signal<MeetingEntity[]>;
 

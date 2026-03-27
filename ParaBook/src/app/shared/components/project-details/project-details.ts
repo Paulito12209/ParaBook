@@ -18,9 +18,16 @@ export interface ProjectDetailsItem {
 })
 export class SharedProjectDetails {
   @Input() project: ProjectDetailsItem | null = null;
+  /** Bestimmt, welche DB-Tabelle für Löschen/Archivieren genutzt wird */
+  @Input() entityType: 'project' | 'area' = 'project';
   @Output() backToProjectList = new EventEmitter<void>();
 
   private db = inject(DatabaseService);
+
+  /** Gibt die korrekte DB-Tabelle zurück */
+  private get table() {
+    return this.entityType === 'area' ? this.db.areas : this.db.projects;
+  }
 
   goBack() {
     this.backToProjectList.emit();
@@ -33,7 +40,7 @@ export class SharedProjectDetails {
     if (!this.project) return;
     
     // In der Datenbank als archiviert markieren
-    await (this.db as any).projects.update(this.project.id, {
+    await (this.table as any).update(this.project.id, {
       isArchived: true,
       updatedAt: Date.now()
     });
@@ -49,7 +56,7 @@ export class SharedProjectDetails {
     if (!this.project) return;
 
     // Projekt aus der Datenbank löschen
-    await (this.db as any).projects.delete(this.project.id);
+    await (this.table as any).delete(this.project.id);
 
     // Zurück zur Liste
     this.goBack();
