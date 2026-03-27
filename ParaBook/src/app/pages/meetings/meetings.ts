@@ -1,4 +1,4 @@
-import { Component, inject, Signal, HostListener } from '@angular/core';
+import { Component, inject, Signal, HostListener, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DatabaseService } from '../../core/database/db.service';
 import { MeetingEntity } from '../../core/models/entities';
@@ -29,6 +29,22 @@ export class Meetings {
   selectedMeeting: MeetingEntity | null = null;
   selectedMeetingId: string | null = null;
   isResizing = false;
+  private autoSelected = false;
+
+  constructor() {
+    effect(() => {
+      const list = this.meetings();
+      if (list && list.length > 0 && !this.autoSelected) {
+        setTimeout(() => {
+          if (!this.selectedMeetingId) {
+            this.selectedMeetingId = list[0].id;
+            this.selectedMeeting = list[0];
+          }
+        });
+        this.autoSelected = true;
+      }
+    });
+  }
 
   @HostListener('document:mousemove', ['$event'])
   onMouseMove(event: MouseEvent) {

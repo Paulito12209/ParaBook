@@ -1,4 +1,4 @@
-import { Component, inject, Signal, computed, HostListener } from '@angular/core';
+import { Component, inject, Signal, computed, HostListener, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DatabaseService } from '../../core/database/db.service';
 import { ProjectEntity } from '../../core/models/entities';
@@ -39,6 +39,21 @@ export class Projects {
 
   selectedProjectId: string | number | null = null;
   isResizing = false;
+  private autoSelected = false;
+
+  constructor() {
+    effect(() => {
+      const list = this.projectsList();
+      if (list && list.length > 0 && !this.autoSelected) {
+        setTimeout(() => {
+          if (!this.selectedProjectId) {
+            this.selectedProjectId = list[0].id;
+          }
+        });
+        this.autoSelected = true;
+      }
+    });
+  }
 
   @HostListener('document:mousemove', ['$event'])
   onMouseMove(event: MouseEvent) {

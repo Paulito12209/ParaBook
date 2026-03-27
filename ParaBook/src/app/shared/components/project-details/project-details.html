@@ -11,7 +11,7 @@
                 Zurück
             </button>
             <span class="type-label">{{ entityType === 'area' ? 'ARBEITSBEREICH' : 'PROJEKT' }}</span>
-            <h1>{{ project.title }}</h1>
+            <input [(ngModel)]="project.title" (ngModelChange)="updateProject()" class="title-input" placeholder="Titel eingeben" />
             <p class="description">{{ project.description || 'Keine Beschreibung vorhanden.' }}</p>
         </div>
     </div>

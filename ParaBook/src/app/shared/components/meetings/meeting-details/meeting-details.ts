@@ -1,12 +1,13 @@
 import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { MeetingEntity } from '../../../../core/models/entities';
 import { DatabaseService } from '../../../../core/database/db.service';
 
 @Component({
   selector: 'app-meeting-details',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './meeting-details.html',
   styleUrl: './meeting-details.scss',
 })
@@ -37,5 +38,14 @@ export class MeetingDetailsComponent {
       updatedAt: Date.now()
     });
     this.onClose();
+  }
+
+  /** Aktualisiert den Titel in der Datenbank */
+  async updateMeeting() {
+    if (!this.meeting) return;
+    await this.db.meetings.update(this.meeting.id, {
+      title: this.meeting.title,
+      updatedAt: Date.now()
+    });
   }
 }

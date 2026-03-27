@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { DatabaseService } from '../../../core/database/db.service';
 
 export interface ProjectDetailsItem {
@@ -12,7 +13,7 @@ export interface ProjectDetailsItem {
 @Component({
   selector: 'app-shared-project-details',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './project-details.html',
   styleUrl: './project-details.scss',
 })
@@ -31,6 +32,15 @@ export class SharedProjectDetails {
 
   goBack() {
     this.backToProjectList.emit();
+  }
+
+  /** Aktualisiert den Titel in der Datenbank */
+  async updateProject() {
+    if (!this.project) return;
+    await (this.table as any).update(this.project.id, {
+      title: this.project.title,
+      updatedAt: Date.now()
+    });
   }
 
   /**

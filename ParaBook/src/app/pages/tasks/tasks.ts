@@ -1,4 +1,4 @@
-import { Component, inject, Signal, HostListener } from '@angular/core';
+import { Component, inject, Signal, HostListener, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DatabaseService } from '../../core/database/db.service';
@@ -30,6 +30,22 @@ export class Tasks {
   selectedTask: TaskEntity | null = null;
   selectedTaskId: string | null = null;
   isResizing = false;
+  private autoSelected = false;
+
+  constructor() {
+    effect(() => {
+      const list = this.tasks();
+      if (list && list.length > 0 && !this.autoSelected) {
+        setTimeout(() => {
+          if (!this.selectedTaskId) {
+            this.selectedTaskId = list[0].id;
+            this.selectedTask = list[0];
+          }
+        });
+        this.autoSelected = true;
+      }
+    });
+  }
 
   @HostListener('document:mousemove', ['$event'])
   onMouseMove(event: MouseEvent) {

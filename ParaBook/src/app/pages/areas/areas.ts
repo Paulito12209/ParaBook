@@ -1,4 +1,4 @@
-import { Component, inject, Signal, computed, HostListener } from '@angular/core';
+import { Component, inject, Signal, computed, HostListener, effect } from '@angular/core';
 import { liveQuery } from 'dexie';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { SharedProjectList, ProjectListItem } from '../../shared/components/project-list/project-list';
@@ -41,6 +41,22 @@ export class Areas {
   selectedAreaId: string | number | null = null;
   
   isResizing = false;
+  private autoSelected = false;
+
+  constructor() {
+    effect(() => {
+      const list = this.areasList();
+      if (list && list.length > 0 && !this.autoSelected) {
+        setTimeout(() => {
+          if (!this.selectedAreaId) {
+            this.selectedAreaId = list[0].id;
+            this.selectedProject = list[0];
+          }
+        });
+        this.autoSelected = true;
+      }
+    });
+  }
 
   @HostListener('document:mousemove', ['$event'])
   onMouseMove(event: MouseEvent) {

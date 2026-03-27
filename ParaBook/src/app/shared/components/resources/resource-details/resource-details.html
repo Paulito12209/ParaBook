@@ -10,7 +10,7 @@
                     Zurück
                 </button>
                 <span class="type-label">{{ resource.type | uppercase }}</span>
-                <h1>{{ resource.title }}</h1>
+                <input [(ngModel)]="resource.title" (ngModelChange)="updateResource()" class="title-input" placeholder="Titel der Ressource" />
                 <div class="meta-badges">
                     <span class="badge" [attr.data-status]="resource.status">{{ resource.status }}</span>
                     <span class="badge">{{ resource.assignee || 'Paul' }}</span>

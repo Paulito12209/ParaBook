@@ -72,6 +72,11 @@ export class Resources implements OnInit {
     }
     
     this.allResources.set(resources);
+
+    // Automatische Auswahl des ersten Elements beim Navigieren
+    if (resources.length > 0 && !this.selectedResource()) {
+      this.selectedResource.set(resources[0]);
+    }
   }
 
   onResourceSelected(res: ResourceEntity) {

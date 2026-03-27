@@ -62,12 +62,22 @@
                 letter-spacing: 1.5px;
             }
 
-            h1 {
+            .title-input {
                 margin: 8px 0;
                 font-size: 32px;
                 font-weight: 700;
                 color: white;
                 line-height: 1.2;
+                background: transparent;
+                border: none;
+                width: 100%;
+                outline: none;
+                font-family: inherit;
+                padding: 0;
+
+                &::placeholder {
+                    color: rgba(255, 255, 255, 0.5);
+                }
             }
 
             .description {
@@ -91,7 +101,7 @@
                 &:hover { background: rgba(0, 0, 0, 0.18); }
             }
             .type-label { color: rgba(0, 0, 0, 0.6); }
-            h1 { color: rgba(0, 0, 0, 0.9); }
+            .title-input { color: rgba(0, 0, 0, 0.9); }
             .description { color: rgba(0, 0, 0, 0.7); }
         }
     }

@@ -67,12 +67,22 @@
                 letter-spacing: 1.5px;
             }
 
-            h1 {
+            .title-input {
                 margin: 8px 0;
                 font-size: 28px;
                 font-weight: 700;
                 color: rgba(0, 0, 0, 0.85);
                 line-height: 1.2;
+                background: transparent;
+                border: none;
+                width: 100%;
+                outline: none;
+                font-family: inherit;
+                padding: 0;
+
+                &::placeholder {
+                    color: rgba(0, 0, 0, 0.3);
+                }
             }
 
             .meta-badges {

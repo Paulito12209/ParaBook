@@ -10,7 +10,7 @@
                     Zurück
                 </button>
                 <span class="type-label">AUFGABE</span>
-                <h1>{{ task.title }}</h1>
+                <input [(ngModel)]="task.title" (ngModelChange)="updateTask()" class="title-input" placeholder="Titel der Aufgabe" />
                 <div class="meta-badges">
                     <span class="badge" [attr.data-status]="task.status">{{ task.status }}</span>
                     <span class="badge priority" [attr.data-priority]="task.priority">{{ task.priority }}</span>
