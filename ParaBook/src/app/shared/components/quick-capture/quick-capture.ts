@@ -78,7 +78,7 @@ export class QuickCapture {
     } else if (type === 'project') {
       await this.db.projects.add({
         id, title: this.content.trim(), status: 'geplant', priority: 'mittel',
-        participants: [], isArchived: false, createdAt: now, updatedAt: now,
+        participants: [], isArchived: false, isFavorite: false, createdAt: now, updatedAt: now,
         taskIds: [], resourceIds: [], areaIds: [], meetingIds: [], bookmarkIds: []
       });
     } else if (type === 'resource') {

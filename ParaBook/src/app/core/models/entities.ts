@@ -47,6 +47,7 @@ export interface ProjectEntity extends BaseEntity {
   assignee?: string;
   participants: string[];
   isArchived: boolean;
+  isFavorite: boolean;
 
   // Relationen (IDs)
   taskIds: string[];

@@ -1,1 +1,32 @@
-<p>dashboard works!</p>
+<div class="dashboard-page">
+  <div class="welcome-header">
+    <h1>Guten Tag</h1>
+  </div>
+
+  <!-- BEREICH 1: Zuletzt besucht -->
+  <section class="dashboard-section section-recent">
+    <app-recent-items></app-recent-items>
+  </section>
+
+  <!-- BEREICH 2: Widgets (Aufgaben & Termine) -->
+  <section class="dashboard-section section-widgets">
+    <div class="widgets-grid">
+      <div class="tasks-col">
+        <app-tasks-widget></app-tasks-widget>
+      </div>
+      <div class="meetings-col">
+        <app-meetings-widget></app-meetings-widget>
+      </div>
+    </div>
+  </section>
+
+  <!-- BEREICH 3: Meine Projekte -->
+  <section class="dashboard-section section-projects">
+    <app-projects-slider></app-projects-slider>
+  </section>
+
+  <!-- BEREICH 4: Ressourcen Matrix -->
+  <section class="dashboard-section section-resources">
+    <app-resources-matrix></app-resources-matrix>
+  </section>
+</div>
