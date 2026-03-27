@@ -16,65 +16,74 @@ export class QuickCapture {
   shortcutService = inject(ShortcutService);
   private db = inject(DatabaseService);
 
-  @ViewChild('titleInput') titleInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('captureInput') captureInput!: ElementRef<HTMLInputElement>;
   
   isOpen = this.shortcutService.isCaptureDialogOpen;
-
-  captureType: 'task' | 'project' = 'task';
-  title = '';
-  details = '';
-  showDetails = false;
+  content = '';
+  selectedType: 'task' | 'project' | 'area' | 'resource' | null = null;
 
   constructor() {
-    // Fokus auf das Input-Feld, sobald sich der Dialog öffnet
     effect(() => {
       if (this.isOpen()) {
-        setTimeout(() => this.titleInput?.nativeElement?.focus(), 50);
+        setTimeout(() => this.captureInput?.nativeElement?.focus(), 50);
       }
     });
   }
 
+  isUrl(text: string): boolean {
+    const pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+      '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
+      '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+      '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+      '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+      '(\\#[-a-z\\d%_.~+=-]*)?$','i'); // fragment locator
+    return !!pattern.test(text);
+  }
+
+  onInput() {
+    if (this.isUrl(this.content)) {
+      this.selectedType = 'resource';
+    } else if (this.content.length > 0 && !this.selectedType) {
+      // Zeige Pillen an, wenn Text da ist aber noch kein Typ gewählt
+    }
+  }
+
+  setType(type: 'task' | 'project' | 'area' | 'resource') {
+    this.selectedType = type;
+  }
+
   close() {
-    this.shortcutService.closeCaptureDialog();
+    this.shortcutService.closeAll();
     this.resetForm();
   }
 
   resetForm() {
-    this.title = '';
-    this.details = '';
-    this.showDetails = false;
-    this.captureType = 'task';
+    this.content = '';
+    this.selectedType = null;
   }
 
   async save() {
-    if (!this.title.trim()) return;
+    if (!this.content.trim()) return;
+    const type = this.selectedType || 'task'; // Default auf Task wenn nichts gewählt
 
-    if (this.captureType === 'task') {
-      const newTask: TaskEntity = {
-        id: crypto.randomUUID(),
-        title: this.title.trim(),
-        details: this.details.trim(),
-        status: 'offen',
-        priority: 'mittel',
-        type: 'aktiv',
-        createdAt: Date.now(),
-        updatedAt: Date.now(),
-        resourceIds: [], meetingIds: [], sopIds: [], noteIds: []
-      };
-      await this.db.tasks.add(newTask);
-    } else if (this.captureType === 'project') {
-      const newProject: ProjectEntity = {
-        id: crypto.randomUUID(),
-        title: this.title.trim(),
-        status: 'geplant',
-        priority: 'mittel',
-        participants: [],
-        isArchived: false,
-        createdAt: Date.now(),
-        updatedAt: Date.now(),
+    const id = crypto.randomUUID();
+    const now = Date.now();
+
+    if (type === 'task') {
+      await this.db.tasks.add({
+        id, title: this.content.trim(), status: 'offen', priority: 'mittel',
+        type: 'aktiv', createdAt: now, updatedAt: now,
+        details: '', resourceIds: [], meetingIds: [], sopIds: [], noteIds: []
+      });
+    } else if (type === 'project') {
+      await this.db.projects.add({
+        id, title: this.content.trim(), status: 'geplant', priority: 'mittel',
+        participants: [], isArchived: false, createdAt: now, updatedAt: now,
         taskIds: [], resourceIds: [], areaIds: [], meetingIds: [], bookmarkIds: []
-      };
-      await this.db.projects.add(newProject);
+      });
+    } else if (type === 'resource') {
+      // Hier würde die Logik für Ressourcen / Lesezeichen hinkommen
+      console.log('Ressource gespeichert:', this.content);
     }
 
     this.close();

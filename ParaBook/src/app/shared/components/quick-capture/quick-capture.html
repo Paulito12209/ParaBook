@@ -1,48 +1,55 @@
 <div class="overlay" *ngIf="isOpen()" (click)="close()">
-  <!-- Stop propagation to prevent closing when clicking inside the modal -->
-  <div class="modal" (click)="$event.stopPropagation()">
+  <div class="capture-container" (click)="$event.stopPropagation()">
     
-    <div class="modal-header">
-      <div class="type-selector">
-        <button [class.active]="captureType === 'task'" (click)="captureType = 'task'">✓ Aufgabe</button>
-        <button [class.active]="captureType === 'project'" (click)="captureType = 'project'">📁 Projekt</button>
+    <div class="capture-header">
+      <div class="smart-pills" *ngIf="content.length > 0">
+        <button [class.active]="selectedType === 'task'" (click)="setType('task')">✓ Aufgabe</button>
+        <button [class.active]="selectedType === 'project'" (click)="setType('project')">📁 Projekt</button>
+        <button [class.active]="selectedType === 'area'" (click)="setType('area')">🎯 Arbeitsbereich</button>
+        <button [class.active]="selectedType === 'resource'" (click)="setType('resource')">📚 Ressource</button>
       </div>
-      <div class="keyboard-hint">
-        <span>esc</span> zum Schließen
+      <div class="close-hint" *ngIf="content.length === 0">
+        <button class="close-btn" (click)="close()">✕</button>
       </div>
     </div>
 
-    <div class="modal-body">
+    <div class="capture-body">
+      <div class="title-hint" *ngIf="selectedType === 'resource'">🔗 URL erkannt: Wird als Ressource gespeichert</div>
       <input 
-        #titleInput
+        #captureInput
         type="text" 
-        [(ngModel)]="title" 
+        [(ngModel)]="content" 
+        (input)="onInput()"
         (keyup.enter)="save()"
-        [placeholder]="captureType === 'task' ? 'Neue Aufgabe erfassen...' : 'Neues Projekt erstellen...'"
+        placeholder="Im Web nach neuen Quellen suchen oder Eintrag erfassen..."
         class="capture-input"
       >
-      
-      <div class="details-section" *ngIf="showDetails">
-        <textarea 
-          [(ngModel)]="details" 
-          placeholder="Details hinzufügen..."
-          rows="3"
-        ></textarea>
-        <!-- Relationen-Picker Placeholder für später -->
-        <div class="relation-bar">
-          <button class="relation-btn">+ Projekt</button>
-          <button class="relation-btn">+ Kontext</button>
-        </div>
-      </div>
     </div>
 
-    <div class="modal-footer">
-      <button class="btn btn-secondary" (click)="showDetails = !showDetails">
-        {{ showDetails ? 'Details ausblenden' : 'Details anzeigen' }}
-      </button>
-
-      <div class="actions">
-        <button class="btn btn-primary" (click)="save()">Speichern <kbd>↵</kbd></button>
+    <div class="capture-footer">
+      <div class="quick-actions">
+        <button class="action-btn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
+          </svg>
+          Dateien hochladen
+        </button>
+        <button class="action-btn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+          </svg>
+          Websites
+        </button>
+        <button class="action-btn">
+          <span>Google Drive</span>
+        </button>
+        <button class="action-btn">
+          <span>Kopierter Text</span>
+        </button>
+      </div>
+      <div class="save-hint">
+        <kbd>↵</kbd> zum Speichern
       </div>
     </div>
 

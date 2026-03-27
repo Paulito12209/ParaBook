@@ -12,7 +12,7 @@ import { System } from './pages/system/system';
 export const routes: Routes = [
     {
         path: "", component: MainLayout, children: [
-            { path: "dashboard", component: Dashboard, data: { title: 'Dashboard' } },
+            { path: "dashboard", component: Dashboard, data: { title: 'Hauptquartier' } },
             { path: "meetings", component: Meetings, data: { title: 'Meetings' } },
             { path: "tasks", component: Tasks, data: { title: 'Aufgaben' } },
             { path: "projects", component: Projects, data: { title: 'Projekte' } },
