@@ -21,40 +21,51 @@ export class QuickCapture {
   isOpen = this.shortcutService.isCaptureDialogOpen;
   content = '';
   selectedType: 'task' | 'project' | 'area' | 'resource' | 'meeting' | null = null;
+  isAutoDetectedUrl = false;
 
   constructor() {
     effect(() => {
       if (this.isOpen()) {
         const preType = this.shortcutService.captureType();
         if (preType) this.selectedType = preType;
+        this.isAutoDetectedUrl = false; // Zurücksetzen beim Öffnen
         setTimeout(() => this.captureInput?.nativeElement?.focus(), 50);
       }
     });
   }
 
   /**
-   * Prüft, ob der Text eine URL ist.
+   * Prüft, ob der Text eine valide URL ist (muss Protokoll oder www. enthalten).
    */
   isUrl(text: string): boolean {
-    const pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
-      '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
-      '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
-      '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
-      '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
-      '(\\#[-a-z\\d%_.~+=-]*)?$','i'); // fragment locator
-    return !!pattern.test(text);
+    if (!text) return false;
+    const trimmed = text.trim();
+    // Einfachere, aber sicherere Prüfung für den User-Case
+    const hasProtocol = /^https?:\/\//i.test(trimmed);
+    const hasWww = /^www\./i.test(trimmed);
+    const hasDomainPattern = /^[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/i.test(trimmed);
+    
+    return hasProtocol || hasWww || (trimmed.includes('.') && hasDomainPattern);
   }
 
   onInput() {
-    if (this.isUrl(this.content)) {
+    if (this.content.length > 0 && this.isUrl(this.content)) {
       this.selectedType = 'resource';
+      this.isAutoDetectedUrl = true;
     } else if (this.content.length > 0 && !this.selectedType) {
+      this.isAutoDetectedUrl = false;
       // Zeige Pillen an, wenn Text da ist aber noch kein Typ gewählt
+    } else if (this.content.length === 0) {
+      this.selectedType = null;
+      this.isAutoDetectedUrl = false;
+    } else {
+      this.isAutoDetectedUrl = false;
     }
   }
 
   setType(type: 'task' | 'project' | 'area' | 'resource' | 'meeting') {
     this.selectedType = type;
+    this.isAutoDetectedUrl = false; // Manuelle Wahl deaktiviert Auto-Hinweis
   }
 
   close() {
@@ -90,9 +101,15 @@ export class QuickCapture {
         taskIds: [], resourceIds: [], areaIds: [], meetingIds: [], bookmarkIds: []
       });
     } else if (type === 'resource') {
+      let url = this.content.trim();
+      // Automatische Protokoll-Ergänzung, falls nur Domain eingegeben wurde
+      if (!url.toLowerCase().startsWith('http')) {
+        url = 'https://' + url;
+      }
+
       await this.db.resources.add({
         id, title: this.content.trim(), type: 'Lesezeichen', status: 'zu prüfen',
-        url: this.content.trim(), isFavorite: false, isArchived: false, isHidden: false,
+        url: url, isFavorite: false, isArchived: false, isHidden: false,
         assignee: 'Paul', participants: [],
         categories: [], targetGroups: [], createdAt: now, updatedAt: now,
         areaIds: [], projectIds: [], taskIds: [], meetingIds: []

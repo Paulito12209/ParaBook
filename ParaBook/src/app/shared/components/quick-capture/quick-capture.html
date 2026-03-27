@@ -47,14 +47,14 @@
     </div>
 
     <div class="capture-body">
-      <div class="title-hint" *ngIf="selectedType === 'resource'">🔗 URL erkannt: Wird als Ressource gespeichert</div>
+      <div class="title-hint" *ngIf="isAutoDetectedUrl && content.length > 0">🔗 URL erkannt: Wird als Ressource gespeichert</div>
       <input 
         #captureInput
         type="text" 
         [(ngModel)]="content" 
         (input)="onInput()"
         (keyup.enter)="save()"
-        placeholder="Im Web nach neuen Quellen suchen oder Eintrag erfassen..."
+        placeholder="Eintrag erfassen oder Link einfügen..."
         class="capture-input"
       >
     </div>
@@ -65,20 +65,20 @@
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
           </svg>
-          Dateien hochladen
+          Option 1
         </button>
         <button class="action-btn">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
             <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
           </svg>
-          Websites
+          Option 2
         </button>
         <button class="action-btn">
-          <span>Google Drive</span>
+          <span>Option 3</span>
         </button>
         <button class="action-btn">
-          <span>Kopierter Text</span>
+          <span>Option 4</span>
         </button>
       </div>
       <div class="save-hint">
