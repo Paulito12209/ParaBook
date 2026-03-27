@@ -129,7 +129,8 @@ import { toSignal } from '@angular/core/rxjs-interop';
       height: 1.25rem; 
     }
     .slider-cards {
-      display: flex;
+      display: inline-flex;
+      max-width: 100%;
       gap: 16px;
       overflow-x: auto;
       padding: 8px 4px 16px 4px;

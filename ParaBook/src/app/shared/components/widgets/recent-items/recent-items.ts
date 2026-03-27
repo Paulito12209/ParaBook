@@ -74,7 +74,8 @@ import { delay } from 'rxjs/operators';
       .icon { width: 1.25rem; height: 1.25rem; }
     }
     .items-carousel {
-      display: flex;
+      display: inline-flex;
+      max-width: 100%;
       gap: 1rem;
       overflow-x: auto;
       padding: 4px 4px 12px 4px;

@@ -16,6 +16,8 @@ export class TaskDetailsComponent {
   @Output() close = new EventEmitter<void>();
   @Output() delete = new EventEmitter<string>();
 
+  showPropertiesDialog = false;
+
   private db = inject(DatabaseService);
 
   onClose() {
@@ -51,6 +53,26 @@ export class TaskDetailsComponent {
     });
   }
 
+  /* --- Due Date Handler --- */
+  formatDate(timestamp?: number): string {
+    if (!timestamp) return '';
+    const d = new Date(timestamp);
+    const month = '' + (d.getMonth() + 1);
+    const day = '' + d.getDate();
+    const year = d.getFullYear();
+    return [year, month.padStart(2, '0'), day.padStart(2, '0')].join('-');
+  }
+
+  async updateDueDate(dateString: string) {
+    if (!this.task) return;
+    const timestamp = dateString ? new Date(dateString).getTime() : undefined;
+    this.task.dueDate = timestamp;
+    await this.db.tasks.update(this.task.id, {
+      dueDate: timestamp,
+      updatedAt: Date.now()
+    });
+  }
+
   /* --- Subtasks Handler --- */
   async updateSubtasks() {
     if (!this.task) return;
@@ -76,5 +98,9 @@ export class TaskDetailsComponent {
     if (!this.task || !this.task.subtasks) return;
     this.task.subtasks = this.task.subtasks.filter(st => st.id !== id);
     await this.updateSubtasks();
+  }
+
+  togglePropertiesDialog() {
+    this.showPropertiesDialog = !this.showPropertiesDialog;
   }
 }
