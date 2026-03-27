@@ -1,21 +1,41 @@
 <div class="meeting-details" [class.empty]="!meeting">
     @if (meeting) {
-        <div class="details-header">
-            <div class="header-main">
-                <h2 class="title">{{ meeting.title }}</h2>
-                <button class="close-btn" (click)="onClose()">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M18 6L6 18M6 6l12 12"/>
-                    </svg>
-                </button>
+        <!-- Glassmorphism Header -->
+        <div class="glass-header">
+            <div class="header-content">
+                <span class="type-label">MEETING</span>
+                <h1>{{ meeting.title }}</h1>
+                <div class="meta-badges">
+                    <span class="badge">{{ meeting.scheduledFor | date:'EEEE, dd. MMMM yyyy' }}</span>
+                    <span class="badge">{{ meeting.scheduledFor | date:'HH:mm' }} Uhr</span>
+                </div>
             </div>
-            
-            <div class="meta-row">
-                <span class="date-badge">{{ meeting.scheduledFor | date:'EEEE, dd. MMMM yyyy' }}</span>
-                <span class="time-badge">{{ meeting.scheduledFor | date:'HH:mm' }} Uhr</span>
-            </div>
+            <button class="close-btn" (click)="onClose()">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 6L6 18M6 6l12 12"/>
+                </svg>
+            </button>
         </div>
 
+        <!-- Action-Bar -->
+        <div class="action-bar">
+            <button class="action-btn" (click)="onArchive()" title="Archivieren">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="21 8 21 21 3 21 3 8"></polyline>
+                    <rect x="1" y="3" width="22" height="5"></rect>
+                    <line x1="10" y1="12" x2="14" y2="12"></line>
+                </svg>
+                Archivieren
+            </button>
+            <button class="action-btn delete" (click)="onDelete()" title="Löschen">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                </svg>
+                Löschen
+            </button>
+        </div>
+
+        <!-- Content -->
         <div class="details-content">
             <div class="section">
                 <h3>Teilnehmer</h3>
@@ -39,15 +59,6 @@
                 } @else {
                     <p class="agenda">Keine Agenda vorhanden.</p>
                 }
-            </div>
-
-            <div class="actions-section">
-                <button class="delete-btn" (click)="onDelete()">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
-                    </svg>
-                    Meeting löschen
-                </button>
             </div>
         </div>
     } @else {

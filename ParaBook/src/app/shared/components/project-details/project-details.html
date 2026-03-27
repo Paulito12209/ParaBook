@@ -1,53 +1,60 @@
-<!-- Project Details -->
-<div class="project-details">
+<!-- Project / Area Details -->
+<div class="project-details" [class.type-area]="entityType === 'area'">
     @if (project) {
-    <div class="project-header">
+    <!-- Zurück-Button -->
+    <div class="back-row">
+        <button class="back-btn" (click)="goBack()">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+            Zurück
+        </button>
+    </div>
+
+    <!-- Glassmorphism Header -->
+    <div class="glass-header">
         <div class="header-content">
-            <span class="project-label">Projekt</span>
+            <span class="type-label">{{ entityType === 'area' ? 'ARBEITSBEREICH' : 'PROJEKT' }}</span>
             <h1>{{ project.title }}</h1>
             <p class="description">{{ project.description || 'Keine Beschreibung vorhanden.' }}</p>
         </div>
     </div>
 
+    <!-- Action-Bar -->
     <div class="action-bar">
-        <div class="action-btn">
-            <button (click)="goBack()" class="back-link">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M19 12H5M12 19l-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                <span>Zurück</span>
-            </button>
-            <button class="icon-btn" aria-label="Edit project">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
-                </svg>
-            </button>
-            <button class="icon-btn" (click)="archiveProject()" aria-label="Archive project" title="Archivieren">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="21 8 21 21 3 21 3 8"></polyline>
-                    <rect x="1" y="3" width="22" height="5"></rect>
-                    <line x1="10" y1="12" x2="14" y2="12"></line>
-                </svg>
-            </button>
-            <button class="icon-btn delete-btn" (click)="deleteProject()" aria-label="Delete project" title="Löschen">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="3 6 5 6 21 6"></polyline>
-                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                </svg>
-            </button>
-        </div>
+        <button class="action-btn" aria-label="Bearbeiten" title="Bearbeiten">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+            </svg>
+            Bearbeiten
+        </button>
+        <button class="action-btn" (click)="archiveProject()" title="Archivieren">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="21 8 21 21 3 21 3 8"></polyline>
+                <rect x="1" y="3" width="22" height="5"></rect>
+                <line x1="10" y1="12" x2="14" y2="12"></line>
+            </svg>
+            Archivieren
+        </button>
+        <button class="action-btn delete" (click)="deleteProject()" title="Löschen">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="3 6 5 6 21 6"></polyline>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+            </svg>
+            Löschen
+        </button>
     </div>
 
+    <!-- Content -->
     <div class="content-area">
         <div class="tabs-placeholder">
-            <!-- Hier kommen später die PARA-spezifischen Tabs rein -->
             <p class="placeholder">Inhalte für "{{ project.title }}" werden geladen...</p>
         </div>
     </div>
     } @else {
     <div class="no-project">
-        <p>Wähle ein Projekt aus, um Details anzuzeigen</p>
+        <p>Wähle ein {{ entityType === 'area' ? 'Arbeitsbereich' : 'Projekt' }} aus, um Details anzuzeigen</p>
     </div>
     }
 </div>

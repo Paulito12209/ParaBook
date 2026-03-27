@@ -1,81 +1,82 @@
 <div class="resource-details" [class.empty]="!resource">
     @if (resource) {
-        <div class="header">
-            <div class="header-left">
-                <div class="type-select-wrapper">
-                    <select [(ngModel)]="resource.type" (ngModelChange)="updateResource()" class="type-select">
-                        @for (opt of typeOptions; track opt) {
-                            <option [value]="opt">{{ opt }}</option>
-                        }
-                    </select>
+        <!-- Glassmorphism Header -->
+        <div class="glass-header">
+            <div class="header-content">
+                <span class="type-label">{{ resource.type | uppercase }}</span>
+                <h1>{{ resource.title }}</h1>
+                <div class="meta-badges">
+                    <span class="badge" [attr.data-status]="resource.status">{{ resource.status }}</span>
+                    <span class="badge">{{ resource.assignee || 'Paul' }}</span>
                 </div>
-                <input [(ngModel)]="resource.title" (ngModelChange)="updateResource()" class="title-input" placeholder="Titel der Ressource">
             </div>
-            <div class="header-actions">
-                <button class="action-btn" (click)="archiveResource()" title="Archivieren">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="21 8 21 21 3 21 3 8"></polyline>
-                        <rect x="1" y="3" width="22" height="5"></rect>
-                        <line x1="10" y1="12" x2="14" y2="12"></line>
-                    </svg>
-                </button>
-                <button class="action-btn delete-btn" (click)="deleteResource()" title="Löschen">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
-                    </svg>
-                </button>
+            <div class="header-right">
+                @if (hasValidUrl()) {
+                    <a [href]="resource.url" target="_blank" class="open-link-btn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                            <polyline points="15 3 21 3 21 9"/>
+                            <line x1="10" y1="14" x2="21" y2="3"/>
+                        </svg>
+                        Link öffnen
+                    </a>
+                }
                 <button class="close-btn" (click)="onClose()">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M18 6L6 18M6 6l12 12"/>
                     </svg>
                 </button>
             </div>
         </div>
 
-        <div class="content">
-            <div class="meta-section">
-                <div class="meta-item">
-                    <span class="label">Status</span>
-                    <select [(ngModel)]="resource.status" (ngModelChange)="updateResource()" class="status-select" [attr.data-status]="resource.status">
-                        @for (opt of statusOptions; track opt) {
-                            <option [value]="opt">{{ opt }}</option>
-                        }
-                    </select>
-                </div>
-                <div class="meta-item">
-                    <span class="label">Verantwortlich</span>
-                    <span class="value">{{ resource.assignee || 'Paul' }}</span>
+        <!-- URL-Bearbeitung (nur bei aktivem Edit-Modus) -->
+        @if (isEditingUrl) {
+            <div class="url-edit-bar">
+                <label>URL bearbeiten</label>
+                <input [(ngModel)]="resource.url" (ngModelChange)="updateResource()" class="url-input" placeholder="https://...">
+            </div>
+        }
+
+        <!-- Action-Bar -->
+        <div class="action-bar">
+            <button class="action-btn" (click)="toggleUrlEdit()" title="Bearbeiten">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                </svg>
+                Bearbeiten
+            </button>
+            <button class="action-btn" (click)="archiveResource()" title="Archivieren">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="21 8 21 21 3 21 3 8"></polyline>
+                    <rect x="1" y="3" width="22" height="5"></rect>
+                    <line x1="10" y1="12" x2="14" y2="12"></line>
+                </svg>
+                Archivieren
+            </button>
+            <button class="action-btn delete" (click)="deleteResource()" title="Löschen">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                </svg>
+                Löschen
+            </button>
+        </div>
+
+        <!-- Content -->
+        <div class="details-content">
+            <div class="section">
+                <div class="notion-notes">
+                    <label>Notizen</label>
+                    <textarea 
+                        [(ngModel)]="resource.description" 
+                        (ngModelChange)="updateResource()" 
+                        placeholder="Schreibe hier deine Notizen..."
+                        class="notion-textarea"
+                    ></textarea>
                 </div>
             </div>
 
-            <div class="url-section" *ngIf="resource.type === 'Lesezeichen'">
-                <div class="field-item">
-                    <span class="label">URL</span>
-                    <input [(ngModel)]="resource.url" (ngModelChange)="updateResource()" class="url-input" placeholder="https://...">
-                </div>
-                @if (resource.url) {
-                    <a [href]="resource.url" target="_blank" class="launch-btn">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-                            <polyline points="15 3 21 3 21 9"/>
-                            <line x1="10" y1="14" x2="21" y2="3"/>
-                        </svg>
-                        Öffnen
-                    </a>
-                }
-            </div>
-
-            <div class="notion-notes">
-                <label>Notizen</label>
-                <textarea 
-                    [(ngModel)]="resource.description" 
-                    (ngModelChange)="updateResource()" 
-                    placeholder="Schreibe hier deine Notizen wie in Notion..."
-                    class="notion-textarea"
-                ></textarea>
-            </div>
-
-            <div class="relations-section">
+            <div class="section relations-section">
                 <h3>Verknüpfungen</h3>
                 <div class="tags">
                     @for (areaId of resource.areaIds; track areaId) {

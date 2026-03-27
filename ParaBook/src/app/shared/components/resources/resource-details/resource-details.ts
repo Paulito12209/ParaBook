@@ -20,6 +20,22 @@ export class ResourceDetailsComponent {
   typeOptions: ResourceType[] = ['Lesezeichen', 'Notiz', 'SOP', 'Dokumentation', 'Ressource'];
   statusOptions: StatusResource[] = ['zu prüfen', 'in Prüfung', 'überprüft'];
 
+  /** Steuert die Sichtbarkeit des URL-Bearbeitungsfelds */
+  isEditingUrl = false;
+
+  /**
+   * Prüft, ob der Titel eine gültige URL enthält – nur dann wird "Link öffnen" angezeigt.
+   */
+  hasValidUrl(): boolean {
+    if (!this.resource?.url) return false;
+    const url = this.resource.url.trim();
+    return url.startsWith('http://') || url.startsWith('https://') || url.startsWith('www.');
+  }
+
+  toggleUrlEdit() {
+    this.isEditingUrl = !this.isEditingUrl;
+  }
+
   async updateResource() {
     if (!this.resource) return;
     
@@ -27,44 +43,36 @@ export class ResourceDetailsComponent {
       title: this.resource.title,
       type: this.resource.type,
       status: this.resource.status,
+      url: this.resource.url,
       description: this.resource.description,
       updatedAt: Date.now()
     });
   }
 
   /**
-   * Archiviert die aktuelle Ressource und schließt die Detailansicht.
+   * Archiviert die aktuelle Ressource.
    */
   async archiveResource() {
     if (!this.resource) return;
-    
-    // Status in der Datenbank aktualisieren
     await this.db.resources.update(this.resource.id, {
       isArchived: true,
       updatedAt: Date.now()
     });
-    
-    // Lokales Objekt aktualisieren
     this.resource.isArchived = true;
-    
-    // Ansicht schließen
     this.onClose();
   }
 
   /**
-   * Löscht die aktuelle Ressource permanent aus der Datenbank.
+   * Löscht die aktuelle Ressource permanent.
    */
   async deleteResource() {
     if (!this.resource) return;
-    
-    // Bestätigung (optional, aber hier direkt löschen wie bei Tasks)
     await this.db.resources.delete(this.resource.id);
-    
-    // Ansicht schließen
     this.onClose();
   }
 
   onClose() {
+    this.isEditingUrl = false;
     this.close.emit();
   }
 }

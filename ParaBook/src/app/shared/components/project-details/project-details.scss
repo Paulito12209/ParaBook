@@ -9,103 +9,138 @@
     flex-direction: column;
     height: 100%;
     background-color: var(--bg-primary);
-    transition: background-color var(--transition-normal);
 
-    .project-header {
-        background: linear-gradient(135deg, #4f46e5 0%, #1a2332 100%);
-        padding: 48px var(--panel-padding);
-        color: white;
+    /* === Zurück-Button === */
+    .back-row {
+        padding: 12px 24px;
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 6px 12px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+
+            &:hover {
+                color: var(--text-primary);
+                background: var(--bg-secondary);
+            }
+        }
+    }
+
+    /* === Glassmorphism Header (Projekt = Rot) === */
+    .glass-header {
+        background: linear-gradient(135deg, #CC312A 0%, #C0C0C0 100%);
+        padding: 40px 32px;
+        position: relative;
+        overflow: hidden;
+
+        /* Glassmorphism-Overlay */
+        &::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
 
         .header-content {
-            .project-label {
-                font-family: var(--font-family);
-                font-size: 13px;
-                color: rgba(255, 255, 255, 0.7);
+            position: relative;
+            z-index: 1;
+
+            .type-label {
+                font-size: 12px;
+                font-weight: 700;
+                color: rgba(255, 255, 255, 0.75);
                 text-transform: uppercase;
-                letter-spacing: 0.5px;
+                letter-spacing: 1.5px;
             }
 
             h1 {
-                margin: var(--section-header-gap) 0 var(--section-header-gap) 0;
-                font-family: var(--font-family);
+                margin: 8px 0;
                 font-size: 32px;
                 font-weight: 700;
+                color: white;
                 line-height: 1.2;
             }
 
             .description {
                 margin: 0;
-                font-family: var(--font-family);
-                font-size: 16px;
-                color: rgba(255, 255, 255, 0.9);
+                font-size: 15px;
+                color: rgba(255, 255, 255, 0.85);
                 max-width: 600px;
+                line-height: 1.5;
             }
         }
     }
 
+    /* Arbeitsbereich-Variante (Gelb) */
+    &.type-area .glass-header {
+        background: linear-gradient(135deg, #F9D61D 0%, #C0C0C0 100%);
+
+        .header-content {
+            .type-label { color: rgba(0, 0, 0, 0.6); }
+            h1 { color: rgba(0, 0, 0, 0.9); }
+            .description { color: rgba(0, 0, 0, 0.7); }
+        }
+    }
+
+    /* === Action-Bar === */
     .action-bar {
         display: flex;
-        padding: var(--section-header-gap) var(--panel-padding);
-        background-color: var(--bg-tertiary);
-        border-bottom: var(--divider-thickness) solid var(--border-color);
+        align-items: center;
+        gap: 4px;
+        padding: 10px 24px;
+        background: var(--bg-tertiary, #f5f5f7);
+        border-bottom: 1px solid var(--border-color);
 
         .action-btn {
             display: flex;
             align-items: center;
-            gap: var(--column-gap);
-            width: 100%;
+            gap: 6px;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            padding: 8px 14px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
 
-            .back-link {
-                display: flex;
-                align-items: center;
-                gap: var(--btn-icon-gap);
-                background: none;
-                border: none;
-                color: var(--text-secondary);
-                cursor: pointer;
-                height: var(--btn-height-sm);
-                padding: 0 var(--btn-padding-x-sm);
-                border-radius: var(--radius-btn);
-                transition: all var(--transition-fast);
-
-                &:hover {
-                    color: var(--text-primary);
-                    background-color: var(--border-color-hover);
-                }
+            &:hover {
+                background: var(--bg-secondary);
+                color: var(--text-primary);
             }
 
-            .icon-btn {
-                background: none;
-                border: none;
-                cursor: pointer;
-                padding: 8px;
-                border-radius: var(--border-radius-sm);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                color: var(--text-secondary);
-                transition: all var(--transition-fast);
-
-                &:hover {
-                    background-color: var(--border-color-hover);
-                    color: var(--accent-primary);
-                }
+            &.delete:hover {
+                background: #fee2e2;
+                color: #991b1b;
             }
         }
     }
 
+    /* === Content === */
     .content-area {
         flex: 1;
-        padding: var(--panel-padding);
+        padding: 32px;
         overflow-y: auto;
 
         .placeholder {
-            font-family: var(--font-family);
             font-size: 14px;
             color: var(--text-muted);
         }
     }
 
+    /* === Empty State === */
     .no-project {
         display: flex;
         align-items: center;
@@ -113,7 +148,6 @@
         height: 100%;
 
         p {
-            font-family: var(--font-family);
             font-size: 16px;
             color: var(--text-muted);
         }

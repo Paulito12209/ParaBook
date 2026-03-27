@@ -4,80 +4,120 @@
     height: 100%;
     background: var(--bg-primary);
 
-    .details-header {
-        padding: 32px;
-        border-bottom: 1px solid var(--border-color);
+    /* === Glassmorphism Header (Aufgaben = Lila) === */
+    .glass-header {
+        background: linear-gradient(135deg, #6366F1 0%, #C0C0C0 100%);
+        padding: 40px 32px;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
 
-        .header-main {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 20px;
+        &::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
 
-            .title {
-                margin: 0;
-                font-size: 1.8rem;
+        .header-content {
+            position: relative;
+            z-index: 1;
+
+            .type-label {
+                font-size: 12px;
                 font-weight: 700;
-                color: var(--text-primary);
+                color: rgba(255, 255, 255, 0.75);
+                text-transform: uppercase;
+                letter-spacing: 1.5px;
+            }
+
+            h1 {
+                margin: 8px 0;
+                font-size: 28px;
+                font-weight: 700;
+                color: white;
                 line-height: 1.2;
             }
 
-            .header-actions {
+            .meta-badges {
                 display: flex;
-                align-items: center;
                 gap: 8px;
-                margin-left: 16px;
+                margin-top: 8px;
 
-                .action-btn, 
-                .close-btn {
-                    background: none;
-                    border: none;
-                    color: var(--text-tertiary);
-                    cursor: pointer;
-                    padding: 8px;
-                    border-radius: 8px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    transition: all 0.2s ease;
-
-                    &:hover {
-                        background: var(--bg-secondary);
-                        color: var(--text-primary);
-                    }
+                .badge {
+                    padding: 4px 12px;
+                    border-radius: 20px;
+                    font-size: 12px;
+                    font-weight: 600;
+                    background: rgba(255, 255, 255, 0.2);
+                    color: white;
+                    text-transform: capitalize;
+                    backdrop-filter: blur(8px);
                 }
             }
         }
 
-        .meta-row {
+        .close-btn {
+            position: relative;
+            z-index: 1;
+            background: rgba(255, 255, 255, 0.15);
+            border: none;
+            color: white;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 8px;
             display: flex;
-            gap: 12px;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            backdrop-filter: blur(8px);
 
-            .status-badge, .priority-badge {
-                padding: 4px 12px;
-                border-radius: 8px;
-                font-size: 0.8rem;
-                font-weight: 600;
-                text-transform: capitalize;
-            }
-
-            .status-badge {
-                background: var(--bg-secondary);
-                color: var(--text-secondary);
-                &[data-status="erledigt"] {
-                    background: #dcfce7;
-                    color: #166534;
-                }
-            }
-
-            .priority-badge {
-                &[data-priority="hoch"] { background: #fee2e2; color: #991b1b; }
-                &[data-priority="mittel"] { background: #fef3c7; color: #92400e; }
-                &[data-priority="niedrig"] { background: #dcfce7; color: #166534; }
+            &:hover {
+                background: rgba(255, 255, 255, 0.3);
             }
         }
     }
 
+    /* === Action-Bar === */
+    .action-bar {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        padding: 10px 24px;
+        background: var(--bg-tertiary, #f5f5f7);
+        border-bottom: 1px solid var(--border-color);
+
+        .action-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            padding: 8px 14px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+
+            &:hover {
+                background: var(--bg-secondary);
+                color: var(--text-primary);
+            }
+
+            &.delete:hover {
+                background: #fee2e2;
+                color: #991b1b;
+            }
+        }
+    }
+
+    /* === Content === */
     .details-content {
         flex: 1;
         padding: 32px;
@@ -87,10 +127,12 @@
             margin-bottom: 32px;
 
             h3 {
-                font-size: 1rem;
+                font-size: 13px;
                 font-weight: 600;
+                color: var(--text-muted);
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
                 margin-bottom: 16px;
-                color: var(--text-secondary);
             }
         }
 
@@ -105,45 +147,21 @@
                 gap: 4px;
 
                 label {
-                    font-size: 0.75rem;
+                    font-size: 12px;
                     color: var(--text-tertiary);
                     font-weight: 500;
                     text-transform: uppercase;
                 }
 
                 span {
-                    font-size: 0.95rem;
+                    font-size: 14px;
                     color: var(--text-primary);
-                }
-            }
-        }
-
-        .actions-section {
-            margin-top: 48px;
-            padding-top: 32px;
-            border-top: 1px solid var(--border-color);
-
-            .delete-btn {
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                padding: 10px 16px;
-                background: #fee2e2;
-                color: #991b1b;
-                border: none;
-                border-radius: 10px;
-                font-weight: 600;
-                cursor: pointer;
-                transition: all 0.2s ease;
-
-                &:hover {
-                    background: #fecaca;
-                    color: #7f1d1d;
                 }
             }
         }
     }
 
+    /* === Empty State === */
     .empty-state {
         height: 100%;
         display: flex;
