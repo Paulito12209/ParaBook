@@ -1,52 +1,44 @@
 <div class="sidebar-container">
-  <div class="sidebar-header">
-    <div class="logo">
-      <img src="parabook-logo.png" alt="ParaBook Logo" class="logo-img">
-      <h1>ParaBook</h1>
-    </div>
-  </div>
-
+  <!-- Alle Nav-Items als eine zentrierte Gruppe -->
   <nav class="sidebar-nav">
-    <a routerLink="/dashboard" routerLinkActive="active" class="nav-item">
-      <span class="icon">🏠</span>
-      <span class="label">Hauptquartier</span>
-    </a>
-    
-    <div class="nav-section">Arbeit</div>
-    <a routerLink="/meetings" routerLinkActive="active" class="nav-item">
-      <span class="icon">🗓️</span>
-      <span class="label">Meetings</span>
-    </a>
-    <a routerLink="/tasks" routerLinkActive="active" class="nav-item">
-      <span class="icon">✓</span>
-      <span class="label">Aufgaben</span>
+    <a routerLink="/dashboard" routerLinkActive="active" class="nav-item" title="Hauptquartier">
+      <img src="parabook-logo.png" alt="ParaBook" class="logo-img">
     </a>
 
-    <div class="nav-section">Organisation</div>
-    <a routerLink="/projects" routerLinkActive="active" class="nav-item">
+    <a routerLink="/dashboard" routerLinkActive="active" class="nav-item" title="Hauptquartier">
+      <span class="icon">🏠</span>
+    </a>
+
+    <a routerLink="/meetings" routerLinkActive="active" class="nav-item" title="Meetings">
+      <span class="icon">🗓️</span>
+    </a>
+
+    <a routerLink="/tasks" routerLinkActive="active" class="nav-item" title="Aufgaben">
+      <span class="icon">✓</span>
+    </a>
+
+    <div class="nav-divider"></div>
+
+    <a routerLink="/projects" routerLinkActive="active" class="nav-item" title="Projekte">
       <span class="icon">📁</span>
-      <span class="label">Projekte</span>
     </a>
-    <a routerLink="/areas" routerLinkActive="active" class="nav-item">
+
+    <a routerLink="/areas" routerLinkActive="active" class="nav-item" title="Arbeitsbereiche">
       <span class="icon">🎯</span>
-      <span class="label">Arbeitsbereiche</span>
     </a>
-    <a routerLink="/resources" routerLinkActive="active" class="nav-item">
+
+    <a routerLink="/resources" routerLinkActive="active" class="nav-item" title="Ressourcen">
       <span class="icon">📚</span>
-      <span class="label">Ressourcen</span>
+    </a>
+
+    <div class="nav-divider"></div>
+
+    <a routerLink="/archive" routerLinkActive="active" class="nav-item" title="Archiv">
+      <span class="icon">🗄️</span>
+    </a>
+
+    <a routerLink="/system" routerLinkActive="active" class="nav-item" title="System">
+      <span class="icon">⚙️</span>
     </a>
   </nav>
-
-  <div class="sidebar-footer">
-    <nav class="sidebar-nav">
-      <a routerLink="/archive" routerLinkActive="active" class="nav-item">
-        <span class="icon">🗄️</span>
-        <span class="label">Archiv</span>
-      </a>
-      <a routerLink="/system" routerLinkActive="active" class="nav-item">
-        <span class="icon">⚙️</span>
-        <span class="label">System</span>
-      </a>
-    </nav>
-  </div>
 </div>

@@ -13,7 +13,7 @@
 
     .project-header {
         background: linear-gradient(135deg, #4f46e5 0%, #1a2332 100%);
-        padding: 48px 32px;
+        padding: 48px var(--panel-padding);
         color: white;
 
         .header-content {
@@ -26,7 +26,7 @@
             }
 
             h1 {
-                margin: 8px 0 12px 0;
+                margin: var(--section-header-gap) 0 var(--section-header-gap) 0;
                 font-family: var(--font-family);
                 font-size: 32px;
                 font-weight: 700;
@@ -45,26 +45,27 @@
 
     .action-bar {
         display: flex;
-        padding: 12px 32px;
+        padding: var(--section-header-gap) var(--panel-padding);
         background-color: var(--bg-tertiary);
-        border-bottom: 1px solid var(--border-color);
+        border-bottom: var(--divider-thickness) solid var(--border-color);
 
         .action-btn {
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: var(--column-gap);
             width: 100%;
 
             .back-link {
                 display: flex;
                 align-items: center;
-                gap: 8px;
+                gap: var(--btn-icon-gap);
                 background: none;
                 border: none;
                 color: var(--text-secondary);
                 cursor: pointer;
-                padding: 8px;
-                border-radius: var(--border-radius-sm);
+                height: var(--btn-height-sm);
+                padding: 0 var(--btn-padding-x-sm);
+                border-radius: var(--radius-btn);
                 transition: all var(--transition-fast);
 
                 &:hover {
@@ -95,7 +96,7 @@
 
     .content-area {
         flex: 1;
-        padding: 32px;
+        padding: var(--panel-padding);
         overflow-y: auto;
 
         .placeholder {

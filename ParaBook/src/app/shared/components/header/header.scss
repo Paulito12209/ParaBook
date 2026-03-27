@@ -1,130 +1,174 @@
+/* Header: 3-Spalten-Layout (Referenz-Design) */
 :host {
     display: block;
 }
 
 header {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
-    padding: 12px 32px;
+    height: var(--header-height);
+    padding: 0 var(--panel-padding);
     background-color: var(--bg-secondary);
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: var(--divider-thickness) solid var(--border-color);
     transition: all var(--transition-normal);
+    gap: var(--column-gap);
+}
+
+/* Linker Bereich: Logo (nur auf Mobile sichtbar) */
+.header-left {
+    display: flex;
+    align-items: center;
 
     .header-logo {
-        width: 32px;
-        height: 32px;
+        width: 28px;
+        height: 28px;
         object-fit: contain;
-        display: none; // Zurück auf none, da es jetzt in der Sidebar ist
+        display: none; /* Desktop: Logo ist in Sidebar */
+    }
+}
+
+/* Zentrale Suchleiste */
+.header-search {
+    display: flex;
+    align-items: center;
+    gap: var(--btn-icon-gap);
+    height: var(--btn-height-sm);
+    padding: 0 var(--btn-padding-x-md);
+    background: var(--bg-primary);
+    border: var(--divider-thickness) solid var(--border-color);
+    border-radius: var(--radius-pill);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    min-width: 240px;
+    max-width: 400px;
+    flex: 1;
+
+    .search-icon {
+        color: var(--text-muted);
+        flex-shrink: 0;
     }
 
-    .header-actions {
+    .search-text {
+        font-size: 13px;
+        color: var(--text-muted);
+        flex: 1;
+    }
+
+    .search-shortcut {
+        font-family: var(--font-family);
+        font-size: 11px;
+        color: var(--text-muted);
+        background: var(--bg-tertiary);
+        border: var(--divider-thickness) solid var(--border-color);
+        border-radius: var(--radius-btn);
+        padding: 2px 6px;
+        line-height: 1;
+    }
+
+    &:hover {
+        border-color: var(--border-color-hover);
+        box-shadow: var(--shadow-card);
+    }
+}
+
+/* Rechter Bereich: Actions */
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    .icon-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        width: var(--icon-btn-size);
+        height: var(--icon-btn-size);
+        border-radius: 50%;
         display: flex;
         align-items: center;
-        gap: 16px;
+        justify-content: center;
+        transition: all var(--transition-fast);
+        color: var(--text-muted);
 
-        .icon-btn {
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 8px;
-            border-radius: var(--border-radius-sm);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background-color var(--transition-fast);
+        &:hover {
+            background-color: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+    }
+
+    .user-profile {
+        display: flex;
+        align-items: center;
+        gap: var(--btn-icon-gap);
+        padding: 4px var(--btn-padding-x-sm) 4px 4px;
+        background-color: var(--bg-tertiary);
+        border: var(--divider-thickness) solid var(--border-color);
+        border-radius: var(--radius-pill);
+        cursor: pointer;
+        transition: all var(--transition-fast);
+        margin-left: 4px;
+
+        &:hover {
+            border-color: var(--border-color-hover);
+            box-shadow: var(--shadow-card);
+        }
+
+        .avatar {
+            width: var(--icon-btn-size);
+            height: var(--icon-btn-size);
+            border-radius: 50%;
+            overflow: hidden;
 
             img {
-                width: 20px;
-                height: 20px;
-                filter: brightness(var(--indicator-brightness, 1)); // Optionaler Filter für Icons
-            }
-
-            &:hover {
-                background-color: var(--border-color-hover);
-            }
-
-            .flag {
-                font-size: 20px;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
             }
         }
 
-        .user-profile {
+        .user-info {
             display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 6px 12px 6px 6px;
-            background-color: var(--border-color);
-            border-radius: 24px;
-            cursor: pointer;
-            transition: background-color var(--transition-fast);
+            flex-direction: column;
+            gap: 1px;
 
-            &:hover {
-                background-color: var(--border-color-hover);
+            .user-name {
+                font-family: var(--font-family);
+                font-size: 13px;
+                font-weight: 600;
+                color: var(--text-primary);
+                line-height: 1;
             }
 
-            .avatar {
-                width: 32px;
-                height: 32px;
-                border-radius: 50%;
-                overflow: hidden;
-
-                img {
-                    width: 100%;
-                    height: 100%;
-                    object-fit: cover;
-                }
-            }
-
-            .user-info {
-                display: flex;
-                flex-direction: column;
-                gap: 2px;
-
-                .user-name {
-                    font-family: var(--font-family);
-                    font-size: 14px;
-                    font-weight: 500;
-                    color: var(--text-primary);
-                    line-height: 1;
-                }
-
-                .user-role {
-                    font-family: var(--font-family);
-                    font-size: 12px;
-                    color: var(--text-secondary);
-                    line-height: 1;
-                }
+            .user-role {
+                font-family: var(--font-family);
+                font-size: 11px;
+                color: var(--text-secondary);
+                line-height: 1;
             }
         }
     }
 }
 
+/* Mobile */
 @media (max-width: 768px) {
     header {
         position: sticky;
         top: 0;
         z-index: 100;
-        justify-content: space-between;
-        /* Space between logo and remaining actions */
+    }
 
-        .header-logo {
-            display: block;
-        }
+    .header-left .header-logo {
+        display: block;
+    }
 
-        .header-actions {
+    .header-search {
+        min-width: 0;
+        .search-text { display: none; }
+        .search-shortcut { display: none; }
+    }
 
-            .icon-btn {
-                display: none;
-            }
-
-            .user-profile {
-                .user-info {
-                    display: none;
-                }
-            }
-
-            /* Ensure help/theme toggle stays visible if desired, or adjust as needed */
-        }
+    .header-actions {
+        .user-profile .user-info { display: none; }
     }
 }
