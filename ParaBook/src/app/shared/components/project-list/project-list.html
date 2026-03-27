@@ -1,30 +1,20 @@
 <!-- Project List -->
 <div class="project-list">
-    @if (showSearch) {
-    <div class="search-container">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="11" cy="11" r="8"/>
-            <path d="m21 21-4.3-4.3"/>
-        </svg>
-        <input type="text" [placeholder]="searchPlaceholder" [(ngModel)]="searchQuery" (input)="onSearch()">
-    </div>
-    }
-
-    <button class="add-project-btn" (click)="addItem()">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="10"/>
-            <line x1="12" y1="8" x2="12" y2="16"/>
-            <line x1="8" y1="12" x2="16" y2="12"/>
-        </svg>
-        {{ addButtonLabel }}
-    </button>
-
     <div class="projects">
         @for (project of filteredProjects; track project.id) {
         <div class="project-card" [class.active]="selectedProject?.id === project.id" (click)="selectProject(project)">
             <h3>{{ project.title }}</h3>
-            <p class="update-time">Updated {{ project.updatedAt }}</p>
+            <p class="update-time">Updated {{ project.updatedAt | date:'dd.MM.yyyy' }}</p>
         </div>
         }
+
+        <button class="add-project-btn" (click)="addItem()">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="12" y1="8" x2="12" y2="16"/>
+                <line x1="8" y1="12" x2="16" y2="12"/>
+            </svg>
+            {{ addButtonLabel }}
+        </button>
     </div>
 </div>
