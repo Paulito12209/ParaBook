@@ -14,12 +14,12 @@
     align-items: center;
     gap: 0.75rem;
 
-    .logo-icon {
-      width: 24px;
-      height: 24px;
-      background: linear-gradient(135deg, var(--accent-primary), var(--accent-hover));
-      border-radius: var(--border-radius-sm);
-      box-shadow: 0 0 10px var(--accent-glow);
+    .logo-img {
+      width: 32px;
+      height: 32px;
+      object-fit: contain;
+      border-radius: var(--border-radius-md);
+      overflow: hidden;
     }
 
     h1 {
