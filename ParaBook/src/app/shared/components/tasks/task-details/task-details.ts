@@ -50,4 +50,31 @@ export class TaskDetailsComponent {
       updatedAt: Date.now()
     });
   }
+
+  /* --- Subtasks Handler --- */
+  async updateSubtasks() {
+    if (!this.task) return;
+    await this.db.tasks.update(this.task.id, {
+      subtasks: this.task.subtasks,
+      updatedAt: Date.now()
+    });
+  }
+
+  async addSubtask(title: string) {
+    if (!title.trim() || !this.task) return;
+    if (!this.task.subtasks) this.task.subtasks = [];
+    
+    this.task.subtasks.push({
+      id: crypto.randomUUID(),
+      title: title.trim(),
+      isCompleted: false
+    });
+    await this.updateSubtasks();
+  }
+
+  async removeSubtask(id: string) {
+    if (!this.task || !this.task.subtasks) return;
+    this.task.subtasks = this.task.subtasks.filter(st => st.id !== id);
+    await this.updateSubtasks();
+  }
 }

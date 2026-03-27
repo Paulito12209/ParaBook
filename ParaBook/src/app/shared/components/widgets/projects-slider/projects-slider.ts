@@ -20,20 +20,22 @@ import { toSignal } from '@angular/core/rxjs-interop';
           <span>Meine Projekte</span>
         </div>
         
-        <div class="projects-carousel">
-          <div *ngFor="let project of projects()" class="project-card">
+        <div class="slider-cards" (wheel)="onWheel($event)">
+          <div *ngFor="let proj of projects()" 
+               class="project-card" 
+               (click)="openProject(proj.id)">
             <div class="card-cover">
-               <div class="cover-pattern" [style.background-color]="getProjectColor(project.id)"></div>
+               <div class="cover-pattern" [style.background-color]="getProjectColor(proj.id)"></div>
             </div>
             <div class="card-content">
-              <h3 class="title">{{ project.title }}</h3>
+              <h3 class="title">{{ proj.title }}</h3>
               
               <div class="pill-container">
-                <span *ngIf="project.areaIds && project.areaIds.length > 0" class="area-pill">
-                  {{ getAreaName(project.areaIds[0]) }}
+                <span *ngIf="proj.areaIds && proj.areaIds.length > 0" class="area-pill">
+                  {{ getAreaName(proj.areaIds[0]) }}
                 </span>
                 
-                <button *ngIf="!project.areaIds || project.areaIds.length === 0" class="link-area-btn">
+                <button *ngIf="!proj.areaIds || proj.areaIds.length === 0" class="link-area-btn">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="btn-icon">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                   </svg>
@@ -126,11 +128,18 @@ import { toSignal } from '@angular/core/rxjs-interop';
       width: 1.25rem; 
       height: 1.25rem; 
     }
-    .projects-carousel {
+    .slider-cards {
       display: flex;
-      gap: 1.25rem;
+      gap: 16px;
       overflow-x: auto;
-      padding-bottom: 1rem;
+      padding: 8px 4px 16px 4px;
+      margin: -8px -4px 0 -4px;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      
+      &::-webkit-scrollbar {
+        display: none;
+      }
     }
     .project-card {
       min-width: 220px;
@@ -141,7 +150,11 @@ import { toSignal } from '@angular/core/rxjs-interop';
       border: 1px solid rgba(0,0,0,0.05);
       transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
       cursor: pointer;
-      &:hover { transform: translateY(-4px) scale(1.02); box-shadow: 0 10px 25px rgba(0,0,0,0.06); }
+      &:hover {
+        transform: scale(1.02);
+        box-shadow: 0 12px 24px rgba(0,0,0,0.06);
+        border-color: rgba(var(--text-secondary-rgb), 0.15);
+      }
     }
     .card-cover {
       height: 100px;
@@ -196,9 +209,23 @@ export class ProjectsSliderComponent {
     { initialValue: [] as AreaEntity[] }
   ) as Signal<AreaEntity[]>;
 
+  selectedProjectId: string | undefined;
+
   getAreaName(areaId: string): string {
     const area = this.areas().find(a => a.id === areaId);
     return area ? area.title : 'Kein Bereich';
+  }
+
+  openProject(projectId: string) {
+    this.selectedProjectId = projectId;
+  }
+
+  onWheel(event: WheelEvent) {
+    const el = event.currentTarget as HTMLElement;
+    if (Math.abs(event.deltaY) > Math.abs(event.deltaX)) {
+      event.preventDefault();
+      el.scrollLeft += event.deltaY;
+    }
   }
 
   getProjectColor(id: string): string {

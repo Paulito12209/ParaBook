@@ -17,7 +17,7 @@ import { delay } from 'rxjs/operators';
         <span>Kürzlich besucht</span>
       </div>
       
-      <div class="items-carousel">
+      <div class="items-carousel" (wheel)="onWheel($event)">
         <!-- Verwendung der AsyncPipe zur Vermeidung von NG0100 Fehlern -->
         <ng-container *ngIf="items$ | async as recentItems">
           <div *ngFor="let item of recentItems" class="item-card">
@@ -77,11 +77,14 @@ import { delay } from 'rxjs/operators';
       display: flex;
       gap: 1rem;
       overflow-x: auto;
-      padding-bottom: 0.5rem;
-      scrollbar-width: thin;
+      padding: 4px 4px 12px 4px;
+      margin: -4px -4px 0 -4px;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
       
-      &::-webkit-scrollbar { height: 4px; }
-      &::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 10px; }
+      &::-webkit-scrollbar {
+        display: none;
+      }
     }
     .item-card {
       width: 160px;
@@ -94,7 +97,7 @@ import { delay } from 'rxjs/operators';
       transition: transform 0.2s;
       cursor: pointer;
       
-      &:hover { transform: translateY(-2px); }
+      &:hover { transform: scale(1.02); }
     }
     .card-cover {
       height: 80px;
@@ -174,5 +177,13 @@ export class RecentItemsComponent {
     if (hours < 24) return `vor ${hours}h`;
     const days = Math.floor(hours / 24);
     return `vor ${days}d`;
+  }
+
+  onWheel(event: WheelEvent) {
+    const el = event.currentTarget as HTMLElement;
+    if (Math.abs(event.deltaY) > Math.abs(event.deltaX)) {
+      event.preventDefault();
+      el.scrollLeft += event.deltaY;
+    }
   }
 }

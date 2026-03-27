@@ -161,6 +161,152 @@
                 }
             }
         }
+
+        .subtasks-section {
+            .subtasks-list {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+                margin-bottom: 12px;
+
+                .subtask-item {
+                    display: flex;
+                    align-items: center;
+                    gap: 12px;
+                    padding: 8px 12px;
+                    background: var(--bg-tertiary);
+                    border-radius: 8px;
+                    border: 1px solid transparent;
+                    transition: all 0.2s ease;
+
+                    &:hover {
+                        background: var(--bg-secondary);
+                        border-color: var(--border-color);
+                        .remove-btn { opacity: 1; }
+                    }
+
+                    &.completed {
+                        opacity: 0.6;
+                        .subtask-title-input { text-decoration: line-through; }
+                    }
+
+                    .custom-checkbox {
+                        position: relative;
+                        width: 20px;
+                        height: 20px;
+                        cursor: pointer;
+
+                        input {
+                            position: absolute;
+                            opacity: 0;
+                            cursor: pointer;
+                            height: 0;
+                            width: 0;
+
+                            &:checked ~ .checkmark {
+                                background-color: var(--text-primary);
+                                border-color: var(--text-primary);
+                            }
+
+                            &:checked ~ .checkmark:after {
+                                display: block;
+                            }
+                        }
+
+                        .checkmark {
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            height: 20px;
+                            width: 20px;
+                            border: 2px solid var(--text-muted);
+                            border-radius: 6px;
+                            background-color: transparent;
+                            transition: all 0.2s ease;
+
+                            &:after {
+                                content: "";
+                                position: absolute;
+                                display: none;
+                                left: 6px;
+                                top: 2px;
+                                width: 5px;
+                                height: 10px;
+                                border: solid var(--bg-primary);
+                                border-width: 0 2px 2px 0;
+                                transform: rotate(45deg);
+                            }
+                        }
+                    }
+
+                    .subtask-title-input {
+                        flex: 1;
+                        background: transparent;
+                        border: none;
+                        font-family: inherit;
+                        font-size: 14px;
+                        color: var(--text-primary);
+                        outline: none;
+                        padding: 2px 0;
+                    }
+
+                    .remove-btn {
+                        background: none;
+                        border: none;
+                        color: var(--text-muted);
+                        cursor: pointer;
+                        opacity: 0;
+                        transition: all 0.2s ease;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        padding: 4px;
+                        border-radius: 4px;
+
+                        &:hover {
+                            color: #ef4444;
+                            background: rgba(239, 68, 68, 0.1);
+                        }
+                    }
+                }
+            }
+
+            .add-subtask-row {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                padding: 10px 12px;
+                background: transparent;
+                border: 1px dashed var(--border-color);
+                border-radius: 8px;
+                color: var(--text-muted);
+                transition: all 0.2s ease;
+
+                &:focus-within {
+                    border-color: var(--text-primary);
+                    color: var(--text-primary);
+                    background: var(--bg-tertiary);
+                }
+
+                .add-icon {
+                    opacity: 0.7;
+                }
+
+                .add-subtask-input {
+                    flex: 1;
+                    background: transparent;
+                    border: none;
+                    outline: none;
+                    font-family: inherit;
+                    font-size: 14px;
+                    color: var(--text-primary);
+
+                    &::placeholder {
+                        color: var(--text-muted);
+                    }
+                }
+            }
+        }
     }
 
     /* === Empty State === */

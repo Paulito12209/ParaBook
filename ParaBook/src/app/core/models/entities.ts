@@ -27,6 +27,7 @@ export interface TaskEntity extends BaseEntity {
   assignee?: string;
   dueDate?: number;
   type: TaskType;
+  subtasks?: { id: string; title: string; isCompleted: boolean }[];
 
   // Relationen (IDs)
   projectId?: string; 
