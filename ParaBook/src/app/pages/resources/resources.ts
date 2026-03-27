@@ -48,8 +48,11 @@ export class Resources implements OnInit {
     document.body.style.cursor = 'col-resize';
   }
 
+  /**
+   * Öffnet den Quick-Capture-Dialog für eine neue Ressource.
+   */
   onAddResource() {
-    this.shortcutService.toggleSearchModal();
+    this.shortcutService.toggleCaptureDialog('resource');
   }
 
   async ngOnInit() {

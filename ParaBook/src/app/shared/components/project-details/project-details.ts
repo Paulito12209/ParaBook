@@ -1,5 +1,6 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { DatabaseService } from '../../../core/database/db.service';
 
 export interface ProjectDetailsItem {
   id: string | number;
@@ -19,7 +20,25 @@ export class SharedProjectDetails {
   @Input() project: ProjectDetailsItem | null = null;
   @Output() backToProjectList = new EventEmitter<void>();
 
+  private db = inject(DatabaseService);
+
   goBack() {
     this.backToProjectList.emit();
+  }
+
+  /**
+   * Archiviert das aktuelle Projekt.
+   */
+  async archiveProject() {
+    if (!this.project) return;
+    
+    // In der Datenbank als archiviert markieren
+    await (this.db as any).projects.update(this.project.id, {
+      isArchived: true,
+      updatedAt: Date.now()
+    });
+    
+    // Zurück zur Liste navigieren
+    this.goBack();
   }
 }

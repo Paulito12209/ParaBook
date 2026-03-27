@@ -54,8 +54,11 @@ export class Meetings {
     this.selectedMeeting = meeting;
   }
 
+  /**
+   * Öffnet den Quick-Capture-Dialog für ein neues Meeting.
+   */
   onAddMeeting() {
-    this.shortcutService.toggleSearchModal();
+    this.shortcutService.toggleCaptureDialog('meeting');
   }
 
   async onDeleteMeeting(id: string) {

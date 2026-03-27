@@ -1,6 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AppStateService, VisitedPage } from '../../../../core/services/app-state.service';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { delay } from 'rxjs/operators';
 
 @Component({
   selector: 'app-recent-items',
@@ -16,23 +18,24 @@ import { AppStateService, VisitedPage } from '../../../../core/services/app-stat
       </div>
       
       <div class="items-carousel">
-        <div *ngFor="let item of items()" class="item-card">
-          <div class="card-cover">
-            <!-- IconPlaceholder oder Cover -->
-            <div class="icon-placeholder">
-              <span class="type-icon">{{ getTypeIcon(item.type) }}</span>
+        <!-- Verwendung der AsyncPipe zur Vermeidung von NG0100 Fehlern -->
+        <ng-container *ngIf="items$ | async as recentItems">
+          <div *ngFor="let item of recentItems" class="item-card">
+            <div class="card-cover">
+              <div class="icon-placeholder">
+                <span class="type-icon">{{ getTypeIcon(item.type) }}</span>
+              </div>
+            </div>
+            <div class="card-content">
+              <h3 class="title">{{ item.title }}</h3>
+              <span class="timestamp">{{ formatTime(item.timestamp) }}</span>
             </div>
           </div>
-          <div class="card-content">
-            <h3 class="title">{{ item.title }}</h3>
-            <span class="timestamp">{{ formatTime(item.timestamp) }}</span>
+          
+          <div *ngIf="recentItems.length === 0" class="empty-state">
+            Keine kürzlich besuchten Seiten vorhanden.
           </div>
-        </div>
-        
-        <!-- Placeholder wenn leer -->
-        <div *ngIf="items().length === 0" class="empty-state">
-          Keine kürzlich besuchten Seiten vorhanden.
-        </div>
+        </ng-container>
       </div>
     </div>
   `,
@@ -118,7 +121,12 @@ import { AppStateService, VisitedPage } from '../../../../core/services/app-stat
 })
 export class RecentItemsComponent {
   private appState = inject(AppStateService);
-  items = this.appState.lastVisitedPages;
+  
+  /**
+   * Observable der zuletzt besuchten Seiten.
+   * delay(0) verhindert 'ExpressionChangedAfterItHasBeenCheckedError' (NG0100).
+   */
+  items$ = toObservable(this.appState.lastVisitedPages).pipe(delay(0));
 
   getTypeIcon(type: string): string {
     switch(type) {

@@ -7,7 +7,10 @@
             <p class="update-time">Updated {{ project.updatedAt | date:'dd.MM.yyyy' }}</p>
         </div>
         }
+    </div>
 
+    <!-- Footer mit Hinzufügen-Button (ausblendbar) -->
+    <div class="list-footer" *ngIf="showAddButton">
         <button class="add-project-btn" (click)="addItem()">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <circle cx="12" cy="12" r="10"/>

@@ -20,7 +20,7 @@ export class QuickCapture {
   
   isOpen = this.shortcutService.isCaptureDialogOpen;
   content = '';
-  selectedType: 'task' | 'project' | 'area' | 'resource' | null = null;
+  selectedType: 'task' | 'project' | 'area' | 'resource' | 'meeting' | null = null;
 
   constructor() {
     effect(() => {
@@ -32,6 +32,9 @@ export class QuickCapture {
     });
   }
 
+  /**
+   * Prüft, ob der Text eine URL ist.
+   */
   isUrl(text: string): boolean {
     const pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
       '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
@@ -50,7 +53,7 @@ export class QuickCapture {
     }
   }
 
-  setType(type: 'task' | 'project' | 'area' | 'resource') {
+  setType(type: 'task' | 'project' | 'area' | 'resource' | 'meeting') {
     this.selectedType = type;
   }
 
@@ -64,6 +67,9 @@ export class QuickCapture {
     this.selectedType = null;
   }
 
+  /**
+   * Speichert den neuen Eintrag in der Datenbank.
+   */
   async save() {
     if (!this.content.trim()) return;
     const type = this.selectedType || 'task'; // Default auf Task wenn nichts gewählt
@@ -90,6 +96,23 @@ export class QuickCapture {
         assignee: 'Paul', participants: [],
         categories: [], targetGroups: [], createdAt: now, updatedAt: now,
         areaIds: [], projectIds: [], taskIds: [], meetingIds: []
+      });
+    } else if (type === 'meeting') {
+      await this.db.meetings.add({
+        id, 
+        title: this.content.trim(), 
+        scheduledFor: now, // Nutzt den aktuellen Zeitstempel
+        status: 'geplant',
+        topics: [],
+        location: 'Noch nicht festgelegt', 
+        participants: [], 
+        isArchived: false,
+        createdAt: now, 
+        updatedAt: now,
+        taskIds: [], 
+        resourceIds: [], 
+        projectIds: [], 
+        areaIds: []
       });
     }
 

@@ -32,6 +32,25 @@ export class ResourceDetailsComponent {
     });
   }
 
+  /**
+   * Archiviert die aktuelle Ressource und schließt die Detailansicht.
+   */
+  async archiveResource() {
+    if (!this.resource) return;
+    
+    // Status in der Datenbank aktualisieren
+    await this.db.resources.update(this.resource.id, {
+      isArchived: true,
+      updatedAt: Date.now()
+    });
+    
+    // Lokales Objekt aktualisieren
+    this.resource.isArchived = true;
+    
+    // Ansicht schließen
+    this.onClose();
+  }
+
   onClose() {
     this.close.emit();
   }

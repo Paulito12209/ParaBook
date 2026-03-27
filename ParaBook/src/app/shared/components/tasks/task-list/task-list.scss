@@ -6,13 +6,16 @@
     background: var(--bg-secondary);
     border-right: 1px solid var(--border-color);
 
+    /**
+     * Scrollbarer Bereich für die Aufgaben-Karten.
+     */
     .list-items {
         display: flex;
         flex-direction: column;
         gap: 8px;
         overflow-y: auto;
         flex: 1;
-        padding-bottom: 24px;
+        padding-right: 4px; // Platz für Scrollbar
 
         .task-card {
             display: flex;
@@ -89,6 +92,22 @@
             }
         }
 
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-tertiary);
+            font-size: 0.9rem;
+        }
+    }
+
+    /**
+     * Footer-Bereich mit fixiertem Hinzufügen-Button.
+     */
+    .list-footer {
+        padding-top: 16px;
+        margin-top: auto;
+        z-index: 10;
+
         .add-task-btn {
             display: flex;
             align-items: center;
@@ -96,7 +115,6 @@
             gap: 10px;
             width: 100%;
             min-height: 50px;
-            margin-top: 16px;
             background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
             color: white;
             border: none;
@@ -113,14 +131,11 @@
                 background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%);
             }
 
-            svg { opacity: 0.9; }
-        }
+            &:active {
+                transform: translateY(0);
+            }
 
-        .empty-state {
-            text-align: center;
-            padding: 40px 20px;
-            color: var(--text-tertiary);
-            font-size: 0.9rem;
+            svg { opacity: 0.9; }
         }
     }
 }

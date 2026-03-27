@@ -20,6 +20,10 @@ export class SharedProjectList implements OnInit {
   @Input() searchPlaceholder: string = 'Search projects...';
   @Input() addButtonLabel: string = 'Add New Project';
   @Input() showSearch: boolean = true;
+  /**
+   * Steuert die Sichtbarkeit des "Add"-Buttons (im Archiv ausgeblendet).
+   */
+  @Input() showAddButton: boolean = true;
   @Output() projectSelected = new EventEmitter<ProjectListItem>();
   @Output() itemAdded = new EventEmitter<void>();
 
