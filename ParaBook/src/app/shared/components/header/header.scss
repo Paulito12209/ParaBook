@@ -76,18 +76,6 @@ header {
             border-top-left-radius: 20px;
             border-top-right-radius: 20px;
         }
-
-        .name {
-            font-weight: 600;
-        }
-
-        .role {
-            color: var(--text-muted);
-            font-weight: 400;
-            border-left: 1px solid var(--border-color);
-            padding-left: 6px;
-        }
-
         .chevron {
             color: var(--text-muted);
             margin-left: 2px;
@@ -169,7 +157,7 @@ header {
     justify-content: center; // Inhalte zentrieren
     gap: var(--btn-icon-gap);
     height: 48px;
-    padding: 0 var(--btn-padding-x-lg);
+    padding: 0 12px;
     background: var(--bg-primary);
     border: var(--divider-thickness) solid var(--border-color);
     border-radius: var(--radius-pill);
@@ -195,9 +183,11 @@ header {
         color: var(--text-muted);
         background: var(--bg-tertiary);
         border: var(--divider-thickness) solid var(--border-color);
-        border-radius: var(--radius-btn);
-        padding: 2px 6px;
-        line-height: 1;
+        border-radius: var(--radius-pill);
+        height: 24px;
+        display: flex;
+        align-items: center;
+        padding: 0 8px;
     }
 
     &:hover {
@@ -218,25 +208,6 @@ header {
     box-shadow: var(--shadow-card);
     border: var(--divider-thickness) solid var(--border-color);
     z-index: 1;
-
-    .icon-btn {
-        background: none;
-        border: none;
-        cursor: pointer;
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all var(--transition-fast);
-        color: var(--text-muted);
-
-        &:hover {
-            background-color: var(--bg-secondary);
-            color: var(--text-primary);
-        }
-    }
 
     /* Das Profil-Badge ist nun in der Container-Pille */
     .user-profile {

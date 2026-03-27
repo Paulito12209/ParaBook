@@ -112,7 +112,8 @@
         </div>
 
         <!-- Subtasks Panel (Side Sheet) -->
-        <div class="subtasks-panel" [class.open]="showSubtasksPanel">
+        <div class="subtasks-panel" [class.open]="showSubtasksPanel" [style.width.px]="subtasksPanelWidth">
+            <div class="resize-handle left" (mousedown)="startResizingSubtasks($event)"></div>
             <div class="panel-header">
                 <h3>Unteraufgaben</h3>
                 <button class="close-btn" (click)="toggleSubtasksPanel()">

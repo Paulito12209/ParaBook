@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TaskEntity } from '../../../../core/models/entities';
@@ -18,6 +18,9 @@ export class TaskDetailsComponent {
 
   showPropertiesDialog = false;
   showSubtasksPanel = false;
+  
+  isResizingSubtasks = false;
+  subtasksPanelWidth = 400; // Standardbreite
 
   private db = inject(DatabaseService);
 
@@ -107,5 +110,29 @@ export class TaskDetailsComponent {
 
   toggleSubtasksPanel() {
     this.showSubtasksPanel = !this.showSubtasksPanel;
+  }
+
+  /* --- Resizing Handler für Subtasks Panel --- */
+  @HostListener('document:mousemove', ['$event'])
+  onMouseMove(event: MouseEvent) {
+    if (!this.isResizingSubtasks) return;
+    // Da das Panel rechts klebt, ist die Breite: Fensterbreite - Maus-X-Position
+    // Wir setzen Grenzen z.B. min 300px, max 800px.
+    const newWidth = Math.max(300, Math.min(800, window.innerWidth - event.clientX));
+    this.subtasksPanelWidth = newWidth;
+  }
+
+  @HostListener('document:mouseup')
+  onMouseUp() {
+    if (this.isResizingSubtasks) {
+        this.isResizingSubtasks = false;
+        document.body.style.cursor = 'default';
+    }
+  }
+
+  startResizingSubtasks(event: MouseEvent) {
+    event.preventDefault();
+    this.isResizingSubtasks = true;
+    document.body.style.cursor = 'col-resize';
   }
 }
