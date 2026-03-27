@@ -1,10 +1,16 @@
 <div class="resources-page split-view">
-    <div class="list-col">
+    <div class="list-col" [style.width.px]="appState.globalSidebarWidth()">
         <app-resource-list 
             [resources]="allResources()" 
-            (resourceSelected)="onResourceSelected($event)">
+            (resourceSelected)="onResourceSelected($event)"
+            (addResource)="onAddResource()">
         </app-resource-list>
     </div>
+
+    <div class="resize-handle" (mousedown)="startResizing($event)"></div>
+
+
+
     <div class="details-col" [class.visible]="selectedResource()">
         <app-resource-details 
             [resource]="selectedResource()" 

@@ -1,19 +1,20 @@
 <!-- Project List -->
 <div class="project-list">
     <div class="search-container">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2" />
-            <path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/>
+            <path d="m21 21-4.3-4.3"/>
         </svg>
-        <input type="text" placeholder="Search projects..." [(ngModel)]="searchQuery" (input)="onSearch()">
+        <input type="text" [placeholder]="searchPlaceholder" [(ngModel)]="searchQuery" (input)="onSearch()">
     </div>
 
-    <button class="add-project-btn" (click)="addProject()">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" />
-            <path d="M12 8v8M8 12h8" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+    <button class="add-project-btn" (click)="addItem()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="8" x2="12" y2="16"/>
+            <line x1="8" y1="12" x2="16" y2="12"/>
         </svg>
-        Add New Project
+        {{ addButtonLabel }}
     </button>
 
     <div class="projects">

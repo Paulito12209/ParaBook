@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ResourceListComponent } from '../../shared/components/resources/resource-list/resource-list';
 import { ResourceDetailsComponent } from '../../shared/components/resources/resource-details/resource-details';
@@ -6,7 +6,7 @@ import { ResourceEntity } from '../../core/models/entities';
 import { DatabaseService } from '../../core/database/db.service';
 import { MockDataService } from '../../core/services/mock-data.service';
 import { AppStateService } from '../../core/services/app-state.service';
-import { from } from 'rxjs';
+import { ShortcutService } from '../../core/services/shortcut.service';
 
 @Component({
   selector: 'app-resources',
@@ -22,6 +22,35 @@ export class Resources implements OnInit {
 
   allResources = signal<ResourceEntity[]>([]);
   selectedResource = signal<ResourceEntity | null>(null);
+
+  isResizing = false;
+
+  private shortcutService = inject(ShortcutService);
+
+  @HostListener('document:mousemove', ['$event'])
+  onMouseMove(event: MouseEvent) {
+    if (!this.isResizing) return;
+    
+    // Minimal 400px
+    const newWidth = Math.max(400, event.clientX);
+    this.appState.setGlobalSidebarWidth(newWidth);
+  }
+
+  @HostListener('document:mouseup')
+  onMouseUp() {
+    this.isResizing = false;
+    document.body.style.cursor = 'default';
+  }
+
+  startResizing(event: MouseEvent) {
+    event.preventDefault();
+    this.isResizing = true;
+    document.body.style.cursor = 'col-resize';
+  }
+
+  onAddResource() {
+    this.shortcutService.toggleSearchModal();
+  }
 
   async ngOnInit() {
     await this.loadResources();

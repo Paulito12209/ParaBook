@@ -1,11 +1,19 @@
-<div class="projects-page">
-  <app-shared-project-list 
-    [projects]="projectsList()" 
-    (projectSelected)="onProjectSelected($event)">
-  </app-shared-project-list>
-  
-  <app-shared-project-details 
-    [project]="selectedProject"
-    (backToProjectList)="selectedProjectId = null">
-  </app-shared-project-details>
+<div class="projects-page split-view">
+    <div class="list-col" [style.width.px]="appState.globalSidebarWidth()">
+        <app-shared-project-list 
+            [searchPlaceholder]="'Search projects...'" 
+            [addButtonLabel]="'Add New Project'"
+            (projectSelected)="onProjectSelected($event)"
+            (itemAdded)="onAddItem()">
+        </app-shared-project-list>
+    </div>
+
+    <div class="resize-handle" (mousedown)="startResizing($event)"></div>
+
+    <div class="details-col" [class.visible]="selectedProjectId">
+        <app-shared-project-details 
+            [project]="selectedProject" 
+            (backToProjectList)="selectedProjectId = null">
+        </app-shared-project-details>
+    </div>
 </div>

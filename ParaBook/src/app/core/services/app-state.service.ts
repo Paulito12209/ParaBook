@@ -17,7 +17,8 @@ export class AppStateService {
   favoriteProjectId = signal<string | null>(this.loadFromStorage('favoriteProjectId', null));
   lastOpenedProjectId = signal<string | null>(this.loadFromStorage('lastOpenedProjectId', null));
   lastActiveWorkspaceId = signal<string | null>(this.loadFromStorage('lastActiveWorkspaceId', null));
-  globalAssigneeFilter = signal<string | null>(this.loadFromStorage('globalAssigneeFilter', 'Paul'));
+  globalRoleFilter = signal<'all' | 'assignee' | 'participant'>(this.loadFromStorage('globalRoleFilter', 'assignee'));
+  globalSidebarWidth = signal<number>(this.loadFromStorage('globalSidebarWidth', 400));
 
   constructor() {
     // Effekte zur Persistierung im LocalStorage
@@ -34,13 +35,20 @@ export class AppStateService {
       localStorage.setItem('parabook_lastActiveWorkspaceId', JSON.stringify(this.lastActiveWorkspaceId()));
     });
     effect(() => {
-      localStorage.setItem('parabook_globalAssigneeFilter', JSON.stringify(this.globalAssigneeFilter()));
+      localStorage.setItem('parabook_globalRoleFilter', JSON.stringify(this.globalRoleFilter()));
+    });
+    effect(() => {
+      localStorage.setItem('parabook_globalSidebarWidth', JSON.stringify(this.globalSidebarWidth()));
     });
   }
 
   // Hilfsmethoden zum Setzen des States
-  setGlobalAssignee(assignee: string | null) {
-      this.globalAssigneeFilter.set(assignee);
+  setGlobalRole(role: 'all' | 'assignee' | 'participant') {
+      this.globalRoleFilter.set(role);
+  }
+
+  setGlobalSidebarWidth(width: number) {
+      this.globalSidebarWidth.set(width);
   }
 
   trackPageVisit(page: VisitedPage) {

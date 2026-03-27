@@ -1,22 +1,23 @@
-import { Component, inject, Signal, computed } from '@angular/core';
+import { Component, inject, Signal, computed, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { DatabaseService } from '../../core/database/db.service';
 import { ProjectEntity } from '../../core/models/entities';
 import { liveQuery } from 'dexie';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { SharedProjectList, ProjectListItem } from '../../shared/components/project-list/project-list';
 import { SharedProjectDetails, ProjectDetailsItem } from '../../shared/components/project-details/project-details';
+import { AppStateService } from '../../core/services/app-state.service';
 
 @Component({
   selector: 'app-projects',
   standalone: true,
-  imports: [CommonModule, FormsModule, SharedProjectList, SharedProjectDetails],
+  imports: [CommonModule, SharedProjectList, SharedProjectDetails],
   templateUrl: './projects.html',
   styleUrl: './projects.scss'
 })
 export class Projects {
   private db = inject(DatabaseService);
+  appState = inject(AppStateService);
 
   // Roh-Daten von Dexie
   rawProjects = toSignal(
@@ -35,6 +36,26 @@ export class Projects {
   });
 
   selectedProjectId: string | number | null = null;
+  isResizing = false;
+
+  @HostListener('document:mousemove', ['$event'])
+  onMouseMove(event: MouseEvent) {
+    if (!this.isResizing) return;
+    const newWidth = Math.max(400, event.clientX);
+    this.appState.setGlobalSidebarWidth(newWidth);
+  }
+
+  @HostListener('document:mouseup')
+  onMouseUp() {
+    this.isResizing = false;
+    document.body.style.cursor = 'default';
+  }
+
+  startResizing(event: MouseEvent) {
+    event.preventDefault();
+    this.isResizing = true;
+    document.body.style.cursor = 'col-resize';
+  }
 
   onProjectSelected(project: ProjectListItem) {
     this.selectedProjectId = project.id;
@@ -59,4 +80,23 @@ export class Projects {
 
   // Die addProject Logik bleibt gleich, wird aber evtl. von der Shared-Komponente getriggert oder hier behalten
   // Für das Refactoring nutzen wir vorerst die Shared-Listen-Logik zum Anzeigen.
+  onAddItem() {
+      const newId = crypto.randomUUID();
+      this.db.projects.add({
+          id: newId,
+          title: 'Neues Projekt',
+          status: 'geplant',
+          priority: 'mittel',
+          createdAt: Date.now(),
+          updatedAt: Date.now(),
+          isArchived: false,
+          isFavorite: false,
+          taskIds: [],
+          resourceIds: [],
+          areaIds: [],
+          meetingIds: [],
+          bookmarkIds: [],
+          participants: []
+      });
+  }
 }

@@ -14,34 +14,41 @@ import { AppStateService } from '../../../../core/services/app-state.service';
 export class ResourceListComponent {
   @Input() resources: ResourceEntity[] = [];
   @Output() resourceSelected = new EventEmitter<ResourceEntity>();
+  @Output() addResource = new EventEmitter<void>();
 
   appState = inject(AppStateService);
-
-  searchQuery = '';
-  selectedCategoryId: ResourceType | 'Alle' = 'Alle';
   selectedResourceId: string | null = null;
+  selectedCategoryId: string = 'Alle';
 
-  categories: (ResourceType | 'Alle')[] = ['Alle', 'SOP', 'Notiz', 'Lesezeichen', 'Dokumentation', 'Ressource'];
+  categories = ['Alle', 'SOP', 'Notiz', 'Lesezeichen', 'Dokumentation', 'Ressource'];
 
   get filteredResources(): ResourceEntity[] {
-    const query = this.searchQuery.toLowerCase();
-    const assigneeFilter = this.appState.globalAssigneeFilter();
+    const roleFilter = this.appState.globalRoleFilter();
 
     return this.resources.filter(res => {
-      const matchesSearch = res.title.toLowerCase().includes(query);
       const matchesCategory = this.selectedCategoryId === 'Alle' || res.type === this.selectedCategoryId;
-      const matchesAssignee = assigneeFilter === 'Alle' || res.assignee === assigneeFilter;
       
-      return matchesSearch && matchesCategory && matchesAssignee;
+      let matchesRole = true;
+      if (roleFilter === 'assignee') {
+        matchesRole = res.assignee === 'Paul';
+      } else if (roleFilter === 'participant') {
+        matchesRole = res.participants.includes('Paul');
+      }
+      
+      return matchesCategory && matchesRole;
     });
   }
 
-  selectCategory(cat: ResourceType | 'Alle') {
+  selectCategory(cat: string) {
     this.selectedCategoryId = cat;
   }
 
   selectResource(res: ResourceEntity) {
     this.selectedResourceId = res.id;
     this.resourceSelected.emit(res);
+  }
+
+  onAddResource() {
+    this.addResource.emit();
   }
 }

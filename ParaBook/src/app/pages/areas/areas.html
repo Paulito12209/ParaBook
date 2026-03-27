@@ -1,5 +1,19 @@
-<!-- Areas Page -->
-<div class="areas-page">
-    <app-shared-project-list (projectSelected)="onProjectSelected($event)"></app-shared-project-list>
-    <app-shared-project-details [project]="selectedProject" (backToProjectList)="selectedProject = null"></app-shared-project-details>
+<div class="areas-page split-view">
+    <div class="list-col" [style.width.px]="appState.globalSidebarWidth()">
+        <app-shared-project-list 
+            [searchPlaceholder]="'Search areas...'" 
+            [addButtonLabel]="'Add New Area'"
+            (projectSelected)="onProjectSelected($event)"
+            (itemAdded)="onAddItem()">
+        </app-shared-project-list>
+    </div>
+
+    <div class="resize-handle" (mousedown)="startResizing($event)"></div>
+
+    <div class="details-col" [class.visible]="selectedAreaId">
+        <app-shared-project-details 
+            [project]="selectedProject" 
+            (backToProjectList)="selectedAreaId = null">
+        </app-shared-project-details>
+    </div>
 </div>

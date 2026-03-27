@@ -17,7 +17,10 @@ export interface ProjectListItem {
 })
 export class SharedProjectList implements OnInit {
   @Input() projects: ProjectListItem[] = [];
+  @Input() searchPlaceholder: string = 'Search projects...';
+  @Input() addButtonLabel: string = 'Add New Project';
   @Output() projectSelected = new EventEmitter<ProjectListItem>();
+  @Output() itemAdded = new EventEmitter<void>();
 
   searchQuery = '';
   selectedProject: ProjectListItem | null = null;
@@ -33,19 +36,12 @@ export class SharedProjectList implements OnInit {
   onSearch() {
     const query = this.searchQuery.toLowerCase();
     this.filteredProjects = this.projects.filter(project =>
-      project.title.toLowerCase().includes(query)
+      project.title.toLowerCase()?.includes(query)
     );
   }
 
-  addProject() {
-    const newProject: ProjectListItem = {
-      id: crypto.randomUUID(),
-      title: `Neues Projekt`,
-      updatedAt: Date.now()
-    };
-
-    this.projects.unshift(newProject);
-    this.onSearch();
+  addItem() {
+    this.itemAdded.emit();
   }
 
   selectProject(project: ProjectListItem) {

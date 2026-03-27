@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, HostListener, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 import { ShortcutService } from '../../../core/services/shortcut.service';
@@ -16,12 +16,20 @@ import { filter } from 'rxjs/operators';
 export class Header {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
+  private el = inject(ElementRef);
 
   private shortcutService = inject(ShortcutService);
   appState = inject(AppStateService);
 
   pageTitle = signal('');
   isAssigneeDropdownOpen = false;
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    if (!this.el.nativeElement.contains(event.target)) {
+      this.isAssigneeDropdownOpen = false;
+    }
+  }
 
   constructor() {
     this.router.events.pipe(
@@ -40,13 +48,14 @@ export class Header {
     this.shortcutService.toggleSearchModal();
   }
 
-  toggleAssigneeDropdown() {
+  toggleAssigneeDropdown(event: Event) {
+    event.stopPropagation();
     this.isAssigneeDropdownOpen = !this.isAssigneeDropdownOpen;
   }
 
-  selectAssignee(assignee: string, event: Event) {
+  selectRole(role: 'all' | 'assignee' | 'participant', event: Event) {
     event.stopPropagation();
-    this.appState.setGlobalAssignee(assignee);
+    this.appState.setGlobalRole(role);
     this.isAssigneeDropdownOpen = false;
   }
 }

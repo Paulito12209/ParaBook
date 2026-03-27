@@ -1,11 +1,12 @@
 <div class="resource-list">
-    <div class="search-container">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="11" cy="11" r="8"/>
-            <path d="m21 21-4.3-4.3"/>
+    <button class="add-resource-btn" (click)="onAddResource()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="8" x2="12" y2="16"/>
+            <line x1="8" y1="12" x2="16" y2="12"/>
         </svg>
-        <input type="text" placeholder="Suchen..." [(ngModel)]="searchQuery">
-    </div>
+        Add New Resource
+    </button>
 
     <!-- Kategorie Pillen (Screenshot 2 inspiriert) -->
     <div class="category-pills">
