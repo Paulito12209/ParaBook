@@ -7,8 +7,9 @@ header {
     justify-content: end;
     align-items: center;
     padding: 16px 32px;
-    background-color: #cfd5e5;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-color);
+    transition: all var(--transition-normal);
 
     .header-logo {
         width: 32px;
@@ -26,19 +27,20 @@ header {
             border: none;
             cursor: pointer;
             padding: 8px;
-            border-radius: 8px;
+            border-radius: var(--border-radius-sm);
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: background-color 0.2s;
+            transition: background-color var(--transition-fast);
 
             img {
                 width: 20px;
                 height: 20px;
+                filter: brightness(var(--indicator-brightness, 1)); // Optionaler Filter für Icons
             }
 
             &:hover {
-                background-color: rgba(255, 255, 255, 0.1);
+                background-color: var(--border-color-hover);
             }
 
             .flag {
@@ -51,13 +53,13 @@ header {
             align-items: center;
             gap: 12px;
             padding: 6px 12px 6px 6px;
-            background-color: rgba(255, 255, 255, 0.05);
+            background-color: var(--border-color);
             border-radius: 24px;
             cursor: pointer;
-            transition: background-color 0.2s;
+            transition: background-color var(--transition-fast);
 
             &:hover {
-                background-color: rgba(255, 255, 255, 0.1);
+                background-color: var(--border-color-hover);
             }
 
             .avatar {
@@ -79,17 +81,17 @@ header {
                 gap: 2px;
 
                 .user-name {
-                    font-family: 'Inter', sans-serif;
+                    font-family: var(--font-family);
                     font-size: 14px;
                     font-weight: 500;
-                    color: rgb(59, 57, 63);
+                    color: var(--text-primary);
                     line-height: 1;
                 }
 
                 .user-role {
-                    font-family: 'Inter', sans-serif;
+                    font-family: var(--font-family);
                     font-size: 12px;
-                    color: rgba(59, 57, 63, 0.6);
+                    color: var(--text-secondary);
                     line-height: 1;
                 }
             }

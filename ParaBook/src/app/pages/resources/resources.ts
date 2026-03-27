@@ -1,23 +1,20 @@
 import { Component } from '@angular/core';
-import { ProjectList } from './components/project-list/project-list';
-import { ProjectDetails } from './components/project-details/project-details';
-
-interface Project {
-  id: number;
-  title: string;
-  updatedAt: string;
-}
+import { SharedProjectList, ProjectListItem } from '../../shared/components/project-list/project-list';
+import { SharedProjectDetails, ProjectDetailsItem } from '../../shared/components/project-details/project-details';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-resources',
-  imports: [ProjectList, ProjectDetails],
+  standalone: true,
+  imports: [CommonModule, SharedProjectList, SharedProjectDetails],
   templateUrl: './resources.html',
   styleUrl: './resources.scss',
 })
 export class Resources {
-  selectedProject: Project | null = null;
+  selectedProject: ProjectDetailsItem | null = null;
 
-  onProjectSelected(project: Project) {
-    this.selectedProject = project;
+  onProjectSelected(project: ProjectListItem) {
+    // Map ProjectListItem to ProjectDetailsItem if needed, or cast if they are compatible
+    this.selectedProject = project as ProjectDetailsItem;
   }
 }

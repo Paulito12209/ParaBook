@@ -1,0 +1,50 @@
+<div class="overlay" *ngIf="isOpen()" (click)="close()">
+  <!-- Stop propagation to prevent closing when clicking inside the modal -->
+  <div class="modal" (click)="$event.stopPropagation()">
+    
+    <div class="modal-header">
+      <div class="type-selector">
+        <button [class.active]="captureType === 'task'" (click)="captureType = 'task'">✓ Aufgabe</button>
+        <button [class.active]="captureType === 'project'" (click)="captureType = 'project'">📁 Projekt</button>
+      </div>
+      <div class="keyboard-hint">
+        <span>esc</span> zum Schließen
+      </div>
+    </div>
+
+    <div class="modal-body">
+      <input 
+        #titleInput
+        type="text" 
+        [(ngModel)]="title" 
+        (keyup.enter)="save()"
+        [placeholder]="captureType === 'task' ? 'Neue Aufgabe erfassen...' : 'Neues Projekt erstellen...'"
+        class="capture-input"
+      >
+      
+      <div class="details-section" *ngIf="showDetails">
+        <textarea 
+          [(ngModel)]="details" 
+          placeholder="Details hinzufügen..."
+          rows="3"
+        ></textarea>
+        <!-- Relationen-Picker Placeholder für später -->
+        <div class="relation-bar">
+          <button class="relation-btn">+ Projekt</button>
+          <button class="relation-btn">+ Kontext</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-secondary" (click)="showDetails = !showDetails">
+        {{ showDetails ? 'Details ausblenden' : 'Details anzeigen' }}
+      </button>
+
+      <div class="actions">
+        <button class="btn btn-primary" (click)="save()">Speichern <kbd>↵</kbd></button>
+      </div>
+    </div>
+
+  </div>
+</div>

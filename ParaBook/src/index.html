@@ -7,6 +7,13 @@
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="PARABOOK-Logo.svg">
+  <script>
+    (function() {
+      const savedTheme = localStorage.getItem('parabook-theme');
+      const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', savedTheme || systemTheme);
+    })();
+  </script>
 </head>
 
 <body>

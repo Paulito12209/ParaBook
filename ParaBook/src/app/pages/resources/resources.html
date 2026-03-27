@@ -1,5 +1,5 @@
 <!-- Resources Page -->
 <div class="resources-page">
-    <app-project-list (projectSelected)="onProjectSelected($event)"></app-project-list>
-    <app-project-details [project]="selectedProject"></app-project-details>
+    <app-shared-project-list (projectSelected)="onProjectSelected($event)"></app-shared-project-list>
+    <app-shared-project-details [project]="selectedProject" (backToProjectList)="selectedProject = null"></app-shared-project-details>
 </div>

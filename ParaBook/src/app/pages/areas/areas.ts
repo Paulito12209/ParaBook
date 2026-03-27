@@ -1,23 +1,19 @@
 import { Component } from '@angular/core';
-import { ProjectList } from './components/project-list/project-list';
-import { ProjectDetails } from './components/project-details/project-details';
-
-interface Project {
-  id: number;
-  title: string;
-  updatedAt: string;
-}
+import { SharedProjectList, ProjectListItem } from '../../shared/components/project-list/project-list';
+import { SharedProjectDetails, ProjectDetailsItem } from '../../shared/components/project-details/project-details';
+import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-areas',
-  imports: [ProjectList, ProjectDetails],
-  templateUrl: './areas.html',
-  styleUrl: './areas.scss',
+    selector: 'app-areas',
+    standalone: true,
+    imports: [CommonModule, SharedProjectList, SharedProjectDetails],
+    templateUrl: './areas.html',
+    styleUrl: './areas.scss',
 })
 export class Areas {
-  selectedProject: Project | null = null;
+    selectedProject: ProjectDetailsItem | null = null;
 
-  onProjectSelected(project: Project) {
-    this.selectedProject = project;
-  }
+    onProjectSelected(project: ProjectListItem) {
+        this.selectedProject = project as ProjectDetailsItem;
+    }
 }

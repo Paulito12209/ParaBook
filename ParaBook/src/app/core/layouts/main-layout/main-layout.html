@@ -1,6 +1,12 @@
-<!-- Main Layout -->
-<app-navigation></app-navigation>
-<div class="layout-container">
-    <app-header></app-header>
-    <router-outlet></router-outlet>
+<div class="layout-wrapper">
+    <app-sidebar class="layout-sidebar"></app-sidebar>
+    <main class="layout-main">
+        <app-header class="layout-header"></app-header>
+        <div class="layout-content">
+            <router-outlet></router-outlet>
+        </div>
+    </main>
 </div>
+
+<!-- Globaler Capture-Dialog -->
+<app-quick-capture></app-quick-capture>

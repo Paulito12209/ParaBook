@@ -1,50 +1,37 @@
-:host {
-    height: 100vh;
-    display: flex;
+.layout-wrapper {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  background-color: var(--bg-primary);
 }
 
-.layout-container {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    height: 100vh;
-    overflow: hidden;
-
-    app-header {
-        flex-shrink: 0;
-    }
-
-    app-projects {
-        flex: 1;
-        overflow: hidden;
-    }
+.layout-sidebar {
+  width: var(--sidebar-width);
+  height: 100%;
+  flex-shrink: 0;
+  border-right: 1px solid var(--border-color);
+  background-color: var(--bg-secondary);
+  z-index: 10;
 }
 
-@media (max-width: 768px) {
-    :host {
-        flex-direction: column-reverse;
-        /* Navigation at bottom */
-    }
+.layout-main {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  height: 100%;
+}
 
-    .layout-container {
-        /* Container fills remaining space, but does NOT scroll itself */
-        height: auto;
-        flex: 1;
-        overflow: hidden;
-        /* Changed from overflow-y: auto */
-        display: flex;
-        flex-direction: column;
-    }
+.layout-header {
+  flex-shrink: 0;
+  /* Header styling delegiert an app-header komponente, wir setzen nur constraints */
+}
 
-    .layout-container app-header {
-        flex-shrink: 0;
-        /* Header keeps its size, never scrolls */
-    }
-
-    /* This targets the router-outlet content area (e.g., app-projects) */
-    .layout-container ::ng-deep>*:not(app-header):not(router-outlet) {
-        flex: 1;
-        overflow-y: auto;
-        /* Only this area scrolls */
-    }
+.layout-content {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 2rem;
+  /* Für Custom Scrollbar innerhalb des Main Contents */
+  scroll-behavior: smooth;
 }
