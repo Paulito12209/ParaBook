@@ -58,4 +58,8 @@ export class Header {
     this.appState.setGlobalRole(role);
     this.isAssigneeDropdownOpen = false;
   }
+
+  goToProfile() {
+    this.router.navigate(['/profile']);
+  }
 }

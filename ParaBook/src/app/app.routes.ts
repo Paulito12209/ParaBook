@@ -8,6 +8,7 @@ import { Resources } from './pages/resources/resources';
 import { Areas } from './pages/areas/areas';
 import { Archive } from './pages/archive/archive';
 import { System } from './pages/system/system';
+import { Profile } from './pages/profile/profile';
 
 export const routes: Routes = [
     {
@@ -20,6 +21,7 @@ export const routes: Routes = [
             { path: "resources", component: Resources, data: { title: 'Ressourcen' } },
             { path: "archive", component: Archive, data: { title: 'Archiv' } },
             { path: "system", component: System, data: { title: 'System' } },
+            { path: "profile", component: Profile, data: { title: 'Mein Profil' } },
             { path: "", redirectTo: "dashboard", pathMatch: "full" }
         ]
     }

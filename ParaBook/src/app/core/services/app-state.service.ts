@@ -19,6 +19,8 @@ export class AppStateService {
   lastActiveWorkspaceId = signal<string | null>(this.loadFromStorage('lastActiveWorkspaceId', null));
   globalRoleFilter = signal<'all' | 'assignee' | 'participant'>(this.loadFromStorage('globalRoleFilter', 'assignee'));
   globalSidebarWidth = signal<number>(this.loadFromStorage('globalSidebarWidth', 400));
+  userName = signal<string>(this.loadFromStorage('userName', 'Paul'));
+  userPhoto = signal<string|null>(this.loadFromStorage('userPhoto', 'profile-icon.png'));
 
   constructor() {
     // Effekte zur Persistierung im LocalStorage
@@ -39,6 +41,12 @@ export class AppStateService {
     });
     effect(() => {
       localStorage.setItem('parabook_globalSidebarWidth', JSON.stringify(this.globalSidebarWidth()));
+    });
+    effect(() => {
+      localStorage.setItem('parabook_userName', JSON.stringify(this.userName()));
+    });
+    effect(() => {
+      localStorage.setItem('parabook_userPhoto', JSON.stringify(this.userPhoto()));
     });
   }
 

@@ -63,13 +63,13 @@
             </svg>
         </button>
 
-        <div class="user-profile">
+        <div class="user-profile" (click)="goToProfile()">
             <div class="avatar">
-                <img src="profile-icon.png" alt="Avatar">
+                <img [src]="appState.userPhoto()" alt="Avatar">
             </div>
             <div class="user-info">
-                <span class="user-name">Paul</span>
-                <span class="user-role">Verantwortliche/r</span>
+                <span class="user-name">{{ appState.userName() }}</span>
+                <span class="user-role">Founder</span>
             </div>
         </div>
     </div>

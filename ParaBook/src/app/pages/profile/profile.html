@@ -1,0 +1,41 @@
+<div class="profile-page">
+    <div class="profile-card">
+        <div class="header">
+            <h1>Mein Profil</h1>
+            <p>Passe deinen Namen und dein Profilbild an</p>
+        </div>
+
+        <div class="profile-content">
+            <div class="avatar-section">
+                <div class="avatar-large" [style.background-image]="'url(' + tempPhoto() + ')'">
+                    <label class="edit-overlay">
+                        <input type="file" (change)="onPhotoChange($event)" hidden accept="image/*">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                            <circle cx="12" cy="13" r="4"/>
+                        </svg>
+                    </label>
+                </div>
+                <div class="role-badge">Founder</div>
+            </div>
+
+            <div class="form-section">
+                <div class="form-group">
+                    <label>Benutzername</label>
+                    <input type="text" [(ngModel)]="tempName" placeholder="Dein Name">
+                </div>
+
+                <div class="form-group">
+                    <label>Rolle</label>
+                    <input type="text" value="Founder" disabled>
+                    <small>Deine Rolle kann aktuell nicht geändert werden.</small>
+                </div>
+            </div>
+
+            <div class="footer-actions">
+                <button class="cancel-btn" (click)="cancel()">Abbrechen</button>
+                <button class="save-btn" (click)="save()">Speichern</button>
+            </div>
+        </div>
+    </div>
+</div>

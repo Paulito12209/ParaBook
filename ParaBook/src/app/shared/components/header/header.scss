@@ -211,16 +211,17 @@ header {
     .user-profile {
         display: flex;
         align-items: center;
-        gap: var(--btn-icon-gap);
-        padding: 4px 16px 4px 4px;
-        background-color: var(--bg-secondary);
-        border-radius: var(--radius-pill);
+        gap: 10px;
+        padding: 4px 12px 4px 4px;
+        background-color: var(--bg-primary);
+        border: 1px solid var(--border-color);
+        border-radius: 20px;
         cursor: pointer;
-        transition: all var(--transition-fast);
-        margin-left: 2px;
+        transition: all 0.2s ease;
 
         &:hover {
-            background-color: var(--border-color-hover);
+            border-color: var(--accent-primary);
+            background-color: var(--bg-secondary);
         }
 
         .avatar {
