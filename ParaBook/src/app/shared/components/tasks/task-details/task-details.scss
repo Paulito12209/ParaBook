@@ -16,8 +16,26 @@
         display: flex;
         flex-direction: column;
 
+        &::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: radial-gradient(circle, #6366f1 1.2px, transparent 1.2px);
+            background-size: 24px 24px;
+            opacity: 0.15;
+            pointer-events: none;
+            z-index: 0;
+
+            :host-context([data-theme="dark"]) & {
+                background-image: radial-gradient(circle, rgba(255, 255, 255, 0.6) 1.2px, transparent 1.2px);
+                opacity: 0.12;
+            }
+        }
+
         /* Obere Sektion (60px) – enthält Zurück-Button */
         .header-top {
+            position: relative;
+            z-index: 1;
             height: 60px;
             display: flex;
             align-items: flex-end;
@@ -174,6 +192,8 @@
 
         /* Untere Sektion (60px) – enthält Subtask-Indikator */
         .header-bottom {
+            position: relative;
+            z-index: 1;
             height: 60px;
             display: flex;
             align-items: flex-end;
@@ -218,7 +238,7 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 12px 24px;
+        padding: 12px 32px;
         background: var(--bg-tertiary);
         border-bottom: 1px solid var(--border-color);
         gap: 16px;
@@ -316,15 +336,16 @@
         height: 400px;
         background: var(--bg-primary);
         border-top: 1px solid var(--border-color);
-        box-shadow: 0 -10px 40px rgba(0,0,0,0.06);
+        box-shadow: none;
         transform: translateY(100%);
-        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s ease;
         z-index: 50;
         display: flex;
         flex-direction: column;
 
         &.open {
             transform: translateY(0);
+            box-shadow: 0 -10px 40px rgba(0,0,0,0.06);
         }
 
         .dialog-header {
@@ -414,15 +435,16 @@
         height: 100%;
         background: var(--bg-primary);
         border-left: 1px solid var(--border-color);
-        box-shadow: -10px 0 40px rgba(0, 0, 0, 0.08);
+        box-shadow: none;
         z-index: 100;
         display: flex;
         flex-direction: column;
         transform: translateX(100%);
-        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s ease;
 
         &.open {
             transform: translateX(0);
+            box-shadow: -10px 0 40px rgba(0, 0, 0, 0.08);
         }
 
         .panel-header {

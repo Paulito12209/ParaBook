@@ -1,10 +1,22 @@
+:host {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    overflow: hidden;
+    height: 100%;
+}
+
 .resource-list {
     display: flex;
     flex-direction: column;
     height: 100%;
-    padding: 16px;
+    max-width: 100%;
+    min-width: 0;
+    overflow: hidden; // Verhindert horizontales Überlaufen beim Zoom
+    padding: 24px 16px;
     background: var(--bg-secondary);
     border-right: 1px solid var(--border-color);
+    border-radius: 4px;
 
     .category-pills {
         display: flex;
@@ -38,9 +50,10 @@
         display: flex;
         flex-direction: column;
         gap: 4px;
-        overflow-y: auto;
+        overflow: hidden auto;
         flex: 1;
-        padding-right: 4px; // Platz für Scrollbar
+        min-width: 0;
+        padding: 0 8px;
 
         .resource-card {
             display: flex;
@@ -50,6 +63,7 @@
             border-radius: var(--radius-md);
             cursor: pointer;
             transition: all var(--transition-fast);
+            min-width: 0;
 
             &:hover {
                 background-color: var(--bg-tertiary);
@@ -70,11 +84,15 @@
                 display: flex;
                 flex-direction: column;
                 gap: 2px;
+                min-width: 0; // Wichtig für Ellipsis
 
                 .title {
                     font-size: 14px;
                     font-weight: 500;
                     color: var(--text-primary);
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
                 }
 
                 .type-pill {
@@ -98,10 +116,12 @@
      * Footer-Bereich mit fixiertem Hinzufügen-Button.
      */
     .list-footer {
-        padding-top: 16px;
+        padding: 16px 8px 0;
         border-top: 1px solid var(--border-color);
         background: var(--bg-secondary);
         z-index: 10;
+        min-width: 0;
+        overflow: hidden;
 
         .add-resource-btn {
             display: flex;

@@ -7,8 +7,8 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 72px; /* Etwas mehr Höhe für den schwebenden Header */
-    padding: 0 16px 0 8px; /* Padding passend zum Canvas-Margin */
+    height: 80px; /* Etwas mehr Höhe für den schwebenden Header */
+    padding: 0 16px 0 0; /* Padding passend zum Canvas-Margin */
     background-color: transparent; /* Liegt auf dem grauen Layout-Wrapper */
     border-bottom: none; /* Keine Linie mehr */
     transition: all var(--transition-normal);
@@ -26,10 +26,11 @@ header {
         align-items: center;
         gap: 6px;
         background-color: var(--bg-primary);
-        padding: 8px 20px;
+        height: 48px;
+        padding: 0 24px;
         border-radius: var(--radius-pill);
-        font-size: 14px;
-        font-weight: 500;
+        font-size: 22px;
+        font-weight: 600;
         color: var(--text-primary);
         box-shadow: var(--shadow-card);
         border: var(--divider-thickness) solid var(--border-color);
@@ -43,10 +44,11 @@ header {
     .assignee-pill {
         display: flex;
         align-items: center;
-        gap: 6px;
+        gap: 8px;
         background-color: var(--bg-primary);
-        padding: 8px 16px;
-        border-radius: 20px; /* Fixed radius to avoid distortion from high pill values */
+        height: 48px;
+        padding: 0 16px;
+        border-radius: var(--radius-pill);
         font-size: 14px;
         font-weight: 500;
         color: var(--text-primary);
@@ -159,7 +161,7 @@ header {
     display: flex;
     align-items: center;
     gap: var(--btn-icon-gap);
-    height: var(--btn-height-md); /* Etwas größer im neuen Design */
+    height: 48px;
     padding: 0 var(--btn-padding-x-lg);
     background: var(--bg-primary);
     border: var(--divider-thickness) solid var(--border-color);
@@ -205,7 +207,8 @@ header {
     align-items: center;
     gap: 6px;
     background: var(--bg-primary); /* Zusammengefasste Pille für Aktionen rechts */
-    padding: 6px;
+    height: 48px;
+    padding: 0 6px;
     border-radius: var(--radius-pill);
     box-shadow: var(--shadow-card);
     border: var(--divider-thickness) solid var(--border-color);
