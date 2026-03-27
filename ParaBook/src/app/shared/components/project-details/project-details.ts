@@ -8,6 +8,7 @@ export interface ProjectDetailsItem {
   title: string;
   updatedAt: string | number;
   description?: string;
+  dueDate?: number;
 }
 
 @Component({
@@ -39,6 +40,25 @@ export class SharedProjectDetails {
     if (!this.project) return;
     await (this.table as any).update(this.project.id, {
       title: this.project.title,
+      updatedAt: Date.now()
+    });
+  }
+
+  formatDate(timestamp?: number): string {
+    if (!timestamp) return '';
+    const d = new Date(timestamp);
+    const month = '' + (d.getMonth() + 1);
+    const day = '' + d.getDate();
+    const year = d.getFullYear();
+    return [year, month.padStart(2, '0'), day.padStart(2, '0')].join('-');
+  }
+
+  async updateDueDate(dateString: string) {
+    if (!this.project) return;
+    const timestamp = dateString ? new Date(dateString).getTime() : undefined;
+    this.project.dueDate = timestamp;
+    await (this.table as any).update(this.project.id, {
+      dueDate: timestamp,
       updatedAt: Date.now()
     });
   }

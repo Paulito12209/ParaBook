@@ -45,11 +45,22 @@ import { MockDataService } from '../../../../core/services/mock-data.service';
       font-weight: 600;
       font-size: 0.875rem;
       color: var(--text-secondary);
-      .icon { width: 1.25rem; height: 1.25rem; color: var(--primary); }
+    }
+    .section-header .icon {
+      width: 1.25rem;
+      height: 1.25rem;
+      color: var(--text-secondary);
     }
     .widget-panel {
       background: var(--bg-canvas);
       border-radius: 1.5rem;
+      border: 1px solid rgba(0,0,0,0.05);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.03);
+      padding: 1.25rem;
+      height: 400px;
+      display: flex;
+      flex-direction: column;
+    }
     .meeting-list {
       overflow-y: auto;
       flex: 1;

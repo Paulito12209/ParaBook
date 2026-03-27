@@ -21,9 +21,28 @@ import { delay } from 'rxjs/operators';
         <!-- Verwendung der AsyncPipe zur Vermeidung von NG0100 Fehlern -->
         <ng-container *ngIf="items$ | async as recentItems">
           <div *ngFor="let item of recentItems" class="item-card">
-            <div class="card-cover">
-              <div class="icon-placeholder">
-                <span class="type-icon">{{ getTypeIcon(item.type) }}</span>
+            <div class="card-cover" [ngClass]="getCoverClass(item.type)">
+              <div class="icon-wrapper" [ngSwitch]="item.type">
+                <!-- Task -->
+                <svg *ngSwitchCase="'Task'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="large-icon">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z" />
+                </svg>
+                <!-- Meeting -->
+                <svg *ngSwitchCase="'Meeting'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="large-icon">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />
+                </svg>
+                <!-- Resource -->
+                <svg *ngSwitchCase="'Resource'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="large-icon">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M4.098 19.902a3.75 3.75 0 0 0 5.304 0l6.401-6.402M6.75 21A3.75 3.75 0 0 1 3 17.25V4.125C3 3.504 3.504 3 4.125 3h5.25c.621 0 1.125.504 1.125 1.125v4.072M6.75 21a3.75 3.75 0 0 0 3.75-3.75V8.197M6.75 21h13.125c.621 0 1.125-.504 1.125-1.125v-5.25c0-.621-.504-1.125-1.125-1.125h-4.072M10.5 8.197l2.88-2.88c.438-.439 1.15-.439 1.59 0l3.712 3.713c.44.44.44 1.152 0 1.59l-2.879 2.88M6.75 17.25h.008v.008H6.75v-.008Z" />
+                </svg>
+                <!-- Project -->
+                <svg *ngSwitchCase="'Project'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="large-icon">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15.59 14.37a6 6 0 0 1-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 0 0 6.16-12.12A14.98 14.98 0 0 0 9.631 8.41m5.96 5.96a14.926 14.926 0 0 1-5.841 2.58m-.119-8.54a6 6 0 0 0-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 0 0-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 0 1-2.448-2.448 14.9 14.9 0 0 1 .06-.312m-2.24 2.39a4.493 4.493 0 0 0-1.757 4.306 4.493 4.493 0 0 0 4.306-1.758M16.5 9a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" />
+                </svg>
+                <!-- Default (Area / Other) -->
+                <svg *ngSwitchDefault xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="large-icon">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 7.125C2.25 6.504 2.754 6 3.375 6h6c.621 0 1.125.504 1.125 1.125v3.75c0 .621-.504 1.125-1.125 1.125h-6a1.125 1.125 0 0 1-1.125-1.125v-3.75ZM14.25 8.625c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v8.25c0 .621-.504 1.125-1.125 1.125h-5.25a1.125 1.125 0 0 1-1.125-1.125v-8.25ZM3.75 16.125c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v2.25c0 .621-.504 1.125-1.125 1.125h-5.25a1.125 1.125 0 0 1-1.125-1.125v-2.25Z" />
+                </svg>
               </div>
             </div>
             <div class="card-content">
@@ -79,20 +98,27 @@ import { delay } from 'rxjs/operators';
     }
     .card-cover {
       height: 80px;
-      background: linear-gradient(135deg, #f0f4ff 0%, #e0e7ff 100%);
+      position: relative;
+      overflow: hidden;
       display: flex;
-      align-items: center;
       justify-content: center;
     }
-    .icon-placeholder {
-      width: 40px;
-      height: 40px;
-      background: white;
-      border-radius: 0.75rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    
+    .bg-project { background: linear-gradient(135deg, rgba(239,68,68,0.1), rgba(239,68,68,0.02)); color: #ef4444; }
+    .bg-area { background: linear-gradient(135deg, rgba(234,179,8,0.1), rgba(234,179,8,0.02)); color: #eab308; }
+    .bg-resource { background: linear-gradient(135deg, rgba(59,130,246,0.1), rgba(59,130,246,0.02)); color: #3b82f6; }
+    .bg-task { background: linear-gradient(135deg, rgba(16,185,129,0.1), rgba(16,185,129,0.02)); color: #10b981; }
+    .bg-meeting { background: linear-gradient(135deg, rgba(139,92,246,0.1), rgba(139,92,246,0.02)); color: #8b5cf6; }
+    .bg-default { background: linear-gradient(135deg, rgba(107,114,128,0.1), rgba(107,114,128,0.02)); color: #6b7280; }
+
+    .large-icon {
+      position: absolute;
+      bottom: -24px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 72px;
+      height: 72px;
+      opacity: 0.9;
     }
     .card-content {
       padding: 0.75rem;
@@ -129,13 +155,14 @@ export class RecentItemsComponent {
    */
   items$ = toObservable(this.appState.lastVisitedPages).pipe(delay(0));
 
-  getTypeIcon(type: string): string {
+  getCoverClass(type: string): string {
     switch(type) {
-      case 'Project': return '📂';
-      case 'Resource': return '📄';
-      case 'Task': return '✅';
-      case 'Meeting': return '📅';
-      default: return '📍';
+      case 'Project': return 'bg-project';
+      case 'Area': return 'bg-area';
+      case 'Resource': return 'bg-resource';
+      case 'Task': return 'bg-task';
+      case 'Meeting': return 'bg-meeting';
+      default: return 'bg-default';
     }
   }
 
