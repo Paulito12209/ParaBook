@@ -96,8 +96,9 @@ import { toSignal } from '@angular/core/rxjs-interop';
     .compact-list-area {
       display: flex;
       flex-direction: column;
-      max-width: 400px;
-      width: 100%;
+      min-width: 400px;
+      width: 400px;
+      flex-shrink: 0;
     }
     .list-container {
       background: var(--bg-canvas);

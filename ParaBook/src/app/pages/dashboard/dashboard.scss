@@ -35,7 +35,7 @@
 }
 
 .meetings-col {
-  max-width: 400px;
-  width: 100%;
+  flex: 0 0 400px;
+  min-width: 400px;
   height: 100%;
 }

@@ -36,7 +36,8 @@ import { MockDataService } from '../../../../core/services/mock-data.service';
       display: flex;
       flex-direction: column;
       height: 100%;
-      max-width: 400px;
+      min-width: 400px;
+      width: 400px;
     }
     .section-header {
       display: flex;
