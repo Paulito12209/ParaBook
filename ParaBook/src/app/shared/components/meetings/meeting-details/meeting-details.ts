@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output, inject, Signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { MeetingEntity } from '../../../../core/models/entities';
+import { MeetingEntity, TaskEntity } from '../../../../core/models/entities';
 import { DatabaseService } from '../../../../core/database/db.service';
 import { TaskLinkPanelComponent } from '../../tasks/task-link-panel/task-link-panel';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -23,16 +23,16 @@ export class MeetingDetailsComponent {
 
   isTaskPanelOpen = false;
 
-  /** Zählt die verknüpften Aufgaben live aus der Datenbank */
-  linkedTasksCount: Signal<number> = toSignal(
+  /** Lädt die verknüpften Aufgaben live für den Header-Indikator */
+  linkedTasks: Signal<TaskEntity[]> = toSignal(
     liveQuery(() => {
-      if (!this.meeting) return Promise.resolve(0);
+      if (!this.meeting) return Promise.resolve([] as TaskEntity[]);
       return this.db.tasks
         .where('meetingIds')
         .equals(this.meeting.id)
-        .count();
+        .toArray();
     }),
-    { initialValue: 0 }
+    { initialValue: [] as TaskEntity[] }
   );
 
   onClose() {

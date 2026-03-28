@@ -198,7 +198,7 @@
             }
         }
 
-        /* Untere Sektion (60px) */
+        /* Untere Sektion (60px) – enthält Subtask-Indikator */
         .header-bottom {
             position: relative;
             z-index: 1;
@@ -206,6 +206,38 @@
             display: flex;
             align-items: flex-end;
             flex-shrink: 0;
+
+            .subtask-indicator {
+                display: flex;
+                gap: 6px;
+                cursor: pointer;
+                transition: opacity 0.2s ease;
+                z-index: 2;
+                width: 100%;
+                margin-bottom: 16px;
+
+                &:hover {
+                    opacity: 0.8;
+                    .indicator-segment:not(.filled) {
+                        border-color: rgba(239, 68, 68, 0.4);
+                    }
+                }
+
+                .indicator-segment {
+                    flex: 1;
+                    height: 8px;
+                    border-radius: 4px;
+                    background: rgba(255, 255, 255, 0.1);
+                    border: 1px solid rgba(128, 128, 128, 0.2);
+                    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+                    &.filled {
+                        background: #ef4444; /* Projekt Rot */
+                        border-color: #ef4444;
+                        box-shadow: 0 0 10px rgba(239, 68, 68, 0.3);
+                    }
+                }
+            }
         }
     }
 

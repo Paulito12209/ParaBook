@@ -22,16 +22,16 @@ export class ResourceDetailsComponent {
 
   isTaskPanelOpen = false;
 
-  /** Zählt die verknüpften Aufgaben live aus der Datenbank */
-  linkedTasksCount: Signal<number> = toSignal(
+  /** Lädt die verknüpften Aufgaben live für den Header-Indikator */
+  linkedTasks: Signal<TaskEntity[]> = toSignal(
     liveQuery(() => {
-      if (!this.resource) return Promise.resolve(0);
+      if (!this.resource) return Promise.resolve([] as TaskEntity[]);
       return this.db.tasks
         .where('resourceIds')
         .equals(this.resource.id)
-        .count();
+        .toArray();
     }),
-    { initialValue: 0 }
+    { initialValue: [] as TaskEntity[] }
   );
 
   typeOptions: ResourceType[] = ['Lesezeichen', 'Notiz', 'SOP', 'Dokumentation', 'Ressource'];

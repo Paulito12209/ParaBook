@@ -35,8 +35,16 @@
             </div>
         </div>
 
-        <!-- Untere Sektion (60px) - momentan leer für Projekte, reserviert für Teilnehmer-Indikator, etc. -->
+        <!-- Untere Sektion (60px) - zeigt die verknüpften Aufgaben-Indikatoren -->
         <div class="header-bottom">
+            @if (linkedTasks() && linkedTasks().length >= 1) {
+                <div class="subtask-indicator" (click)="toggleTaskPanel()" title="Verknüpfte Aufgaben anzeigen">
+                    <div *ngFor="let t of linkedTasks()" 
+                         class="indicator-segment" 
+                         [class.filled]="t.status === 'erledigt'">
+                    </div>
+                </div>
+            }
         </div>
     </div>
 

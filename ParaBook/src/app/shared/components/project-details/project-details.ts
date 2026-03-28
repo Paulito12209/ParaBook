@@ -1,8 +1,11 @@
-import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject, Signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DatabaseService } from '../../../core/database/db.service';
 import { TaskLinkPanelComponent } from '../tasks/task-link-panel/task-link-panel';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { liveQuery } from 'dexie';
+import { TaskEntity } from '../../../core/models/entities';
 
 export interface ProjectDetailsItem {
   id: string | number;
@@ -28,8 +31,19 @@ export class SharedProjectDetails {
   @Output() backToProjectList = new EventEmitter<void>();
 
   isTaskPanelOpen = false;
-
   private db = inject(DatabaseService);
+
+  /** Lädt die verknüpften Aufgaben live für den Header-Indikator */
+  linkedTasks: Signal<TaskEntity[]> = toSignal(
+    liveQuery(() => {
+      if (!this.project) return Promise.resolve([] as TaskEntity[]);
+      return this.db.tasks
+        .where('projectId')
+        .equals(this.project.id as string)
+        .toArray();
+    }),
+    { initialValue: [] as TaskEntity[] }
+  );
 
   /** Gibt die korrekte DB-Tabelle zurück */
   private get table() {

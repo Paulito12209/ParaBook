@@ -143,16 +143,46 @@
             }
         }
 
-        /* Untere Sektion (60px) */
+        /* Untere Sektion (60px) – enthält Subtask-Indikator */
         .header-bottom {
             position: relative;
             z-index: 1;
             height: 60px;
             display: flex;
             align-items: flex-end;
-            padding-bottom: 16px;
             flex-shrink: 0;
 
+            .subtask-indicator {
+                display: flex;
+                gap: 6px;
+                cursor: pointer;
+                transition: opacity 0.2s ease;
+                z-index: 2;
+                width: 100%;
+                margin-bottom: 16px;
+
+                &:hover {
+                    opacity: 0.8;
+                    .indicator-segment:not(.filled) {
+                        border-color: rgba(0, 209, 178, 0.4);
+                    }
+                }
+
+                .indicator-segment {
+                    flex: 1;
+                    height: 8px;
+                    border-radius: 4px;
+                    background: rgba(255, 255, 255, 0.1);
+                    border: 1px solid rgba(128, 128, 128, 0.2);
+                    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+                    &.filled {
+                        background: #00d1b2; /* Resource Grün */
+                        border-color: #00d1b2;
+                        box-shadow: 0 0 10px rgba(0, 209, 178, 0.3);
+                    }
+                }
+            }
             .task-indicator {
                 display: flex;
                 align-items: center;
@@ -229,7 +259,10 @@
                 .action-btn {
                     gap: 0;
                     padding: 0 8px;
-                    .btn-text { display: none; }
+                    
+                    .btn-text {
+                        display: none;
+                    }
                 }
             }
         }
