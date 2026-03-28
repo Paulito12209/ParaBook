@@ -20,15 +20,22 @@
 }
 
 .widgets-grid {
-  display: grid;
-  grid-template-columns: 1.5fr 1fr;
+  display: flex;
   gap: 2rem;
   
   @media (max-width: 1024px) {
-    grid-template-columns: 1fr;
+    flex-direction: column;
   }
 }
 
-.tasks-col, .meetings-col {
+.tasks-col {
+  flex: 1;
+  min-width: 0; /* Verhindert overflow durch lange Inhalte in Flex-Containern */
+  height: 100%;
+}
+
+.meetings-col {
+  max-width: 400px;
+  width: 100%;
   height: 100%;
 }

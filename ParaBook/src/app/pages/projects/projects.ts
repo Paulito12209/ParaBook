@@ -98,6 +98,9 @@ export class Projects {
       id: p.id,
       title: p.title,
       updatedAt: p.updatedAt,
+      dueDate: p.dueDate,
+      status: p.status,
+      priority: p.priority,
       description: `Status: ${p.status} | Priorität: ${p.priority}`
     };
   }

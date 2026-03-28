@@ -1,34 +1,42 @@
 <div class="resource-details" [class.empty]="!resource">
     @if (resource) {
         <!-- Glassmorphism Header -->
-        <div class="glass-header">
-            <div class="header-content">
-                <button class="back-pill" (click)="onClose()">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="15 18 9 12 15 6"></polyline>
-                    </svg>
-                    Zurück
-                </button>
-                <span class="type-label">{{ resource.type | uppercase }}</span>
+    <div class="glass-header">
+        <!-- Obere Sektion (60px) -->
+        <div class="header-top">
+            <button class="back-pill" (click)="onClose()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+                Zurück
+            </button>
+        </div>
+
+        <!-- Content-Block (Mitte, 120px) -->
+        <div class="header-content">
+            <span class="type-label">{{ resource.type | uppercase }}</span>
+            <div class="title-row">
                 <input [(ngModel)]="resource.title" (ngModelChange)="updateResource()" class="title-input" placeholder="Titel der Ressource" />
-                <div class="meta-badges">
-                    <span class="badge" [attr.data-status]="resource.status">{{ resource.status }}</span>
-                    <span class="badge">{{ resource.assignee || 'Paul' }}</span>
-                </div>
             </div>
-            <div class="header-right">
-                @if (hasValidUrl()) {
-                    <a [href]="resource.url" target="_blank" class="open-link-btn">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-                            <polyline points="15 3 21 3 21 9"/>
-                            <line x1="10" y1="14" x2="21" y2="3"/>
-                        </svg>
-                        Link öffnen
-                    </a>
-                }
+            <div class="meta-badges">
+                <span class="badge" [attr.data-status]="resource.status">{{ resource.status }}</span>
+                <span class="badge">{{ resource.assignee || 'Paul' }}</span>
             </div>
         </div>
+
+        <!-- Untere Sektion (60px) -->
+        <div class="header-bottom">
+            @if (linkedTasksCount() > 0) {
+                <div class="task-indicator" (click)="toggleTaskPanel()" title="Verknüpfte Aufgaben anzeigen">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 11l3 3L22 4"></path>
+                        <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                    </svg>
+                    <span>{{ linkedTasksCount() }} verknüpfte {{ linkedTasksCount() === 1 ? 'Aufgabe' : 'Aufgaben' }}</span>
+                </div>
+            }
+        </div>
+    </div>
 
         <!-- URL-Bearbeitung (nur bei aktivem Edit-Modus) -->
         @if (isEditingUrl) {
@@ -40,28 +48,55 @@
 
         <!-- Action-Bar -->
         <div class="action-bar">
-            <button class="action-btn" (click)="toggleUrlEdit()" title="Bearbeiten">
+            <div class="action-group">
+                @if (hasValidUrl()) {
+                    <a [href]="resource.url" target="_blank" class="action-btn link-btn">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                            <polyline points="15 3 21 3 21 9"/>
+                            <line x1="10" y1="14" x2="21" y2="3"/>
+                        </svg>
+                        <span class="btn-text">Link öffnen</span>
+                    </a>
+                }
+                <button class="action-btn" (click)="toggleUrlEdit()" title="Bearbeiten">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                    </svg>
+                    <span class="btn-text">URL Editieren</span>
+                </button>
+                <button class="action-btn" (click)="archiveResource()" title="Archivieren">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="21 8 21 21 3 21 3 8"></polyline>
+                        <rect x="1" y="3" width="22" height="5"></rect>
+                        <line x1="10" y1="12" x2="14" y2="12"></line>
+                    </svg>
+                    <span class="btn-text">Archivieren</span>
+                </button>
+                <button class="action-btn delete" (click)="deleteResource()" title="Löschen">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                    </svg>
+                    <span class="btn-text">Löschen</span>
+                </button>
+            </div>
+            
+            <button class="action-btn task-toggle" (click)="toggleTaskPanel()" title="Aufgabe verknüpfen oder erstellen">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
                 </svg>
-                Bearbeiten
-            </button>
-            <button class="action-btn" (click)="archiveResource()" title="Archivieren">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="21 8 21 21 3 21 3 8"></polyline>
-                    <rect x="1" y="3" width="22" height="5"></rect>
-                    <line x1="10" y1="12" x2="14" y2="12"></line>
-                </svg>
-                Archivieren
-            </button>
-            <button class="action-btn delete" (click)="deleteResource()" title="Löschen">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
-                </svg>
-                Löschen
+                <span class="btn-text">Aufgabe</span>
             </button>
         </div>
+
+        <app-task-link-panel 
+            [parentId]="resource.id" 
+            parentType="resource" 
+            [isOpen]="isTaskPanelOpen"
+            (close)="toggleTaskPanel()">
+        </app-task-link-panel>
 
         <!-- Content -->
         <div class="details-content">

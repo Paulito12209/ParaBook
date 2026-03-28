@@ -53,14 +53,26 @@ import { toSignal } from '@angular/core/rxjs-interop';
           <span>Zuletzt erstellt</span>
         </div>
         <div class="widget-panel list-container">
-          <div *ngFor="let proj of projects().slice(0, 4)" class="compact-project">
+          <div *ngFor="let proj of projects().slice(0, 10)" class="compact-project">
             <div class="compact-content">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="proj-icon">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.59 14.37a6 6 0 0 1-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 0 0 6.16-12.12A14.98 14.98 0 0 0 9.631 8.41m5.96 5.96a14.926 14.926 0 0 1-5.841 2.58m-.119-8.54a6 6 0 0 0-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 0 0-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 0 1-2.448-2.448 14.9 14.9 0 0 1 .06-.312m-2.24 2.39a4.493 4.493 0 0 0-1.757 4.306 4.493 4.493 0 0 0 4.306-1.758M16.5 9a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" />
               </svg>
               <span class="title">{{ proj.title }}</span>
             </div>
-            <span class="due-date" *ngIf="proj.dueDate">{{ proj.dueDate | date:'dd. MMM' }}</span>
+            
+            <div class="due-date-wrapper" *ngIf="proj.dueDate">
+              <svg class="calendar-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+              </svg>
+              <span class="due-date">{{ proj.dueDate | date:'dd.MM.yyyy' }}</span>
+            </div>
+            <div class="due-date-wrapper empty" *ngIf="!proj.dueDate">
+              <span class="due-date">Ohne Datum</span>
+            </div>
           </div>
         </div>
       </div>
@@ -84,6 +96,8 @@ import { toSignal } from '@angular/core/rxjs-interop';
     .compact-list-area {
       display: flex;
       flex-direction: column;
+      max-width: 400px;
+      width: 100%;
     }
     .list-container {
       background: var(--bg-canvas);
@@ -108,7 +122,20 @@ import { toSignal } from '@angular/core/rxjs-interop';
         gap: 0.5rem;
       }
       .proj-icon { width: 1.1rem; height: 1.1rem; color: var(--text-secondary); }
-      .due-date { font-size: 0.75rem; color: var(--text-secondary); }
+      .due-date-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        color: var(--text-secondary);
+        
+        .calendar-icon { opacity: 0.7; }
+        .due-date { font-size: 0.75rem; }
+        
+        &.empty { 
+          opacity: 0.5; 
+          font-style: italic; 
+        }
+      }
       .title {
         font-size: 0.875rem;
         font-weight: 600;
@@ -143,7 +170,8 @@ import { toSignal } from '@angular/core/rxjs-interop';
       }
     }
     .project-card {
-      min-width: 220px;
+      width: 240px; /* Explizite Breite, um Proportionen zu wahren (240x120 = 2:1) */
+      flex: 0 0 auto;
       background: var(--bg-canvas);
       border-radius: 1.25rem;
       overflow: hidden;
@@ -158,7 +186,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
       }
     }
     .card-cover {
-      height: 100px;
+      height: 120px;
       overflow: hidden;
       background: #f8fafc;
     }

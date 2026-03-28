@@ -5,14 +5,17 @@
 }
 
 .project-details {
+    container-type: inline-size;
     display: flex;
     flex-direction: column;
     height: 100%;
     background-color: var(--bg-primary);
+    position: relative;
+    overflow: hidden;
 
-    /* === Glassmorphism Header (Projekt = Rot) === */
+    /* === Glassmorphism Header (Projekt = Rot #ef4444) === */
     .glass-header {
-        background: linear-gradient(135deg, rgba(204, 49, 42, 0.15) 0%, var(--bg-primary) 100%);
+        background: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, var(--bg-primary) 100%);
         padding: 0 32px;
         position: relative;
         overflow: hidden;
@@ -20,10 +23,30 @@
         display: flex;
         flex-direction: column;
 
+        &::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: radial-gradient(circle, #ef4444 1.2px, transparent 1.2px);
+            background-size: 24px 24px;
+            opacity: 0.15;
+            pointer-events: none;
+            z-index: 0;
+
+            :host-context([data-theme="dark"]) & {
+                background-image: radial-gradient(circle, rgba(255, 255, 255, 0.6) 1.2px, transparent 1.2px);
+                opacity: 0.12;
+            }
+        }
+
+        /* Obere Sektion (60px) – enthält Zurück-Button */
         .header-top {
+            position: relative;
+            z-index: 1;
             height: 60px;
             display: flex;
-            align-items: flex-end;
+            align-items: flex-start;
+            padding-top: 24px;
             flex-shrink: 0;
 
             .back-pill {
@@ -41,23 +64,30 @@
                 font-weight: 500;
                 cursor: pointer;
                 transition: all 0.2s ease;
-                margin-top: 24px;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+
+                :host-context([data-theme="dark"]) & {
+                    box-shadow: 0 2px 8px rgba(255, 255, 255, 0.05);
+                }
 
                 &:hover {
                     background: var(--bg-secondary);
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
                 }
             }
-        }        /* Content-Block (Mitte, vertikal zentriert) */
+        }
+
+        /* Content-Block (Mitte, 120px) */
         .header-content {
             position: relative;
             z-index: 1;
-            flex: 1;
+            height: 120px;
+            flex-shrink: 0;
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
             gap: 8px;
             width: 100%;
-            max-height: 120px;
 
             .type-label {
                 font-size: 12px;
@@ -72,11 +102,12 @@
                 align-items: center;
                 justify-content: space-between;
                 gap: 16px;
+                margin: 0;
 
                 .title-input {
                     flex: 1;
                     min-width: 0;
-                    font-size: 32px;
+                    font-size: 28px;
                     font-weight: 700;
                     color: var(--text-primary);
                     line-height: 1.2;
@@ -94,25 +125,33 @@
                     }
                 }
 
-                .due-date-picker {
-                    display: flex;
+                .due-date-pill {
+                    display: inline-flex;
                     align-items: center;
                     gap: 6px;
-                    font-size: 12px;
-                    color: var(--text-secondary);
-                    font-weight: 500;
-                    background: var(--bg-canvas);
+                    background: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(239, 68, 68, 0.05) 100%);
+                    color: #ef4444; /* Projekt Rot */
                     height: 32px;
-                    padding: 0 10px;
-                    border-radius: 12px;
-                    border: 1px dashed rgba(0,0,0,0.15);
-                    position: relative;
-                    cursor: pointer;
+                    padding: 0 14px;
+                    border-radius: 20px;
+                    font-size: 13px;
+                    font-weight: 600;
+                    white-space: nowrap;
                     flex-shrink: 0;
+                    position: relative;
+                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 
-                    &:hover {
-                        background: var(--bg-tertiary);
-                        color: var(--text-primary);
+                    :host-context([data-theme="dark"]) & {
+                        box-shadow: 0 2px 8px rgba(255, 255, 255, 0.05);
+                    }
+                    .label { display: block; opacity: 0.8; }
+                    .calendar-icon {
+                        display: none; opacity: 0.8; flex-shrink: 0; margin-right: -2px;
+                    }
+
+                    @container (max-width: 640px) {
+                        .label { display: none; }
+                        .calendar-icon { display: block; }
                     }
 
                     .date-input {
@@ -121,6 +160,7 @@
                         color: inherit;
                         font-family: inherit;
                         font-size: inherit;
+                        font-weight: inherit;
                         outline: none;
                         cursor: pointer;
                         width: 90px;
@@ -135,55 +175,121 @@
                     }
                 }
             }
-            .description {
+
+            .meta-badges {
+                display: flex;
+                align-items: center;
+                gap: 8px;
                 margin: 0;
-                font-size: 14px;
-                color: var(--text-secondary);
-                max-width: 600px;
-                line-height: 1.5;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
+
+                .badge {
+                    display: flex;
+                    align-items: center;
+                    height: 24px;
+                    padding: 0 12px;
+                    border-radius: 20px;
+                    font-size: 12px;
+                    font-weight: 600;
+                    background: var(--bg-tertiary);
+                    color: var(--text-primary);
+                    border: 1px solid var(--border-color);
+                    white-space: nowrap;
+                }
             }
+        }
+
+        /* Untere Sektion (60px) */
+        .header-bottom {
+            position: relative;
+            z-index: 1;
+            height: 60px;
+            display: flex;
+            align-items: flex-end;
+            flex-shrink: 0;
         }
     }
 
-    /* Arbeitsbereich-Variante (Gelb) */
+    /* Arbeitsbereich-Variante (Gelb #eab308) */
     &.type-area .glass-header {
-        background: linear-gradient(135deg, rgba(249, 214, 29, 0.15) 0%, var(--bg-primary) 100%);
+        background: linear-gradient(135deg, rgba(234, 179, 8, 0.15) 0%, var(--bg-primary) 100%);
+        &::before { background-image: radial-gradient(circle, #eab308 1.2px, transparent 1.2px); }
+        .due-date-pill {
+            background: linear-gradient(135deg, rgba(234, 179, 8, 0.15) 0%, rgba(234, 179, 8, 0.05) 100%);
+            color: #d97706; /* Etwas dunkler für Kontrast */
+        }
     }
 
-    /* === Action-Bar === */
+    /* === Action Bar === */
     .action-bar {
+        container-type: inline-size;
         display: flex;
         align-items: center;
-        gap: 4px;
-        padding: 10px 24px;
-        background: var(--bg-tertiary, #f5f5f7);
+        justify-content: space-between;
+        padding: 12px 32px;
+        background: var(--bg-tertiary);
         border-bottom: 1px solid var(--border-color);
+
+        .action-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            @container (max-width: 640px) {
+                .action-btn {
+                    gap: 0;
+                    padding: 0 8px;
+                    
+                    .btn-text {
+                        display: none;
+                    }
+                }
+            }
+        }
 
         .action-btn {
             display: flex;
             align-items: center;
-            gap: 6px;
-            background: none;
-            border: none;
+            gap: 8px;
+            padding: 0 16px;
+            height: 32px;
+            background: transparent;
+            border: 1px solid transparent;
+            border-radius: 10px;
             color: var(--text-secondary);
-            cursor: pointer;
             font-size: 13px;
             font-weight: 500;
-            padding: 8px 14px;
-            border-radius: 8px;
+            cursor: pointer;
             transition: all 0.2s ease;
+
+            .btn-text {
+                display: block;
+            }
 
             &:hover {
                 background: var(--bg-secondary);
                 color: var(--text-primary);
+                border-color: var(--border-color);
             }
 
             &.delete:hover {
-                background: #fee2e2;
-                color: #991b1b;
+                background: rgba(244, 63, 94, 0.1);
+                color: #f43f5e;
+                border-color: rgba(244, 63, 94, 0.2);
+            }
+
+            &.task-toggle {
+                background: #ef4444;
+                color: #ffffff;
+                border: 1px solid #ef4444;
+                font-weight: 600;
+                flex-shrink: 0;
+                white-space: nowrap;
+
+                &:hover {
+                    background: #dc2626;
+                    border-color: #dc2626;
+                    transform: translateY(-1px);
+                }
             }
         }
     }

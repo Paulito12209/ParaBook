@@ -1,13 +1,16 @@
-import { Component, Input, EventEmitter, Output, inject } from '@angular/core';
+import { Component, Input, EventEmitter, Output, inject, Signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ResourceEntity, ResourceType, StatusResource } from '../../../../core/models/entities';
+import { ResourceEntity, ResourceType, StatusResource, TaskEntity } from '../../../../core/models/entities';
 import { DatabaseService } from '../../../../core/database/db.service';
+import { TaskLinkPanelComponent } from '../../tasks/task-link-panel/task-link-panel';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { liveQuery } from 'dexie';
 
 @Component({
   selector: 'app-resource-details',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TaskLinkPanelComponent],
   templateUrl: './resource-details.html',
   styleUrl: './resource-details.scss',
 })
@@ -16,6 +19,20 @@ export class ResourceDetailsComponent {
   @Output() close = new EventEmitter<void>();
 
   private db = inject(DatabaseService);
+
+  isTaskPanelOpen = false;
+
+  /** Zählt die verknüpften Aufgaben live aus der Datenbank */
+  linkedTasksCount: Signal<number> = toSignal(
+    liveQuery(() => {
+      if (!this.resource) return Promise.resolve(0);
+      return this.db.tasks
+        .where('resourceIds')
+        .equals(this.resource.id)
+        .count();
+    }),
+    { initialValue: 0 }
+  );
 
   typeOptions: ResourceType[] = ['Lesezeichen', 'Notiz', 'SOP', 'Dokumentation', 'Ressource'];
   statusOptions: StatusResource[] = ['zu prüfen', 'in Prüfung', 'überprüft'];
@@ -73,6 +90,11 @@ export class ResourceDetailsComponent {
 
   onClose() {
     this.isEditingUrl = false;
+    this.isTaskPanelOpen = false;
     this.close.emit();
+  }
+
+  toggleTaskPanel() {
+    this.isTaskPanelOpen = !this.isTaskPanelOpen;
   }
 }

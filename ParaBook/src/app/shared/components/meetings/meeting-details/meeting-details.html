@@ -1,49 +1,77 @@
 <div class="meeting-details" [class.empty]="!meeting">
     @if (meeting) {
         <!-- Glassmorphism Header -->
-        <div class="glass-header">
-            <!-- Obere Sektion (60px) -->
-            <div class="header-top">
-                <button class="back-pill" (click)="onClose()">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="15 18 9 12 15 6"></polyline>
-                    </svg>
-                    Zurück
-                </button>
+    <div class="glass-header">
+        <!-- Obere Sektion (60px) -->
+        <div class="header-top">
+            <button class="back-pill" (click)="onClose()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+                Zurück
+            </button>
+        </div>
+
+        <!-- Content-Block (Mitte, 120px, vertikal zentriert) -->
+        <div class="header-content">
+            <span class="type-label">MEETING</span>
+            <div class="title-row">
+                <input [(ngModel)]="meeting.title" (ngModelChange)="updateMeeting()" class="title-input" placeholder="Titel des Meetings" />
             </div>
-
-            <!-- Content-Block (Mitte, 120px, vertikal zentriert) -->
-            <div class="header-content">
-                <span class="type-label">MEETING</span>
-                
-                <div class="title-row">
-                    <input [(ngModel)]="meeting.title" (ngModelChange)="updateMeeting()" class="title-input" placeholder="Titel des Meetings" />
-                </div>
-
-                <div class="meta-badges">
-                    <span class="badge">{{ meeting.scheduledFor | date:'EEEE, dd. MMMM yyyy' }}</span>
-                    <span class="badge">{{ meeting.scheduledFor | date:'HH:mm' }} Uhr</span>
-                </div>
+            <div class="meta-badges">
+                <span class="badge">{{ meeting.scheduledFor | date:'EEEE, dd. MMMM yyyy' }}</span>
+                <span class="badge">{{ meeting.scheduledFor | date:'HH:mm' }} Uhr</span>
             </div>
         </div>
 
-        <!-- Action-Bar -->
-        <div class="action-bar">
+        <!-- Untere Sektion (60px) -->
+        <div class="header-bottom">
+            @if (linkedTasksCount() > 0) {
+                <div class="task-indicator" (click)="toggleTaskPanel()" title="Verknüpfte Aufgaben anzeigen">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 11l3 3L22 4"></path>
+                        <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                    </svg>
+                    <span>{{ linkedTasksCount() }} verknüpfte {{ linkedTasksCount() === 1 ? 'Aufgabe' : 'Aufgaben' }}</span>
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- Action-Bar -->
+    <div class="action-bar">
+        <div class="action-group">
             <button class="action-btn" (click)="onArchive()" title="Archivieren">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <polyline points="21 8 21 21 3 21 3 8"></polyline>
                     <rect x="1" y="3" width="22" height="5"></rect>
                     <line x1="10" y1="12" x2="14" y2="12"></line>
                 </svg>
-                Archivieren
+                <span class="btn-text">Archivieren</span>
             </button>
             <button class="action-btn delete" (click)="onDelete()" title="Löschen">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
                 </svg>
-                Löschen
+                <span class="btn-text">Löschen</span>
             </button>
         </div>
+
+        <button class="action-btn task-toggle" (click)="toggleTaskPanel()" title="Aufgabe verknüpfen oder erstellen">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            <span class="btn-text">Aufgabe</span>
+        </button>
+    </div>
+
+    <app-task-link-panel 
+        [parentId]="meeting.id" 
+        parentType="meeting" 
+        [isOpen]="isTaskPanelOpen"
+        (close)="toggleTaskPanel()">
+    </app-task-link-panel>
 
         <!-- Content -->
         <div class="details-content">

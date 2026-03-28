@@ -1,13 +1,16 @@
-import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject, Signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MeetingEntity } from '../../../../core/models/entities';
 import { DatabaseService } from '../../../../core/database/db.service';
+import { TaskLinkPanelComponent } from '../../tasks/task-link-panel/task-link-panel';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { liveQuery } from 'dexie';
 
 @Component({
   selector: 'app-meeting-details',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TaskLinkPanelComponent],
   templateUrl: './meeting-details.html',
   styleUrl: './meeting-details.scss',
 })
@@ -17,6 +20,20 @@ export class MeetingDetailsComponent {
   @Output() delete = new EventEmitter<string>();
 
   private db = inject(DatabaseService);
+
+  isTaskPanelOpen = false;
+
+  /** Zählt die verknüpften Aufgaben live aus der Datenbank */
+  linkedTasksCount: Signal<number> = toSignal(
+    liveQuery(() => {
+      if (!this.meeting) return Promise.resolve(0);
+      return this.db.tasks
+        .where('meetingIds')
+        .equals(this.meeting.id)
+        .count();
+    }),
+    { initialValue: 0 }
+  );
 
   onClose() {
     this.close.emit();
@@ -47,5 +64,9 @@ export class MeetingDetailsComponent {
       title: this.meeting.title,
       updatedAt: Date.now()
     });
+  }
+
+  toggleTaskPanel() {
+    this.isTaskPanelOpen = !this.isTaskPanelOpen;
   }
 }

@@ -1,13 +1,16 @@
 .tasks-page.split-view {
+    container-type: inline-size;
     display: flex;
     height: 100%;
     margin: 0;
     overflow: hidden;
+    position: relative; /* Wichtig für absolute Details */
 
     .list-col {
         height: 100%;
         overflow: hidden;
         flex-shrink: 0;
+        transition: width 0.3s ease;
     }
 
     .resize-handle {
@@ -28,17 +31,28 @@
         height: 100%;
         overflow: hidden;
         border-right: none;
-        
-        @media (max-width: 900px) {
-            position: fixed;
-            top: 72px;
-            right: 0;
+    }
+
+    /* === Responsive Master-Detail (Single Column Mode) === */
+    @container (max-width: 800px) {
+        .list-col {
+            width: 100% !important; /* Forciert volle Breite für die Liste */
+        }
+
+        .resize-handle {
+            display: none; /* Verstecke den Resize-Grip im Mobile-Modus */
+        }
+
+        .details-col {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
-            height: calc(100% - 72px);
+            height: 100%;
             z-index: 50;
             background: var(--bg-primary);
             transform: translateX(100%);
-            transition: transform 0.3s ease;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 
             &.visible {
                 transform: translateX(0);

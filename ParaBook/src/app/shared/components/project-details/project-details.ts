@@ -2,19 +2,22 @@ import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DatabaseService } from '../../../core/database/db.service';
+import { TaskLinkPanelComponent } from '../tasks/task-link-panel/task-link-panel';
 
 export interface ProjectDetailsItem {
   id: string | number;
   title: string;
   updatedAt: string | number;
   description?: string;
+  status?: string;
+  priority?: string;
   dueDate?: number;
 }
 
 @Component({
   selector: 'app-shared-project-details',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TaskLinkPanelComponent],
   templateUrl: './project-details.html',
   styleUrl: './project-details.scss',
 })
@@ -23,6 +26,8 @@ export class SharedProjectDetails {
   /** Bestimmt, welche DB-Tabelle für Löschen/Archivieren genutzt wird */
   @Input() entityType: 'project' | 'area' = 'project';
   @Output() backToProjectList = new EventEmitter<void>();
+
+  isTaskPanelOpen = false;
 
   private db = inject(DatabaseService);
 
@@ -90,5 +95,12 @@ export class SharedProjectDetails {
 
     // Zurück zur Liste
     this.goBack();
+  }
+
+  /**
+   * Öffnet das Side-Panel zur Aufgaben-Verknüpfung.
+   */
+  toggleTaskPanel() {
+    this.isTaskPanelOpen = !this.isTaskPanelOpen;
   }
 }
