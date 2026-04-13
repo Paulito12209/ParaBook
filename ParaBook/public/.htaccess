@@ -1,0 +1,8 @@
+# Angular SPA-Routing: Alle Anfragen auf index.html umleiten
+Options -MultiViews
+RewriteEngine On
+RewriteBase /projects/parabook/
+RewriteRule ^index\.html$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /projects/parabook/index.html [L]
